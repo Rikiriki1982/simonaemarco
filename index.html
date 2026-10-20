@@ -59,10 +59,13 @@
         radial-gradient(circle at 10% 20%, rgba(139, 168, 136, 0.12) 0%, transparent 40%),
         radial-gradient(circle at 90% 80%, rgba(212, 175, 55, 0.1) 0%, transparent 40%),
         radial-gradient(circle at 50% 50%, rgba(199, 214, 199, 0.15) 0%, transparent 60%);
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
     }
 
     .card-watercolor {
-      background: rgba(255, 255, 255, 0.85);
+      background: rgba(255, 255, 255, 0.88);
       backdrop-filter: blur(8px);
       border: 1px solid rgba(212, 175, 55, 0.25);
       box-shadow: 0 10px 30px -5px rgba(60, 80, 60, 0.08);
@@ -70,7 +73,7 @@
   </style>
 </head>
 
-<body class="watercolor-bg text-gray-800 font-sans min-h-screen flex flex-col justify-between selection:bg-sage-200 selection:text-sage-900">
+<body id="pageBody" class="watercolor-bg text-gray-800 font-sans min-h-screen flex flex-col justify-between selection:bg-sage-200 selection:text-sage-900">
 
   <!-- Navigation Bar -->
   <header class="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-sage-100 shadow-sm">
@@ -257,7 +260,6 @@
 
       <form id="rsvpForm" onsubmit="handleFormSubmit(event)" class="space-y-6">
         
-        <!-- Dati Principali Ospite 1 -->
         <div class="bg-white/60 p-4 rounded-2xl border border-sage-200/80 space-y-4">
           <h3 class="font-serif font-bold text-base text-sage-900 flex items-center space-x-2">
             <i data-lucide="user" class="w-4 h-4 text-gold"></i>
@@ -275,7 +277,6 @@
             </div>
           </div>
 
-          <!-- Intolleranze Ospite Principale -->
           <div>
             <label class="block text-xs font-semibold text-sage-800 mb-1.5">Intolleranze / Regimi Alimentari dell'Ospite Principale</label>
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-2">
@@ -316,7 +317,6 @@
           </div>
         </div>
 
-        <!-- Partecipazione -->
         <div>
           <label class="block text-xs font-semibold text-sage-800 mb-2">Conferma Partecipazione *</label>
           <div class="grid grid-cols-2 gap-4">
@@ -331,10 +331,8 @@
           </div>
         </div>
 
-        <!-- Dettagli Gruppo (Accompagnatore + Bimbi) -->
         <div id="attendanceDetails" class="space-y-6 border-t border-sage-200/60 pt-6">
           
-          <!-- Accompagnatore -->
           <div>
             <label class="flex items-center space-x-2 text-sm font-semibold text-sage-800 cursor-pointer mb-2">
               <input type="checkbox" id="hasPartner" onchange="togglePartnerFields(this.checked)" class="rounded accent-sage-600 w-4 h-4">
@@ -347,7 +345,6 @@
                 <input type="text" id="partnerName" placeholder="Es. Laura Bianchi" class="w-full px-3 py-2 rounded-xl border border-sage-200 text-sm bg-white">
               </div>
 
-              <!-- Intolleranze Accompagnatore -->
               <div>
                 <label class="block text-xs font-semibold text-sage-800 mb-1">Intolleranze dell'accompagnatore</label>
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-2">
@@ -389,7 +386,6 @@
             </div>
           </div>
 
-          <!-- Bambini -->
           <div>
             <label class="flex items-center space-x-2 text-sm font-semibold text-sage-800 cursor-pointer mb-2">
               <input type="checkbox" id="hasKids" onchange="toggleKidsFields(this.checked)" class="rounded accent-sage-600 w-4 h-4">
@@ -418,7 +414,6 @@
             </div>
           </div>
 
-          <!-- Canzone & Dedica -->
           <div class="grid md:grid-cols-2 gap-4 pt-2">
             <div>
               <label class="block text-xs font-semibold text-sage-800 mb-1">Canzone da far ballare al DJ Set 🎵</label>
@@ -533,13 +528,16 @@
       <!-- Contenuto Dashboard -->
       <div id="adminDashboard" class="hidden space-y-8">
         
-        <div class="flex justify-between items-center border-b border-sage-200 pb-2">
+        <div class="flex justify-between items-center border-b border-sage-200 pb-2 flex-wrap gap-2">
           <div class="flex space-x-2">
             <button id="tabGuestsBtn" onclick="switchAdminTab('guests')" class="px-4 py-2 rounded-xl font-medium text-sm bg-sage-700 text-white">
-              <i data-lucide="users" class="w-4 h-4 inline mr-1"></i> Lista Partecipanti & Intolleranze Singole
+              <i data-lucide="users" class="w-4 h-4 inline mr-1"></i> Ospiti
             </button>
             <button id="tabTablesBtn" onclick="switchAdminTab('tables')" class="px-4 py-2 rounded-xl font-medium text-sm text-sage-700 hover:bg-sage-100">
-              <i data-lucide="layout-grid" class="w-4 h-4 inline mr-1"></i> Gestione Tavoli
+              <i data-lucide="layout-grid" class="w-4 h-4 inline mr-1"></i> Tavoli
+            </button>
+            <button id="tabBgBtn" onclick="switchAdminTab('background')" class="px-4 py-2 rounded-xl font-medium text-sm text-sage-700 hover:bg-sage-100">
+              <i data-lucide="image" class="w-4 h-4 inline mr-1"></i> Sfondo
             </button>
           </div>
           <button onclick="showSetupPin()" class="text-xs text-sage-600 underline hover:text-sage-800">Cambia PIN</button>
@@ -547,7 +545,6 @@
 
         <!-- TAB 1: LISTA PARTECIPANTI -->
         <div id="tabGuests" class="space-y-6">
-          
           <div class="grid grid-cols-2 md:grid-cols-5 gap-3 text-center">
             <div class="bg-sage-50 p-3 rounded-2xl border border-sage-200">
               <span id="statTotal" class="block font-serif text-2xl font-bold text-sage-900">0</span>
@@ -573,13 +570,10 @@
 
           <div class="flex flex-col md:flex-row justify-between items-center gap-3 bg-sage-50 p-3 rounded-2xl">
             <input type="text" id="searchGuest" onkeyup="filterGuestTable()" placeholder="Cerca invitato per nome..." class="px-3 py-1.5 text-xs rounded-xl border border-sage-200 w-full md:w-64">
-            
-            <div class="flex space-x-2">
-              <button onclick="exportCSV()" class="bg-sage-600 hover:bg-sage-700 text-white text-xs px-3 py-1.5 rounded-xl font-medium transition flex items-center space-x-1">
-                <i data-lucide="download" class="w-3.5 h-3.5"></i>
-                <span>Esporta CSV</span>
-              </button>
-            </div>
+            <button onclick="exportCSV()" class="bg-sage-600 hover:bg-sage-700 text-white text-xs px-3 py-1.5 rounded-xl font-medium transition flex items-center space-x-1">
+              <i data-lucide="download" class="w-3.5 h-3.5"></i>
+              <span>Esporta CSV</span>
+            </button>
           </div>
 
           <div class="overflow-x-auto border border-sage-200 rounded-2xl">
@@ -595,58 +589,65 @@
                   <th class="p-3 text-right">Azione</th>
                 </tr>
               </thead>
-              <tbody id="guestTableBody" class="divide-y divide-sage-100">
-              </tbody>
+              <tbody id="guestTableBody" class="divide-y divide-sage-100"></tbody>
             </table>
           </div>
-
         </div>
 
         <!-- TAB 2: GESTIONE TAVOLI -->
         <div id="tabTables" class="hidden space-y-6">
-          
           <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-sage-50 p-4 rounded-2xl border border-sage-200">
             <div>
               <h3 class="font-serif font-bold text-sage-900 text-lg">Mappa & Disposizione Tavoli</h3>
-              <p class="text-xs text-sage-600">Organizza i tuoi invitati confermati per tavolo senza separare i gruppi familiari.</p>
+              <p class="text-xs text-sage-600">Organizza i tuoi invitati confermati per tavolo.</p>
             </div>
-            
             <div class="flex items-center space-x-2">
               <input type="text" id="newTableName" placeholder="Es. Tavolo Olivo" class="px-3 py-1.5 text-xs rounded-xl border border-sage-200">
               <input type="number" id="newTableCapacity" value="10" min="2" max="20" class="w-16 px-2 py-1.5 text-xs rounded-xl border border-sage-200">
-              <button onclick="addTable()" class="bg-sage-700 hover:bg-sage-800 text-white text-xs px-3 py-1.5 rounded-xl font-medium transition">
-                + Aggiungi Tavolo
-              </button>
+              <button onclick="addTable()" class="bg-sage-700 hover:bg-sage-800 text-white text-xs px-3 py-1.5 rounded-xl font-medium transition">+ Aggiungi</button>
             </div>
           </div>
 
           <div class="grid md:grid-cols-3 gap-6">
             <div class="bg-white p-4 rounded-2xl border border-sage-200 shadow-sm md:col-span-1">
-              <div class="flex justify-between items-center mb-3 pb-2 border-b border-sage-100">
-                <h4 class="font-bold text-xs uppercase tracking-wider text-sage-800">
-                  Ospiti da Assegnare (<span id="unassignedCount">0</span>)
-                </h4>
-              </div>
-
-              <div id="unassignedList" class="space-y-3 max-h-[500px] overflow-y-auto pr-1">
-              </div>
+              <h4 class="font-bold text-xs uppercase tracking-wider text-sage-800 mb-3 pb-2 border-b border-sage-100">
+                Ospiti da Assegnare (<span id="unassignedCount">0</span>)
+              </h4>
+              <div id="unassignedList" class="space-y-3 max-h-[500px] overflow-y-auto pr-1"></div>
             </div>
 
             <div class="md:col-span-2 space-y-4">
               <div class="flex justify-between items-center">
-                <h4 class="font-bold text-xs uppercase tracking-wider text-sage-800">
-                  Tavoli e Posti Assegnati
-                </h4>
-                <span id="tablesSummary" class="text-xs font-semibold text-sage-600">
-                  0 Posti Assegnati
-                </span>
+                <h4 class="font-bold text-xs uppercase tracking-wider text-sage-800">Tavoli e Posti Assegnati</h4>
+                <span id="tablesSummary" class="text-xs font-semibold text-sage-600">0 Posti Assegnati</span>
               </div>
+              <div id="tablesGrid" class="grid sm:grid-cols-2 gap-4"></div>
+            </div>
+          </div>
+        </div>
 
-              <div id="tablesGrid" class="grid sm:grid-cols-2 gap-4">
+        <!-- TAB 3: PERSONALIZZAZIONE SFONDO -->
+        <div id="tabBackground" class="hidden space-y-6">
+          <div class="bg-sage-50 p-6 rounded-2xl border border-sage-200 max-w-lg mx-auto text-center space-y-4">
+            <div class="w-12 h-12 bg-sage-200 rounded-full flex items-center justify-center text-sage-800 mx-auto">
+              <i data-lucide="image" class="w-6 h-6"></i>
+            </div>
+            <h3 class="font-serif font-bold text-sage-900 text-xl">Personalizza Immagine di Sfondo</h3>
+            <p class="text-xs text-sage-600">Carica una foto dal tuo dispositivo (es. natura o cani) per impostarla come sfondo di tutto il sito.</p>
+            
+            <div class="space-y-3 pt-2">
+              <input type="file" id="bgImageInput" accept="image/*" class="w-full text-xs text-sage-700 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-sage-700 file:text-white hover:file:bg-sage-800 cursor-pointer">
+              
+              <div class="flex gap-2 pt-2">
+                <button onclick="applyCustomBackground()" class="flex-1 bg-sage-700 hover:bg-sage-800 text-white text-xs py-2.5 rounded-xl font-medium transition">
+                  Applica Sfondo
+                </button>
+                <button onclick="removeCustomBackground()" class="px-4 bg-red-100 hover:bg-red-200 text-red-700 text-xs py-2.5 rounded-xl font-medium transition">
+                  Rimuovi / Predefinito
+                </button>
               </div>
             </div>
           </div>
-
         </div>
 
       </div>
@@ -673,7 +674,43 @@
         localStorage.setItem('wedding_admin_pin', '1234');
         localStorage.setItem('wedding_admin_secret', 'fido');
       }
+
+      // Carica eventuale sfondo personalizzato salvato
+      const savedBg = localStorage.getItem('wedding_custom_bg');
+      if (savedBg) {
+        applyBgToBody(savedBg);
+      }
     });
+
+    function applyBgToBody(dataUrl) {
+      const body = document.getElementById('pageBody');
+      body.style.backgroundImage = `linear-gradient(rgba(252, 251, 247, 0.85), rgba(252, 251, 247, 0.85)), url('${dataUrl}')`;
+    }
+
+    function applyCustomBackground() {
+      const fileInput = document.getElementById('bgImageInput');
+      if (fileInput.files && fileInput.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const base64Image = e.target.result;
+          localStorage.setItem('wedding_custom_bg', base64Image);
+          applyBgToBody(base64Image);
+          alert('Sfondo aggiornato con successo!');
+          toggleAdminModal();
+        };
+        reader.readAsDataURL(fileInput.files[0]);
+      } else {
+        alert('Seleziona prima un file immagine.');
+      }
+    }
+
+    function removeCustomBackground() {
+      localStorage.removeItem('wedding_custom_bg');
+      const body = document.getElementById('pageBody');
+      body.style.backgroundImage = '';
+      alert('Sfondo ripristinato allo stile originale.');
+      toggleAdminModal();
+    }
 
     function startCountdown() {
       const update = () => {
@@ -719,12 +756,8 @@
       submitBtn.innerHTML = `<span>Invio in corso...</span>`;
 
       const attendance = document.querySelector('input[name="attendance"]:checked').value;
-
-      // Intolleranze singole Ospite Principale
       const mainDietary = Array.from(document.querySelectorAll('.main-diet-option:checked')).map(cb => cb.value);
       const mainNotes = document.getElementById('mainDietNotes').value.trim();
-
-      // Intolleranze singole Accompagnatore
       const partnerDietary = Array.from(document.querySelectorAll('.partner-diet-option:checked')).map(cb => cb.value);
       const partnerNotes = document.getElementById('partnerDietNotes').value.trim();
 
@@ -748,7 +781,6 @@
         tableId: null
       };
 
-      // Formattazione riassunto intolleranze per Google Sheet
       let formattedDietarySummary = `${newEntry.name}: ${mainDietary.join(', ')} ${mainNotes ? '(' + mainNotes + ')' : ''}`;
       if (newEntry.hasPartner) {
         formattedDietarySummary += ` | ${newEntry.partnerName || 'Accompagnatore'}: ${partnerDietary.join(', ')} ${partnerNotes ? '(' + partnerNotes + ')' : ''}`;
@@ -888,17 +920,23 @@
     }
 
     function switchAdminTab(tab) {
+      document.getElementById('tabGuests').classList.add('hidden');
+      document.getElementById('tabTables').classList.add('hidden');
+      document.getElementById('tabBackground').classList.add('hidden');
+      document.getElementById('tabGuestsBtn').className = "px-4 py-2 rounded-xl font-medium text-sm text-sage-700 hover:bg-sage-100";
+      document.getElementById('tabTablesBtn').className = "px-4 py-2 rounded-xl font-medium text-sm text-sage-700 hover:bg-sage-100";
+      document.getElementById('tabBgBtn').className = "px-4 py-2 rounded-xl font-medium text-sm text-sage-700 hover:bg-sage-100";
+
       if (tab === 'guests') {
         document.getElementById('tabGuests').classList.remove('hidden');
-        document.getElementById('tabTables').classList.add('hidden');
         document.getElementById('tabGuestsBtn').className = "px-4 py-2 rounded-xl font-medium text-sm bg-sage-700 text-white";
-        document.getElementById('tabTablesBtn').className = "px-4 py-2 rounded-xl font-medium text-sm text-sage-700 hover:bg-sage-100";
-      } else {
-        document.getElementById('tabGuests').classList.add('hidden');
+      } else if (tab === 'tables') {
         document.getElementById('tabTables').classList.remove('hidden');
-        document.getElementById('tabGuestsBtn').className = "px-4 py-2 rounded-xl font-medium text-sm text-sage-700 hover:bg-sage-100";
         document.getElementById('tabTablesBtn').className = "px-4 py-2 rounded-xl font-medium text-sm bg-sage-700 text-white";
         renderTablesDashboard();
+      } else if (tab === 'background') {
+        document.getElementById('tabBackground').classList.remove('hidden');
+        document.getElementById('tabBgBtn').className = "px-4 py-2 rounded-xl font-medium text-sm bg-sage-700 text-white";
       }
     }
 
