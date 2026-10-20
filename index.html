@@ -84,7 +84,6 @@
         <a href="#dettagli" class="text-sage-700 hover:text-sage-900 transition">Evento</a>
         <a href="#location" class="text-sage-700 hover:text-sage-900 transition">Dove</a>
         <a href="#rsvp" class="bg-sage-600 hover:bg-sage-700 text-white px-3 py-1.5 rounded-full shadow-sm transition">RSVP</a>
-        <!-- Accesso Riservato nascosto con icona discreta -->
         <button onclick="toggleAdminModal()" title="Area Sposi" class="p-1.5 text-sage-300 hover:text-sage-600 transition">
           <i data-lucide="key" class="w-3.5 h-3.5"></i>
         </button>
@@ -116,7 +115,6 @@
         "Insieme alla nostra amata natura e ai nostri compagni a quattro zampe, vi invitiamo a festeggiare il nostro giorno speciale."
       </p>
 
-      <!-- Data & Luogo Badge -->
       <div class="inline-flex flex-col sm:flex-row items-center justify-center gap-4 bg-white/90 border border-gold/30 rounded-2xl p-4 shadow-md mb-10">
         <div class="flex items-center space-x-2 text-sage-800 font-medium">
           <i data-lucide="calendar" class="w-5 h-5 text-gold"></i>
@@ -134,7 +132,6 @@
         </div>
       </div>
 
-      <!-- Countdown -->
       <div id="countdown" class="grid grid-cols-4 gap-2 max-w-xs mx-auto mb-8">
         <div class="bg-white/80 p-2 rounded-xl border border-sage-200 shadow-sm text-center">
           <span id="days" class="block font-serif text-2xl font-bold text-sage-800">--</span>
@@ -260,19 +257,68 @@
 
       <form id="rsvpForm" onsubmit="handleFormSubmit(event)" class="space-y-6">
         
-        <div class="grid md:grid-cols-2 gap-4">
-          <div>
-            <label class="block text-xs font-semibold text-sage-800 mb-1">Nome e Cognome *</label>
-            <input type="text" id="guestName" required placeholder="Es. Mario Rossi" class="w-full px-4 py-2.5 rounded-xl border border-sage-200 focus:outline-none focus:ring-2 focus:ring-sage-400 text-sm">
+        <!-- Dati Principali Ospite 1 -->
+        <div class="bg-white/60 p-4 rounded-2xl border border-sage-200/80 space-y-4">
+          <h3 class="font-serif font-bold text-base text-sage-900 flex items-center space-x-2">
+            <i data-lucide="user" class="w-4 h-4 text-gold"></i>
+            <span>Ospite Principale</span>
+          </h3>
+
+          <div class="grid md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-semibold text-sage-800 mb-1">Nome e Cognome *</label>
+              <input type="text" id="guestName" required placeholder="Es. Mario Rossi" class="w-full px-4 py-2 rounded-xl border border-sage-200 focus:outline-none focus:ring-2 focus:ring-sage-400 text-sm bg-white">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-sage-800 mb-1">Email / Telefono *</label>
+              <input type="text" id="guestContact" required placeholder="Es. mario.rossi@email.it o 3331234567" class="w-full px-4 py-2 rounded-xl border border-sage-200 focus:outline-none focus:ring-2 focus:ring-sage-400 text-sm bg-white">
+            </div>
           </div>
+
+          <!-- Intolleranze Ospite Principale -->
           <div>
-            <label class="block text-xs font-semibold text-sage-800 mb-1">Email / Telefono *</label>
-            <input type="text" id="guestContact" required placeholder="Es. mario.rossi@email.it o 3331234567" class="w-full px-4 py-2.5 rounded-xl border border-sage-200 focus:outline-none focus:ring-2 focus:ring-sage-400 text-sm">
+            <label class="block text-xs font-semibold text-sage-800 mb-1.5">Intolleranze / Regimi Alimentari dell'Ospite Principale</label>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-2">
+              <label class="flex items-center text-xs text-sage-800 space-x-1.5 bg-white p-2 rounded-lg border border-sage-100 cursor-pointer">
+                <input type="checkbox" value="Vegetariano" class="main-diet-option accent-sage-600">
+                <span>Vegetariano</span>
+              </label>
+              <label class="flex items-center text-xs text-sage-800 space-x-1.5 bg-white p-2 rounded-lg border border-sage-100 cursor-pointer">
+                <input type="checkbox" value="Vegano" class="main-diet-option accent-sage-600">
+                <span>Vegano</span>
+              </label>
+              <label class="flex items-center text-xs text-sage-800 space-x-1.5 bg-white p-2 rounded-lg border border-sage-100 cursor-pointer">
+                <input type="checkbox" value="Senza Glutine" class="main-diet-option accent-sage-600">
+                <span>Senza Glutine</span>
+              </label>
+              <label class="flex items-center text-xs text-sage-800 space-x-1.5 bg-white p-2 rounded-lg border border-sage-100 cursor-pointer">
+                <input type="checkbox" value="Senza Lattosio" class="main-diet-option accent-sage-600">
+                <span>Senza Lattosio</span>
+              </label>
+              <label class="flex items-center text-xs text-sage-800 space-x-1.5 bg-white p-2 rounded-lg border border-sage-100 cursor-pointer">
+                <input type="checkbox" value="No Pesce" class="main-diet-option accent-sage-600">
+                <span>No Pesce</span>
+              </label>
+              <label class="flex items-center text-xs text-sage-800 space-x-1.5 bg-white p-2 rounded-lg border border-sage-100 cursor-pointer">
+                <input type="checkbox" value="No Carne" class="main-diet-option accent-sage-600">
+                <span>No Carne</span>
+              </label>
+              <label class="flex items-center text-xs text-sage-800 space-x-1.5 bg-white p-2 rounded-lg border border-sage-100 cursor-pointer">
+                <input type="checkbox" value="Allergia Crostacei" class="main-diet-option accent-sage-600">
+                <span>Crostacei</span>
+              </label>
+              <label class="flex items-center text-xs text-sage-800 space-x-1.5 bg-white p-2 rounded-lg border border-sage-100 cursor-pointer">
+                <input type="checkbox" value="Allergia Molluschi" class="main-diet-option accent-sage-600">
+                <span>Molluschi</span>
+              </label>
+            </div>
+            <input type="text" id="mainDietNotes" placeholder="Altre allergie o note per la cucina per l'ospite principale..." class="w-full px-3 py-1.5 rounded-xl border border-sage-200 text-xs bg-white">
           </div>
         </div>
 
+        <!-- Partecipazione -->
         <div>
-          <label class="block text-xs font-semibold text-sage-800 mb-2">Partecipazione *</label>
+          <label class="block text-xs font-semibold text-sage-800 mb-2">Conferma Partecipazione *</label>
           <div class="grid grid-cols-2 gap-4">
             <label class="flex items-center justify-center p-3 rounded-xl border border-sage-200 bg-white cursor-pointer hover:border-sage-400 transition">
               <input type="radio" name="attendance" value="attending" checked onclick="toggleAttendanceFields(true)" class="accent-sage-600 mr-2">
@@ -285,35 +331,80 @@
           </div>
         </div>
 
+        <!-- Dettagli Gruppo (Accompagnatore + Bimbi) -->
         <div id="attendanceDetails" class="space-y-6 border-t border-sage-200/60 pt-6">
           
+          <!-- Accompagnatore -->
           <div>
             <label class="flex items-center space-x-2 text-sm font-semibold text-sage-800 cursor-pointer mb-2">
               <input type="checkbox" id="hasPartner" onchange="togglePartnerFields(this.checked)" class="rounded accent-sage-600 w-4 h-4">
               <span>Porti un accompagnatore / partner?</span>
             </label>
             
-            <div id="partnerContainer" class="hidden mt-3 pl-6 border-l-2 border-sage-300">
-              <label class="block text-xs font-semibold text-sage-800 mb-1">Nome e Cognome Accompagnatore</label>
-              <input type="text" id="partnerName" placeholder="Es. Laura Bianchi" class="w-full px-4 py-2 rounded-xl border border-sage-200 text-sm">
+            <div id="partnerContainer" class="hidden mt-3 pl-4 border-l-2 border-sage-300 space-y-3 bg-white/60 p-3 rounded-r-2xl">
+              <div>
+                <label class="block text-xs font-semibold text-sage-800 mb-1">Nome e Cognome Accompagnatore</label>
+                <input type="text" id="partnerName" placeholder="Es. Laura Bianchi" class="w-full px-3 py-2 rounded-xl border border-sage-200 text-sm bg-white">
+              </div>
+
+              <!-- Intolleranze Accompagnatore -->
+              <div>
+                <label class="block text-xs font-semibold text-sage-800 mb-1">Intolleranze dell'accompagnatore</label>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-2">
+                  <label class="flex items-center text-xs text-sage-800 space-x-1.5 bg-white p-2 rounded-lg border border-sage-100 cursor-pointer">
+                    <input type="checkbox" value="Vegetariano" class="partner-diet-option accent-sage-600">
+                    <span>Vegetariano</span>
+                  </label>
+                  <label class="flex items-center text-xs text-sage-800 space-x-1.5 bg-white p-2 rounded-lg border border-sage-100 cursor-pointer">
+                    <input type="checkbox" value="Vegano" class="partner-diet-option accent-sage-600">
+                    <span>Vegano</span>
+                  </label>
+                  <label class="flex items-center text-xs text-sage-800 space-x-1.5 bg-white p-2 rounded-lg border border-sage-100 cursor-pointer">
+                    <input type="checkbox" value="Senza Glutine" class="partner-diet-option accent-sage-600">
+                    <span>Senza Glutine</span>
+                  </label>
+                  <label class="flex items-center text-xs text-sage-800 space-x-1.5 bg-white p-2 rounded-lg border border-sage-100 cursor-pointer">
+                    <input type="checkbox" value="Senza Lattosio" class="partner-diet-option accent-sage-600">
+                    <span>Senza Lattosio</span>
+                  </label>
+                  <label class="flex items-center text-xs text-sage-800 space-x-1.5 bg-white p-2 rounded-lg border border-sage-100 cursor-pointer">
+                    <input type="checkbox" value="No Pesce" class="partner-diet-option accent-sage-600">
+                    <span>No Pesce</span>
+                  </label>
+                  <label class="flex items-center text-xs text-sage-800 space-x-1.5 bg-white p-2 rounded-lg border border-sage-100 cursor-pointer">
+                    <input type="checkbox" value="No Carne" class="partner-diet-option accent-sage-600">
+                    <span>No Carne</span>
+                  </label>
+                  <label class="flex items-center text-xs text-sage-800 space-x-1.5 bg-white p-2 rounded-lg border border-sage-100 cursor-pointer">
+                    <input type="checkbox" value="Allergia Crostacei" class="partner-diet-option accent-sage-600">
+                    <span>Crostacei</span>
+                  </label>
+                  <label class="flex items-center text-xs text-sage-800 space-x-1.5 bg-white p-2 rounded-lg border border-sage-100 cursor-pointer">
+                    <input type="checkbox" value="Allergia Molluschi" class="partner-diet-option accent-sage-600">
+                    <span>Molluschi</span>
+                  </label>
+                </div>
+                <input type="text" id="partnerDietNotes" placeholder="Note cibo o altre allergie dell'accompagnatore..." class="w-full px-3 py-1.5 rounded-xl border border-sage-200 text-xs bg-white">
+              </div>
             </div>
           </div>
 
+          <!-- Bambini -->
           <div>
             <label class="flex items-center space-x-2 text-sm font-semibold text-sage-800 cursor-pointer mb-2">
               <input type="checkbox" id="hasKids" onchange="toggleKidsFields(this.checked)" class="rounded accent-sage-600 w-4 h-4">
               <span>Verranno bambini con te?</span>
             </label>
             
-            <div id="kidsContainer" class="hidden mt-3 pl-6 border-l-2 border-sage-300 space-y-3">
+            <div id="kidsContainer" class="hidden mt-3 pl-4 border-l-2 border-sage-300 space-y-3 bg-white/60 p-3 rounded-r-2xl">
               <div class="grid grid-cols-2 gap-4">
                 <div>
                   <label class="block text-xs font-semibold text-sage-800 mb-1">Numero Bambini</label>
-                  <input type="number" id="kidsCount" min="1" max="6" value="1" class="w-full px-4 py-2 rounded-xl border border-sage-200 text-sm">
+                  <input type="number" id="kidsCount" min="1" max="6" value="1" class="w-full px-3 py-2 rounded-xl border border-sage-200 text-sm bg-white">
                 </div>
                 <div>
                   <label class="block text-xs font-semibold text-sage-800 mb-1">Necessità Seggiolone?</label>
-                  <select id="highChairCount" class="w-full px-4 py-2 rounded-xl border border-sage-200 text-sm">
+                  <select id="highChairCount" class="w-full px-3 py-2 rounded-xl border border-sage-200 text-sm bg-white">
                     <option value="0">Nessuno</option>
                     <option value="1">1 Seggiolone</option>
                     <option value="2">2 Seggioloni</option>
@@ -321,51 +412,21 @@
                 </div>
               </div>
               <div>
-                <label class="block text-xs font-semibold text-sage-800 mb-1">Menu Bambini o età dei bimbi</label>
-                <input type="text" id="kidsMenuNotes" placeholder="Es. 2 bimbi (4 e 7 anni) - necessitano menu bimbi" class="w-full px-4 py-2 rounded-xl border border-sage-200 text-sm">
+                <label class="block text-xs font-semibold text-sage-800 mb-1">Menu bimbi, età ed eventuali intolleranze dei bambini</label>
+                <input type="text" id="kidsMenuNotes" placeholder="Es. Marco (5 anni) senza lattosio, Sofia (2 anni) seggiolone" class="w-full px-3 py-2 rounded-xl border border-sage-200 text-sm bg-white">
               </div>
             </div>
           </div>
 
-          <div>
-            <label class="block text-xs font-semibold text-sage-800 mb-2">Preferenze Alimentari, Intolleranze o Allergie</label>
-            <div class="grid grid-cols-2 md:grid-cols-3 gap-2 mb-3">
-              <label class="flex items-center text-xs text-sage-800 space-x-1.5 bg-white p-2 rounded-lg border border-sage-100 cursor-pointer">
-                <input type="checkbox" value="Vegetariano" class="diet-option accent-sage-600">
-                <span>Vegetariano</span>
-              </label>
-              <label class="flex items-center text-xs text-sage-800 space-x-1.5 bg-white p-2 rounded-lg border border-sage-100 cursor-pointer">
-                <input type="checkbox" value="Vegano" class="diet-option accent-sage-600">
-                <span>Vegano</span>
-              </label>
-              <label class="flex items-center text-xs text-sage-800 space-x-1.5 bg-white p-2 rounded-lg border border-sage-100 cursor-pointer">
-                <input type="checkbox" value="Celiaco / Senza Glutine" class="diet-option accent-sage-600">
-                <span>Senza Glutine</span>
-              </label>
-              <label class="flex items-center text-xs text-sage-800 space-x-1.5 bg-white p-2 rounded-lg border border-sage-100 cursor-pointer">
-                <input type="checkbox" value="Intollerante Lattosio" class="diet-option accent-sage-600">
-                <span>Senza Lattosio</span>
-              </label>
-              <label class="flex items-center text-xs text-sage-800 space-x-1.5 bg-white p-2 rounded-lg border border-sage-100 cursor-pointer">
-                <input type="checkbox" value="No Pesce" class="diet-option accent-sage-600">
-                <span>No Pesce</span>
-              </label>
-              <label class="flex items-center text-xs text-sage-800 space-x-1.5 bg-white p-2 rounded-lg border border-sage-100 cursor-pointer">
-                <input type="checkbox" value="No Carne" class="diet-option accent-sage-600">
-                <span>No Carne</span>
-              </label>
-            </div>
-            <textarea id="dietNotes" rows="2" placeholder="Specifica eventuali allergie gravi o altre intolleranze per la cucina del ristorante..." class="w-full px-4 py-2 rounded-xl border border-sage-200 text-sm focus:outline-none focus:ring-2 focus:ring-sage-400"></textarea>
-          </div>
-
-          <div class="grid md:grid-cols-2 gap-4">
+          <!-- Canzone & Dedica -->
+          <div class="grid md:grid-cols-2 gap-4 pt-2">
             <div>
               <label class="block text-xs font-semibold text-sage-800 mb-1">Canzone da far ballare al DJ Set 🎵</label>
-              <input type="text" id="songRequest" placeholder="Es. Titolo e Artista" class="w-full px-4 py-2 rounded-xl border border-sage-200 text-sm">
+              <input type="text" id="songRequest" placeholder="Es. Titolo e Artista" class="w-full px-4 py-2 rounded-xl border border-sage-200 text-sm bg-white">
             </div>
             <div>
               <label class="block text-xs font-semibold text-sage-800 mb-1">Messaggio o Auguri per Simona & Marco 💚</label>
-              <input type="text" id="guestMessage" placeholder="Un pensiero speciale..." class="w-full px-4 py-2 rounded-xl border border-sage-200 text-sm">
+              <input type="text" id="guestMessage" placeholder="Un pensiero speciale..." class="w-full px-4 py-2 rounded-xl border border-sage-200 text-sm bg-white">
             </div>
           </div>
 
@@ -420,7 +481,7 @@
         </button>
       </div>
 
-      <!-- Form PIN di Accesso / Configurazione -->
+      <!-- Form PIN -->
       <div id="pinView" class="text-center py-6 max-w-sm mx-auto space-y-4">
         <div id="pinPromptContainer">
           <i data-lucide="lock" class="w-12 h-12 text-sage-400 mx-auto mb-3"></i>
@@ -438,12 +499,11 @@
           </div>
         </div>
 
-        <!-- Sezione Recupero PIN (Nascosta) -->
         <div id="forgotPinContainer" class="hidden text-left bg-sage-50 p-4 rounded-2xl border border-sage-200 space-y-3">
           <h4 class="font-serif font-bold text-sage-900 text-sm">Recupero PIN tramite Parola Segreta</h4>
-          <p class="text-[11px] text-sage-600">Rispondi alla domanda di sicurezza stabilita per azzerare e impostare un nuovo PIN.</p>
+          <p class="text-[11px] text-sage-600">Rispondi alla domanda di sicurezza per impostare un nuovo PIN.</p>
           <div>
-            <label class="block text-[11px] font-semibold text-sage-800 mb-1" id="recoveryQuestionLabel">Domanda: Qual è il nome del vostro cane?</label>
+            <label class="block text-[11px] font-semibold text-sage-800 mb-1">Parola segreta stabilita</label>
             <input type="text" id="recoveryAnswerInput" placeholder="Risposta segreta" class="w-full px-3 py-2 text-xs rounded-xl border border-sage-200 bg-white">
           </div>
           <div class="flex space-x-2 pt-1">
@@ -452,16 +512,15 @@
           </div>
         </div>
 
-        <!-- Sezione Setup / Modifica PIN (Nascosta) -->
         <div id="setupPinContainer" class="hidden text-left bg-sage-50 p-4 rounded-2xl border border-sage-200 space-y-3">
           <h4 class="font-serif font-bold text-sage-900 text-sm">Imposta o Cambia il tuo PIN</h4>
           <div>
-            <label class="block text-[11px] font-semibold text-sage-800 mb-1">Nuovo PIN (es. 4 cifre)</label>
+            <label class="block text-[11px] font-semibold text-sage-800 mb-1">Nuovo PIN</label>
             <input type="password" id="newPinInput" placeholder="Nuovo PIN" class="w-full px-3 py-2 text-xs rounded-xl border border-sage-200 bg-white">
           </div>
           <div>
-            <label class="block text-[11px] font-semibold text-sage-800 mb-1">Parola segreta (per il recupero in caso di perdita)</label>
-            <input type="text" id="newSecretWord" placeholder="Es. nome del cane o data" class="w-full px-3 py-2 text-xs rounded-xl border border-sage-200 bg-white">
+            <label class="block text-[11px] font-semibold text-sage-800 mb-1">Parola segreta di recupero</label>
+            <input type="text" id="newSecretWord" placeholder="Es. nome del cane" class="w-full px-3 py-2 text-xs rounded-xl border border-sage-200 bg-white">
           </div>
           <div class="flex space-x-2 pt-1">
             <button onclick="saveNewPinConfig()" class="flex-1 bg-sage-700 text-white text-xs py-2 rounded-xl">Salva PIN</button>
@@ -471,16 +530,16 @@
 
       </div>
 
-      <!-- Contenuto Dashboard Sposi -->
+      <!-- Contenuto Dashboard -->
       <div id="adminDashboard" class="hidden space-y-8">
         
         <div class="flex justify-between items-center border-b border-sage-200 pb-2">
           <div class="flex space-x-2">
             <button id="tabGuestsBtn" onclick="switchAdminTab('guests')" class="px-4 py-2 rounded-xl font-medium text-sm bg-sage-700 text-white">
-              <i data-lucide="users" class="w-4 h-4 inline mr-1"></i> Lista Partecipanti & Intolleranze
+              <i data-lucide="users" class="w-4 h-4 inline mr-1"></i> Lista Partecipanti & Intolleranze Singole
             </button>
             <button id="tabTablesBtn" onclick="switchAdminTab('tables')" class="px-4 py-2 rounded-xl font-medium text-sm text-sage-700 hover:bg-sage-100">
-              <i data-lucide="layout-grid" class="w-4 h-4 inline mr-1"></i> Gestione Tavoli & Incastri
+              <i data-lucide="layout-grid" class="w-4 h-4 inline mr-1"></i> Gestione Tavoli
             </button>
           </div>
           <button onclick="showSetupPin()" class="text-xs text-sage-600 underline hover:text-sage-800">Cambia PIN</button>
@@ -531,7 +590,7 @@
                   <th class="p-3">Stato</th>
                   <th class="p-3">Accompagnatore</th>
                   <th class="p-3">Bambini & Seggioloni</th>
-                  <th class="p-3">Intolleranze & Note Cibo</th>
+                  <th class="p-3">Dettaglio Intolleranze per Persona</th>
                   <th class="p-3">Musica / Auguri</th>
                   <th class="p-3 text-right">Azione</th>
                 </tr>
@@ -562,7 +621,6 @@
           </div>
 
           <div class="grid md:grid-cols-3 gap-6">
-            
             <div class="bg-white p-4 rounded-2xl border border-sage-200 shadow-sm md:col-span-1">
               <div class="flex justify-between items-center mb-3 pb-2 border-b border-sage-100">
                 <h4 class="font-bold text-xs uppercase tracking-wider text-sage-800">
@@ -587,7 +645,6 @@
               <div id="tablesGrid" class="grid sm:grid-cols-2 gap-4">
               </div>
             </div>
-
           </div>
 
         </div>
@@ -599,7 +656,6 @@
 
   <script>
     const GOOGLE_SHEET_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzhofDrWGONjjjrpHlzdfI0mOSpD9ghaaBj2pNvFlqNxrTauVfMfQJCwiPm2Jq29vyQ/exec';
-
     const defaultWeddingDate = new Date("2027-06-12T17:00:00").getTime();
 
     let guestResponses = JSON.parse(localStorage.getItem('wedding_guests_simona_marco')) || [];
@@ -613,10 +669,9 @@
       lucide.createIcons();
       startCountdown();
       
-      // Imposta PIN di default se non esiste
       if (!localStorage.getItem('wedding_admin_pin')) {
         localStorage.setItem('wedding_admin_pin', '1234');
-        localStorage.setItem('wedding_admin_secret', 'fido'); // parola segreta di default
+        localStorage.setItem('wedding_admin_secret', 'fido');
       }
     });
 
@@ -664,32 +719,66 @@
       submitBtn.innerHTML = `<span>Invio in corso...</span>`;
 
       const attendance = document.querySelector('input[name="attendance"]:checked').value;
-      const dietary = Array.from(document.querySelectorAll('.diet-option:checked')).map(cb => cb.value);
+
+      // Intolleranze singole Ospite Principale
+      const mainDietary = Array.from(document.querySelectorAll('.main-diet-option:checked')).map(cb => cb.value);
+      const mainNotes = document.getElementById('mainDietNotes').value.trim();
+
+      // Intolleranze singole Accompagnatore
+      const partnerDietary = Array.from(document.querySelectorAll('.partner-diet-option:checked')).map(cb => cb.value);
+      const partnerNotes = document.getElementById('partnerDietNotes').value.trim();
 
       const newEntry = {
         id: Date.now().toString(),
         name: document.getElementById('guestName').value.trim(),
         contact: document.getElementById('guestContact').value.trim(),
         attendance: attendance,
+        mainDietary: mainDietary,
+        mainNotes: mainNotes,
         hasPartner: attendance === 'attending' ? document.getElementById('hasPartner').checked : false,
         partnerName: attendance === 'attending' && document.getElementById('hasPartner').checked ? document.getElementById('partnerName').value.trim() : '',
+        partnerDietary: attendance === 'attending' && document.getElementById('hasPartner').checked ? partnerDietary : [],
+        partnerNotes: attendance === 'attending' && document.getElementById('hasPartner').checked ? partnerNotes : '',
         hasKids: attendance === 'attending' ? document.getElementById('hasKids').checked : false,
         kidsCount: attendance === 'attending' && document.getElementById('hasKids').checked ? parseInt(document.getElementById('kidsCount').value) || 0 : 0,
         highChairCount: attendance === 'attending' && document.getElementById('hasKids').checked ? parseInt(document.getElementById('highChairCount').value) || 0 : 0,
         kidsNotes: attendance === 'attending' && document.getElementById('hasKids').checked ? document.getElementById('kidsMenuNotes').value.trim() : '',
-        dietaryOptions: attendance === 'attending' ? dietary : [],
-        dietNotes: attendance === 'attending' ? document.getElementById('dietNotes').value.trim() : '',
         song: attendance === 'attending' ? document.getElementById('songRequest').value.trim() : '',
         message: document.getElementById('guestMessage').value.trim(),
         tableId: null
       };
+
+      // Formattazione riassunto intolleranze per Google Sheet
+      let formattedDietarySummary = `${newEntry.name}: ${mainDietary.join(', ')} ${mainNotes ? '(' + mainNotes + ')' : ''}`;
+      if (newEntry.hasPartner) {
+        formattedDietarySummary += ` | ${newEntry.partnerName || 'Accompagnatore'}: ${partnerDietary.join(', ')} ${partnerNotes ? '(' + partnerNotes + ')' : ''}`;
+      }
+      if (newEntry.hasKids && newEntry.kidsNotes) {
+        formattedDietarySummary += ` | Note Bimbi: ${newEntry.kidsNotes}`;
+      }
+
+      newEntry.formattedDietarySummary = formattedDietarySummary;
 
       try {
         await fetch(GOOGLE_SHEET_SCRIPT_URL, {
           method: 'POST',
           mode: 'no-cors',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(newEntry)
+          body: JSON.stringify({
+            name: newEntry.name,
+            contact: newEntry.contact,
+            attendance: newEntry.attendance,
+            hasPartner: newEntry.hasPartner,
+            partnerName: newEntry.partnerName,
+            hasKids: newEntry.hasKids,
+            kidsCount: newEntry.kidsCount,
+            highChairCount: newEntry.highChairCount,
+            kidsNotes: newEntry.kidsNotes,
+            dietaryOptions: [formattedDietarySummary],
+            dietNotes: '',
+            song: newEntry.song,
+            message: newEntry.message
+          })
         });
       } catch (err) {
         console.error('Errore invio Google Sheet:', err);
@@ -732,7 +821,6 @@
       cancelSetupPin();
     }
 
-    // GESTIONE PIN E RECUPERO
     function verifyPin() {
       const enteredPin = document.getElementById('adminPin').value;
       const savedPin = localStorage.getItem('wedding_admin_pin') || '1234';
@@ -793,7 +881,7 @@
 
       localStorage.setItem('wedding_admin_pin', newPin);
       localStorage.setItem('wedding_admin_secret', newSecret);
-      alert('PIN e parola segreta aggiornati con successo!');
+      alert('PIN aggiornato con successo!');
       document.getElementById('newPinInput').value = '';
       document.getElementById('newSecretWord').value = '';
       cancelSetupPin();
@@ -838,14 +926,23 @@
 
         const tr = document.createElement('tr');
         tr.className = "hover:bg-sage-50/60";
-        const dietList = [...g.dietaryOptions, g.dietNotes].filter(Boolean).join(', ');
+
+        let dietDetailsHtml = `<div class="space-y-1 text-[11px]">`;
+        dietDetailsHtml += `<div><strong>${g.name}:</strong> ${g.mainDietary && g.mainDietary.length > 0 ? g.mainDietary.join(', ') : 'Nessuna'} ${g.mainNotes ? '<span class="italic">(' + g.mainNotes + ')</span>' : ''}</div>`;
+        if (g.hasPartner) {
+          dietDetailsHtml += `<div><strong>${g.partnerName || 'Accompagnatore'}:</strong> ${g.partnerDietary && g.partnerDietary.length > 0 ? g.partnerDietary.join(', ') : 'Nessuna'} ${g.partnerNotes ? '<span class="italic">(' + g.partnerNotes + ')</span>' : ''}</div>`;
+        }
+        if (g.hasKids && g.kidsNotes) {
+          dietDetailsHtml += `<div><strong>Bimbi:</strong> ${g.kidsNotes}</div>`;
+        }
+        dietDetailsHtml += `</div>`;
 
         tr.innerHTML = `
           <td class="p-3 font-semibold text-sage-900">${g.name}<br><span class="text-[10px] text-gray-500 font-normal">${g.contact}</span></td>
           <td class="p-3">${g.attendance === 'attending' ? '<span class="bg-green-100 text-green-800 font-medium px-2 py-0.5 rounded-full text-[10px]">Presente</span>' : '<span class="bg-red-100 text-red-800 font-medium px-2 py-0.5 rounded-full text-[10px]">Assente</span>'}</td>
           <td class="p-3">${g.hasPartner ? g.partnerName || 'Sì' : 'No'}</td>
           <td class="p-3">${g.hasKids ? `${g.kidsCount} bimbi (${g.highChairCount} seggioloni)` : 'No'}</td>
-          <td class="p-3 text-red-700 font-medium">${dietList || '-'}</td>
+          <td class="p-3 text-red-800 font-medium">${dietDetailsHtml}</td>
           <td class="p-3 text-gray-600">${g.song ? '🎵 ' + g.song : ''} ${g.message ? '💬 ' + g.message : ''}</td>
           <td class="p-3 text-right">
             <button onclick="deleteGuest('${g.id}')" class="text-red-500 hover:text-red-700 text-xs">Elimina</button>
@@ -877,11 +974,11 @@
     }
 
     function exportCSV() {
-      let csv = 'Nome Ospite,Contatto,Presenza,Accompagnatore,Bambini,Seggioloni,Intolleranze Alimentari,Canzone,Messaggio,Tavolo\n';
+      let csv = 'Nome Ospite,Contatto,Presenza,Accompagnatore,Bambini,Seggioloni,Dettaglio Intolleranze per Persona,Canzone,Messaggio,Tavolo\n';
       guestResponses.forEach(g => {
         const tableObj = tables.find(t => t.id === g.tableId);
         const tableName = tableObj ? tableObj.name : 'Non Assegnato';
-        const diet = [...g.dietaryOptions, g.dietNotes].filter(Boolean).join(' | ').replace(/,/g, ' ');
+        const diet = g.formattedDietarySummary ? g.formattedDietarySummary.replace(/,/g, ' ') : '';
         csv += `"${g.name}","${g.contact}","${g.attendance}","${g.hasPartner ? g.partnerName : ''}","${g.hasKids ? g.kidsCount : 0}","${g.highChairCount}","${diet}","${g.song.replace(/,/g, ' ')}","${g.message.replace(/,/g, ' ')}","${tableName}"\n`;
       });
 
