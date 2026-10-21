@@ -773,7 +773,7 @@
                 <input type="text" id="cmsDateText" class="w-full px-3 py-2 rounded-xl border border-sage-200 bg-white">
               </div>
               <div>
-                <label class="block font-semibold mb-1">Orario di Inizio (es. Ore 17:00)</label>
+                <label class="block font-semibold mb-1">Orario di Inizio Generale (es. Ore 17:00)</label>
                 <input type="text" id="cmsTimeText" class="w-full px-3 py-2 rounded-xl border border-sage-200 bg-white">
               </div>
             </div>
@@ -795,6 +795,28 @@
               <div>
                 <label class="block font-semibold mb-1">Descrizione Location</label>
                 <textarea id="cmsLocDesc" rows="2" class="w-full px-3 py-2 rounded-xl border border-sage-200 bg-white"></textarea>
+              </div>
+            </div>
+
+            <div class="bg-sage-50 p-4 rounded-2xl border border-sage-200 space-y-3 text-xs md:col-span-2">
+              <h4 class="font-bold text-sage-800 text-sm">Orari Programma della Giornata</h4>
+              <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                <div>
+                  <label class="block font-semibold mb-1">1. Cerimonia</label>
+                  <input type="text" id="cmsProgTime1" placeholder="Ore 17:00" class="w-full px-3 py-2 rounded-xl border border-sage-200 bg-white">
+                </div>
+                <div>
+                  <label class="block font-semibold mb-1">2. Aperitivo</label>
+                  <input type="text" id="cmsProgTime2" placeholder="Ore 18:30" class="w-full px-3 py-2 rounded-xl border border-sage-200 bg-white">
+                </div>
+                <div>
+                  <label class="block font-semibold mb-1">3. Banchetto</label>
+                  <input type="text" id="cmsProgTime3" placeholder="Ore 20:00" class="w-full px-3 py-2 rounded-xl border border-sage-200 bg-white">
+                </div>
+                <div>
+                  <label class="block font-semibold mb-1">4. Torta & Party</label>
+                  <input type="text" id="cmsProgTime4" placeholder="Ore 23:00" class="w-full px-3 py-2 rounded-xl border border-sage-200 bg-white">
+                </div>
               </div>
             </div>
 
@@ -936,6 +958,10 @@
       DataIso: '2027-06-12T17:00',
       TestoData: 'Sabato 12 Giugno 2027',
       Orario: 'Ore 17:00',
+      ProgTime1: 'Ore 17:00',
+      ProgTime2: 'Ore 18:30',
+      ProgTime3: 'Ore 20:00',
+      ProgTime4: 'Ore 23:00',
       HeroQuote: '"Immersi nella bellezza della natura, vi invitiamo a condividere con noi la gioia del nostro giorno speciale."',
       LocName: 'Ristorante Acquamatta',
       LocAddress: 'Cascina Molino della Raina, 6 - 27020 Semiana (PV)',
@@ -1019,13 +1045,21 @@
         document.getElementById('footerText').innerText = `${cmsConfig.NomiSposi} • ${cmsConfig.TestoData || ''}`;
       }
       if (cmsConfig.HeroQuote) document.getElementById('heroQuote').innerText = cmsConfig.HeroQuote;
-      if (cmsConfig.TestoData) document.getElementById('heroDate').innerText = cmsConfig.TestoData;
+      if (cmsConfig.TestoData) {
+        document.getElementById('heroDate').innerText = cmsConfig.TestoData;
+        document.getElementById('programSub').innerText = `${cmsConfig.TestoData} • ${cmsConfig.LocName || 'Ristorante Acquamatta'}`;
+      }
       if (cmsConfig.Orario) document.getElementById('heroTime').innerText = cmsConfig.Orario;
+      
+      if (cmsConfig.ProgTime1) document.getElementById('progTime1').innerText = cmsConfig.ProgTime1;
+      if (cmsConfig.ProgTime2) document.getElementById('progTime2').innerText = cmsConfig.ProgTime2;
+      if (cmsConfig.ProgTime3) document.getElementById('progTime3').innerText = cmsConfig.ProgTime3;
+      if (cmsConfig.ProgTime4) document.getElementById('progTime4').innerText = cmsConfig.ProgTime4;
+
       if (cmsConfig.LocName) {
         document.getElementById('heroLocationName').innerText = cmsConfig.LocName;
         document.getElementById('locationTitle').innerText = cmsConfig.LocName;
         document.getElementById('footerSubText').innerText = cmsConfig.LocName;
-        document.getElementById('programSub').innerText = `${cmsConfig.TestoData || ''} • ${cmsConfig.LocName}`;
       }
       if (cmsConfig.LocDesc) document.getElementById('locationDesc').innerText = cmsConfig.LocDesc;
       if (cmsConfig.LocAddress) document.getElementById('locationAddress').innerText = cmsConfig.LocAddress;
@@ -1079,6 +1113,10 @@
       cmsConfig.DataIso = document.getElementById('cmsDateInput').value;
       cmsConfig.TestoData = document.getElementById('cmsDateText').value.trim();
       cmsConfig.Orario = document.getElementById('cmsTimeText').value.trim();
+      cmsConfig.ProgTime1 = document.getElementById('cmsProgTime1').value.trim();
+      cmsConfig.ProgTime2 = document.getElementById('cmsProgTime2').value.trim();
+      cmsConfig.ProgTime3 = document.getElementById('cmsProgTime3').value.trim();
+      cmsConfig.ProgTime4 = document.getElementById('cmsProgTime4').value.trim();
       cmsConfig.HeroQuote = document.getElementById('cmsHeroQuote').value.trim();
       cmsConfig.LocName = document.getElementById('cmsLocName').value.trim();
       cmsConfig.LocAddress = document.getElementById('cmsLocAddress').value.trim();
@@ -1092,7 +1130,6 @@
       applyCmsToPage();
 
       try {
-        // Invio tramite Form nascosto + iframe per bypassare totalmente il blocco CORS del browser
         const form = document.createElement('form');
         form.action = GOOGLE_SHEET_SCRIPT_URL;
         form.method = 'POST';
@@ -1368,6 +1405,10 @@
         document.getElementById('cmsDateInput').value = cmsConfig.DataIso || '';
         document.getElementById('cmsDateText').value = cmsConfig.TestoData || '';
         document.getElementById('cmsTimeText').value = cmsConfig.Orario || '';
+        document.getElementById('cmsProgTime1').value = cmsConfig.ProgTime1 || 'Ore 17:00';
+        document.getElementById('cmsProgTime2').value = cmsConfig.ProgTime2 || 'Ore 18:30';
+        document.getElementById('cmsProgTime3').value = cmsConfig.ProgTime3 || 'Ore 20:00';
+        document.getElementById('cmsProgTime4').value = cmsConfig.ProgTime4 || 'Ore 23:00';
         document.getElementById('cmsHeroQuote').value = cmsConfig.HeroQuote || '';
         document.getElementById('cmsLocName').value = cmsConfig.LocName || '';
         document.getElementById('cmsLocAddress').value = cmsConfig.LocAddress || '';
