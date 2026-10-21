@@ -311,7 +311,7 @@
         <p class="text-xs text-sage-600"><strong>Banca:</strong> <span id="giftBank">[Nome Banca]</span></p>
         <div class="flex items-center justify-between bg-sage-50 p-2.5 rounded-xl border border-sage-100">
           <span id="ibanText" class="text-xs font-mono font-bold text-sage-900 tracking-wider">IT00 X000 0000 0000 0000 0000 000</span>
-          <button onclick="copyIban()" class="bg-sage-700 hover:bg-sage-800 text-white text-[11px] px-3 py-1.5 rounded-lg transition flex items-center space-x-1">
+          <button onclick="copyIban()" class="bg-sage-700 hover:bg-sage-800 text-white text-[11px] py-1.5 px-3 rounded-lg transition flex items-center space-x-1">
             <i data-lucide="copy" class="w-3 h-3"></i>
             <span>Copia IBAN</span>
           </button>
@@ -1045,10 +1045,16 @@
         document.getElementById('footerText').innerText = `${cmsConfig.NomiSposi} • ${cmsConfig.TestoData || ''}`;
       }
       if (cmsConfig.HeroQuote) document.getElementById('heroQuote').innerText = cmsConfig.HeroQuote;
-      if (cmsConfig.TestoData) {
-        document.getElementById('heroDate').innerText = cmsConfig.TestoData;
-        document.getElementById('programSub').innerText = `${cmsConfig.TestoData} • ${cmsConfig.LocName || 'Ristorante Acquamatta'}`;
+      
+      // Controllo di sicurezza: se TestoData è vuoto o contiene una stringa ISO grezza, usiamo un testo leggibile
+      let displayDate = cmsConfig.TestoData;
+      if (!displayDate || displayDate.includes('T') || displayDate.includes('Z')) {
+        displayDate = 'Sabato 12 Giugno 2027';
       }
+
+      document.getElementById('heroDate').innerText = displayDate;
+      document.getElementById('programSub').innerText = `${displayDate} • ${cmsConfig.LocName || 'Ristorante Acquamatta'}`;
+
       if (cmsConfig.Orario) document.getElementById('heroTime').innerText = cmsConfig.Orario;
       
       if (cmsConfig.ProgTime1) document.getElementById('progTime1').innerText = cmsConfig.ProgTime1;
