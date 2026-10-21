@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Simona & Marco - Invito di Nozze</title>
+  <title id="docTitle">Simona & Marco - Invito di Nozze</title>
   
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -11,7 +11,7 @@
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Montserrat:wght@300;400;500;600;700&family=Sacramento&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Montserrat:wght@300;400;500;600;700&family=Sacramento&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Great+Vibes&family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
 
   <!-- Lucide Icons & Canvas Confetti -->
   <script src="https://unpkg.com/lucide@latest"></script>
@@ -34,25 +34,26 @@
               800: '#2f412f',
               900: '#283728'
             },
-            eucalyptus: '#8ba888',
             gold: {
               DEFAULT: '#d4af37',
               light: '#f3e5ab',
               dark: '#aa8c2c'
-            },
-            cream: '#fcfbf7'
+            }
           },
           fontFamily: {
             serif: ['Cormorant Garamond', 'serif'],
             sans: ['Montserrat', 'sans-serif'],
-            script: ['Sacramento', 'cursive']
+            script: ['Sacramento', 'cursive'],
+            playfair: ['Playfair Display', 'serif'],
+            greatvibes: ['Great Vibes', 'cursive'],
+            cinzel: ['Cinzel', 'serif']
           }
         }
       }
     }
   </script>
 
-  <style>
+  <style id="customDynamicStyles">
     .watercolor-bg {
       background-color: #fcfbf7;
       background-image: 
@@ -75,12 +76,15 @@
 
 <body id="pageBody" class="watercolor-bg text-gray-800 font-sans min-h-screen flex flex-col justify-between selection:bg-sage-200 selection:text-sage-900">
 
+  <!-- Audio Player Sottofondo -->
+  <audio id="bgAudioPlayer" loop class="hidden"></audio>
+
   <!-- Navigation Bar -->
   <header class="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-sage-100 shadow-sm">
     <div class="max-w-5xl mx-auto px-4 py-3 flex justify-between items-center">
       <div class="flex items-center space-x-2">
         <i data-lucide="heart" class="w-5 h-5 text-gold fill-gold"></i>
-        <span class="font-serif text-xl font-bold tracking-wider text-sage-800">S & M</span>
+        <span id="navInitials" class="font-serif text-xl font-bold tracking-wider text-sage-800">S & M</span>
       </div>
       
       <nav class="flex items-center space-x-2 md:space-x-4 text-xs md:text-sm font-medium">
@@ -90,6 +94,12 @@
         <a href="#regalo" class="text-sage-700 hover:text-sage-900 transition hidden sm:inline">Lista Nozze</a>
         <a href="#faq" class="text-sage-700 hover:text-sage-900 transition hidden sm:inline">FAQ</a>
         <a href="#rsvp" class="bg-sage-600 hover:bg-sage-700 text-white px-3 py-1.5 rounded-full shadow-sm transition">RSVP</a>
+        
+        <!-- Toggle Audio Button -->
+        <button id="audioToggleBtn" onclick="toggleAudioPlay()" title="Musica di sottofondo" class="hidden p-1.5 text-sage-600 hover:text-sage-900 transition">
+          <i id="audioIcon" data-lucide="volume-x" class="w-4 h-4"></i>
+        </button>
+
         <button onclick="toggleAdminModal()" title="Area Sposi" class="p-1.5 text-sage-300 hover:text-sage-600 transition">
           <i data-lucide="key" class="w-3.5 h-3.5"></i>
         </button>
@@ -113,28 +123,28 @@
 
       <p class="text-sm uppercase tracking-widest text-sage-600 font-semibold mb-2">Ci Sposiamo!</p>
       
-      <h1 class="font-serif text-5xl md:text-7xl text-sage-900 font-bold mb-4 tracking-tight">
+      <h1 id="heroNames" class="font-serif text-5xl md:text-7xl text-sage-900 font-bold mb-4 tracking-tight">
         Simona <span class="font-script text-gold text-4xl md:text-6xl font-normal">&</span> Marco
       </h1>
 
-      <p class="font-serif italic text-lg md:text-2xl text-sage-700 mb-8 max-w-xl mx-auto">
+      <p id="heroQuote" class="font-serif italic text-lg md:text-2xl text-sage-700 mb-8 max-w-xl mx-auto">
         "Immersi nella bellezza della natura, vi invitiamo a condividere con noi la gioia del nostro giorno speciale."
       </p>
 
       <div class="inline-flex flex-col sm:flex-row items-center justify-center gap-4 bg-white/90 border border-gold/30 rounded-2xl p-4 shadow-md mb-10">
         <div class="flex items-center space-x-2 text-sage-800 font-medium">
           <i data-lucide="calendar" class="w-5 h-5 text-gold"></i>
-          <span>Sabato 12 Giugno 2027</span>
+          <span id="heroDate">Sabato 12 Giugno 2027</span>
         </div>
         <span class="hidden sm:inline text-sage-300">•</span>
         <div class="flex items-center space-x-2 text-sage-800 font-medium">
           <i data-lucide="clock" class="w-5 h-5 text-gold"></i>
-          <span>Ore 17:00</span>
+          <span id="heroTime">Ore 17:00</span>
         </div>
         <span class="hidden sm:inline text-sage-300">•</span>
         <div class="flex items-center space-x-2 text-sage-800 font-medium">
           <i data-lucide="map-pin" class="w-5 h-5 text-gold"></i>
-          <span>Ristorante Acquamatta (Semiana, PV)</span>
+          <span id="heroLocationName">Ristorante Acquamatta (Semiana, PV)</span>
         </div>
       </div>
 
@@ -170,7 +180,7 @@
   <section id="dettagli" class="py-12 px-4 max-w-4xl mx-auto w-full">
     <div class="text-center mb-10">
       <h2 class="font-serif text-3xl md:text-4xl font-bold text-sage-900 mb-2">Programma della Giornata</h2>
-      <p class="text-sage-600 text-sm">Sabato 12 Giugno 2027 • Ristorante Acquamatta</p>
+      <p id="programSub" class="text-sage-600 text-sm">Sabato 12 Giugno 2027 • Ristorante Acquamatta</p>
     </div>
 
     <div class="grid md:grid-cols-4 gap-6">
@@ -178,7 +188,7 @@
         <div class="w-12 h-12 bg-sage-100 rounded-full flex items-center justify-center text-sage-700 mb-4">
           <i data-lucide="sparkles" class="w-6 h-6"></i>
         </div>
-        <span class="text-xs font-bold text-gold tracking-widest uppercase mb-1">Ore 17:00</span>
+        <span id="progTime1" class="text-xs font-bold text-gold tracking-widest uppercase mb-1">Ore 17:00</span>
         <h3 class="font-serif font-bold text-lg text-sage-900 mb-2">Accoglienza & Cerimonia</h3>
         <p class="text-xs text-sage-600">Rito simbolico immerso nel verde del giardino e circondati dalla natura.</p>
       </div>
@@ -187,7 +197,7 @@
         <div class="w-12 h-12 bg-sage-100 rounded-full flex items-center justify-center text-sage-700 mb-4">
           <i data-lucide="wine" class="w-6 h-6"></i>
         </div>
-        <span class="text-xs font-bold text-gold tracking-widest uppercase mb-1">Ore 18:30</span>
+        <span id="progTime2" class="text-xs font-bold text-gold tracking-widest uppercase mb-1">Ore 18:30</span>
         <h3 class="font-serif font-bold text-lg text-sage-900 mb-2">Aperitivo al Tramonto</h3>
         <p class="text-xs text-sage-600">Cocktail di benvenuto, sfizi gourmet e musica di sottofondo nel parco.</p>
       </div>
@@ -196,7 +206,7 @@
         <div class="w-12 h-12 bg-sage-100 rounded-full flex items-center justify-center text-sage-700 mb-4">
           <i data-lucide="utensils" class="w-6 h-6"></i>
         </div>
-        <span class="text-xs font-bold text-gold tracking-widest uppercase mb-1">Ore 20:00</span>
+        <span id="progTime3" class="text-xs font-bold text-gold tracking-widest uppercase mb-1">Ore 20:00</span>
         <h3 class="font-serif font-bold text-lg text-sage-900 mb-2">Banchetto Nuziale</h3>
         <p class="text-xs text-sage-600">Cena collocata nelle sale del Ristorante Acquamatta con prodotti tipici del territorio.</p>
       </div>
@@ -205,7 +215,7 @@
         <div class="w-12 h-12 bg-sage-100 rounded-full flex items-center justify-center text-sage-700 mb-4">
           <i data-lucide="music" class="w-6 h-6"></i>
         </div>
-        <span class="text-xs font-bold text-gold tracking-widest uppercase mb-1">Ore 23:00</span>
+        <span id="progTime4" class="text-xs font-bold text-gold tracking-widest uppercase mb-1">Ore 23:00</span>
         <h3 class="font-serif font-bold text-lg text-sage-900 mb-2">Torta & Party</h3>
         <p class="text-xs text-sage-600">Taglio della torta, brindisi e DJ set per ballare fino a tarda notte.</p>
       </div>
@@ -221,17 +231,17 @@
             <i data-lucide="map-pin" class="w-4 h-4 text-gold"></i>
             <span>La Location del Matrimonio</span>
           </div>
-          <h2 class="font-serif text-3xl font-bold text-sage-900 mb-4">Ristorante Acquamatta</h2>
-          <p class="text-sm text-sage-700 mb-4 leading-relaxed">
+          <h2 id="locationTitle" class="font-serif text-3xl font-bold text-sage-900 mb-4">Ristorante Acquamatta</h2>
+          <p id="locationDesc" class="text-sm text-sage-700 mb-4 leading-relaxed">
             Situato nel cuore della Lomellina a Semiana (PV), il Ristorante Acquamatta offre un'atmosfera unica immersa nella natura, ideale per celebrare il nostro giorno speciale insieme alle persone care.
           </p>
           
           <div class="text-xs text-sage-600 space-y-1 mb-6">
-            <p><strong>Indirizzo:</strong> Cascina Molino della Raina, 6 - 27020 Semiana (PV)</p>
+            <p><strong>Indirizzo:</strong> <span id="locationAddress">Cascina Molino della Raina, 6 - 27020 Semiana (PV)</span></p>
             <p><strong>Note:</strong> Ampio parcheggio riservato agli ospiti all'interno della struttura.</p>
           </div>
 
-          <a href="https://maps.google.com/?cid=1094651536832372958&g_mp=Cidnb29nbGUubWFwsy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQ" target="_blank" rel="noopener noreferrer" class="inline-flex items-center space-x-2 bg-sage-700 hover:bg-sage-800 text-white text-sm font-medium px-5 py-2.5 rounded-full transition shadow-sm">
+          <a id="locationMapsUrl" href="https://maps.google.com/?cid=1094651536832372958&g_mp=Cidnb29nbGUubWFwsy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQ" target="_blank" rel="noopener noreferrer" class="inline-flex items-center space-x-2 bg-sage-700 hover:bg-sage-800 text-white text-sm font-medium px-5 py-2.5 rounded-full transition shadow-sm">
             <i data-lucide="navigation" class="w-4 h-4"></i>
             <span>Apri su Google Maps</span>
           </a>
@@ -256,7 +266,7 @@
       </div>
       <div>
         <h2 class="font-serif text-3xl font-bold text-sage-900">Wedding Challenge 🎲</h2>
-        <p class="text-xs text-sage-600 mt-1">Sfide individuali e di squadra per tutti i 70 invitati! Estrai la tua missione per la giornata.</p>
+        <p class="text-xs text-sage-600 mt-1">Sfide individuali e di squadra per tutti gli invitati! Estrai la tua missione per la giornata.</p>
       </div>
 
       <!-- Box Generatore Sfide -->
@@ -292,13 +302,13 @@
         <i data-lucide="gift" class="w-6 h-6 text-gold"></i>
       </div>
       <h2 class="font-serif text-3xl font-bold text-sage-900">Lista Nozze & Viaggio</h2>
-      <p class="text-sm text-sage-700 max-w-lg mx-auto">
+      <p id="giftDesc" class="text-sm text-sage-700 max-w-lg mx-auto">
         La vostra presenza è il regalo più importante. Per chi desidera contribuire al nostro viaggio di nozze o ai nostri progetti futuri, abbiamo predisposto un conto dedicato:
       </p>
 
       <div class="bg-white p-4 rounded-2xl border border-sage-200 max-w-md mx-auto space-y-2 text-left">
-        <p class="text-xs text-sage-600"><strong>Intestato a:</strong> Simona & Marco</p>
-        <p class="text-xs text-sage-600"><strong>Banca:</strong> [Nome Banca]</p>
+        <p class="text-xs text-sage-600"><strong>Intestato a:</strong> <span id="giftOwner">Simona & Marco</span></p>
+        <p class="text-xs text-sage-600"><strong>Banca:</strong> <span id="giftBank">[Nome Banca]</span></p>
         <div class="flex items-center justify-between bg-sage-50 p-2.5 rounded-xl border border-sage-100">
           <span id="ibanText" class="text-xs font-mono font-bold text-sage-900 tracking-wider">IT00 X000 0000 0000 0000 0000 000</span>
           <button onclick="copyIban()" class="bg-sage-700 hover:bg-sage-800 text-white text-[11px] px-3 py-1.5 rounded-lg transition flex items-center space-x-1">
@@ -317,7 +327,7 @@
       <p class="text-xs text-sage-600 mt-1">Tutto quello che c'è da sapere per godersi al meglio la giornata</p>
     </div>
 
-    <div class="space-y-4">
+    <div id="faqContainer" class="space-y-4">
       <div class="card-watercolor p-5 rounded-2xl">
         <h3 class="font-serif font-bold text-base text-sage-900 flex items-center space-x-2 mb-1">
           <i data-lucide="shirt" class="w-4 h-4 text-gold"></i>
@@ -343,8 +353,8 @@
   <section class="py-6 px-4 max-w-3xl mx-auto w-full">
     <div class="bg-sage-100/60 border border-sage-200 rounded-2xl p-5 text-center space-y-2">
       <h3 class="font-serif font-bold text-sage-900 text-sm uppercase tracking-wider">Numeri Utili per il Giorno delle Nozze</h3>
-      <p class="text-xs text-sage-700">Per qualsiasi imprevisto o ritardo dell'ultimo minuto il 12 giugno 2027:</p>
-      <div class="flex justify-center gap-6 pt-1 text-xs font-semibold text-sage-900">
+      <p class="text-xs text-sage-700">Per qualsiasi imprevisto o ritardo dell'ultimo minuto:</p>
+      <div id="emergencyContactsList" class="flex justify-center gap-6 pt-1 text-xs font-semibold text-sage-900">
         <div>📞 Testimone (Marco): 333 0000000</div>
         <div>📞 Testimone (Simona): 333 0000000</div>
       </div>
@@ -523,7 +533,7 @@
               <input type="text" id="songRequest" placeholder="Es. Titolo e Artista" class="w-full px-4 py-2 rounded-xl border border-sage-200 text-sm bg-white">
             </div>
             <div>
-              <label class="block text-xs font-semibold text-sage-800 mb-1">Messaggio o Auguri per Simona & Marco 💚</label>
+              <label class="block text-xs font-semibold text-sage-800 mb-1">Messaggio o Auguri per gli Sposi 💚</label>
               <input type="text" id="guestMessage" placeholder="Un pensiero speciale..." class="w-full px-4 py-2 rounded-xl border border-sage-200 text-sm bg-white">
             </div>
           </div>
@@ -542,7 +552,7 @@
         </div>
         <h3 class="font-serif text-3xl font-bold text-sage-900">Grazie per la tua risposta!</h3>
         <p class="text-sm text-sage-700 max-w-md mx-auto">
-          Abbiamo registrato la tua conferma. Non vediamo l'ora di festeggiare insieme a te al Ristorante Acquamatta il 12 Giugno 2027!
+          Abbiamo registrato la tua conferma. Non vediamo l'ora di festeggiare insieme a te!
         </p>
         <button onclick="resetRsvpForm()" class="text-xs text-sage-600 underline hover:text-sage-800">
           Invia un'altra risposta o modifica
@@ -557,21 +567,21 @@
     <div class="max-w-4xl mx-auto px-4 space-y-2">
       <div class="flex justify-center items-center space-x-2 text-gold">
         <i data-lucide="sparkles" class="w-4 h-4"></i>
-        <span class="font-serif italic font-bold text-sage-800">Simona & Marco • 12 Giugno 2027</span>
+        <span id="footerText" class="font-serif italic font-bold text-sage-800">Simona & Marco • 12 Giugno 2027</span>
         <i data-lucide="leaf" class="w-4 h-4"></i>
       </div>
-      <p>Ristorante Acquamatta • Semiana (PV)</p>
+      <p id="footerSubText">Ristorante Acquamatta • Semiana (PV)</p>
     </div>
   </footer>
 
-  <!-- MODALE AREA RISERVATA SPOSI & GESTIONE TAVOLI -->
+  <!-- MODALE AREA RISERVATA SPOSI & CMS EDITABILE -->
   <div id="adminModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl max-w-5xl w-full max-h-[90vh] overflow-y-auto p-6 md:p-8 shadow-2xl border border-sage-200">
       
       <div class="flex justify-between items-center border-b border-sage-100 pb-4 mb-6">
         <div class="flex items-center space-x-2">
           <i data-lucide="shield-check" class="w-6 h-6 text-gold"></i>
-          <h2 class="font-serif text-2xl font-bold text-sage-900">Area Riservata Sposi</h2>
+          <h2 class="font-serif text-2xl font-bold text-sage-900">Area Riservata Sposi & Gestione</h2>
         </div>
         <button onclick="toggleAdminModal()" class="text-gray-400 hover:text-gray-600 p-1">
           <i data-lucide="x" class="w-6 h-6"></i>
@@ -631,19 +641,13 @@
       <div id="adminDashboard" class="hidden space-y-8">
         
         <div class="flex justify-between items-center border-b border-sage-200 pb-2 flex-wrap gap-2">
-          <div class="flex space-x-2">
-            <button id="tabGuestsBtn" onclick="switchAdminTab('guests')" class="px-4 py-2 rounded-xl font-medium text-sm bg-sage-700 text-white">
-              <i data-lucide="users" class="w-4 h-4 inline mr-1"></i> Ospiti
-            </button>
-            <button id="tabTablesBtn" onclick="switchAdminTab('tables')" class="px-4 py-2 rounded-xl font-medium text-sm text-sage-700 hover:bg-sage-100">
-              <i data-lucide="layout-grid" class="w-4 h-4 inline mr-1"></i> Tavoli
-            </button>
-            <button id="tabChallengesBtn" onclick="switchAdminTab('challenges')" class="px-4 py-2 rounded-xl font-medium text-sm text-sage-700 hover:bg-sage-100">
-              <i data-lucide="dices" class="w-4 h-4 inline mr-1"></i> Sfide Inviate
-            </button>
-            <button id="tabBgBtn" onclick="switchAdminTab('background')" class="px-4 py-2 rounded-xl font-medium text-sm text-sage-700 hover:bg-sage-100">
-              <i data-lucide="image" class="w-4 h-4 inline mr-1"></i> Sfondo
-            </button>
+          <div class="flex space-x-2 flex-wrap gap-1">
+            <button id="tabGuestsBtn" onclick="switchAdminTab('guests')" class="px-3 py-1.5 rounded-xl font-medium text-xs bg-sage-700 text-white">👥 Ospiti</button>
+            <button id="tabTablesBtn" onclick="switchAdminTab('tables')" class="px-3 py-1.5 rounded-xl font-medium text-xs text-sage-700 hover:bg-sage-100">🍽️ Tavoli</button>
+            <button id="tabChallengesBtn" onclick="switchAdminTab('challenges')" class="px-3 py-1.5 rounded-xl font-medium text-xs text-sage-700 hover:bg-sage-100">🎲 Sfide</button>
+            <button id="tabCmsBtn" onclick="switchAdminTab('cms')" class="px-3 py-1.5 rounded-xl font-medium text-xs text-sage-700 hover:bg-sage-100">✏️ Edita Contenuti</button>
+            <button id="tabStyleBtn" onclick="switchAdminTab('style')" class="px-3 py-1.5 rounded-xl font-medium text-xs text-sage-700 hover:bg-sage-100">🎨 Colori & Font</button>
+            <button id="tabBgBtn" onclick="switchAdminTab('background')" class="px-3 py-1.5 rounded-xl font-medium text-xs text-sage-700 hover:bg-sage-100">🖼️ Sfondo & Audio</button>
           </div>
           <button onclick="showSetupPin()" class="text-xs text-sage-600 underline hover:text-sage-800">Cambia PIN</button>
         </div>
@@ -749,23 +753,168 @@
           </div>
         </div>
 
-        <!-- TAB 4: PERSONALIZZAZIONE SFONDO -->
-        <div id="tabBackground" class="hidden space-y-6">
-          <div class="bg-sage-50 p-6 rounded-2xl border border-sage-200 max-w-lg mx-auto text-center space-y-4">
-            <div class="w-12 h-12 bg-sage-200 rounded-full flex items-center justify-center text-sage-800 mx-auto">
-              <i data-lucide="image" class="w-6 h-6"></i>
+        <!-- TAB 4: CMS EDITABILE IN AUTONOMIA (INFO, DATE, ORARI) -->
+        <div id="tabCms" class="hidden space-y-6">
+          <h3 class="font-serif font-bold text-sage-900 text-lg border-b border-sage-200 pb-2">Editore Contenuti & Informazioni</h3>
+          
+          <div class="grid md:grid-cols-2 gap-6">
+            <div class="bg-sage-50 p-4 rounded-2xl border border-sage-200 space-y-3 text-xs">
+              <h4 class="font-bold text-sage-800 text-sm">Dettagli Principali Sposi & Evento</h4>
+              <div>
+                <label class="block font-semibold mb-1">Nomi degli Sposi (es. Simona & Marco)</label>
+                <input type="text" id="cmsNamesInput" class="w-full px-3 py-2 rounded-xl border border-sage-200 bg-white">
+              </div>
+              <div>
+                <label class="block font-semibold mb-1">Data Matrimonio (per il Conto alla Rovescia)</label>
+                <input type="datetime-local" id="cmsDateInput" class="w-full px-3 py-2 rounded-xl border border-sage-200 bg-white">
+              </div>
+              <div>
+                <label class="block font-semibold mb-1">Data Formattata (es. Sabato 12 Giugno 2027)</label>
+                <input type="text" id="cmsDateText" class="w-full px-3 py-2 rounded-xl border border-sage-200 bg-white">
+              </div>
+              <div>
+                <label class="block font-semibold mb-1">Orario di Inizio (es. Ore 17:00)</label>
+                <input type="text" id="cmsTimeText" class="w-full px-3 py-2 rounded-xl border border-sage-200 bg-white">
+              </div>
             </div>
-            <h3 class="font-serif font-bold text-sage-900 text-xl">Personalizza Immagine di Sfondo</h3>
-            <p class="text-xs text-sage-600">Carica una foto dal tuo dispositivo per impostarla come sfondo di tutto il sito.</p>
-            
-            <div class="space-y-3 pt-2">
-              <input type="file" id="bgImageInput" accept="image/*" class="w-full text-xs text-sage-700 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-sage-700 file:text-white hover:file:bg-sage-800 cursor-pointer">
-              <div class="flex gap-2 pt-2">
-                <button onclick="applyCustomBackground()" class="flex-1 bg-sage-700 hover:bg-sage-800 text-white text-xs py-2.5 rounded-xl font-medium transition">
-                  Applica Sfondo
-                </button>
-                <button onclick="removeCustomBackground()" class="px-4 bg-red-100 hover:bg-red-200 text-red-700 text-xs py-2.5 rounded-xl font-medium transition">
-                  Rimuovi / Predefinito
+
+            <div class="bg-sage-50 p-4 rounded-2xl border border-sage-200 space-y-3 text-xs">
+              <h4 class="font-bold text-sage-800 text-sm">Location e Mappe</h4>
+              <div>
+                <label class="block font-semibold mb-1">Nome Location</label>
+                <input type="text" id="cmsLocName" class="w-full px-3 py-2 rounded-xl border border-sage-200 bg-white">
+              </div>
+              <div>
+                <label class="block font-semibold mb-1">Indirizzo Completo</label>
+                <input type="text" id="cmsLocAddress" class="w-full px-3 py-2 rounded-xl border border-sage-200 bg-white">
+              </div>
+              <div>
+                <label class="block font-semibold mb-1">Link Google Maps</label>
+                <input type="text" id="cmsLocMapsUrl" class="w-full px-3 py-2 rounded-xl border border-sage-200 bg-white">
+              </div>
+              <div>
+                <label class="block font-semibold mb-1">Descrizione Location</label>
+                <textarea id="cmsLocDesc" rows="2" class="w-full px-3 py-2 rounded-xl border border-sage-200 bg-white"></textarea>
+              </div>
+            </div>
+
+            <div class="bg-sage-50 p-4 rounded-2xl border border-sage-200 space-y-3 text-xs md:col-span-2">
+              <h4 class="font-bold text-sage-800 text-sm">Frasi, Lista Nozze & IBAN</h4>
+              <div class="grid md:grid-cols-2 gap-4">
+                <div>
+                  <label class="block font-semibold mb-1">Citazione Hero principali</label>
+                  <textarea id="cmsHeroQuote" rows="2" class="w-full px-3 py-2 rounded-xl border border-sage-200 bg-white"></textarea>
+                </div>
+                <div>
+                  <label class="block font-semibold mb-1">IBAN per i Regali</label>
+                  <input type="text" id="cmsIban" class="w-full px-3 py-2 rounded-xl border border-sage-200 bg-white font-mono">
+                </div>
+                <div>
+                  <label class="block font-semibold mb-1">Intestatario Conto</label>
+                  <input type="text" id="cmsGiftOwner" class="w-full px-3 py-2 rounded-xl border border-sage-200 bg-white">
+                </div>
+                <div>
+                  <label class="block font-semibold mb-1">Banca</label>
+                  <input type="text" id="cmsGiftBank" class="w-full px-3 py-2 rounded-xl border border-sage-200 bg-white">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <button onclick="saveCmsChanges()" class="w-full bg-sage-700 hover:bg-sage-800 text-white font-medium py-3 rounded-xl transition text-xs">
+            💾 Salva e Applica Modifiche Contenuti
+          </button>
+        </div>
+
+        <!-- TAB 5: PERSONALIZZAZIONE COLORI, SCRITTE E FONT -->
+        <div id="tabStyle" class="hidden space-y-6">
+          <h3 class="font-serif font-bold text-sage-900 text-lg border-b border-sage-200 pb-2">Personalizzazione Stile, Colori e Font</h3>
+          
+          <div class="grid md:grid-cols-2 gap-6 text-xs">
+            <div class="bg-sage-50 p-4 rounded-2xl border border-sage-200 space-y-4">
+              <h4 class="font-bold text-sage-800 text-sm">Colori della Pagina</h4>
+              <div class="flex justify-between items-center bg-white p-2.5 rounded-xl border border-sage-100">
+                <label class="font-semibold">Colore Testi Principali:</label>
+                <input type="color" id="styleTextColor" value="#283728" class="w-10 h-8 rounded cursor-pointer">
+              </div>
+              <div class="flex justify-between items-center bg-white p-2.5 rounded-xl border border-sage-100">
+                <label class="font-semibold">Colore Dettagli / Oro:</label>
+                <input type="color" id="styleAccentColor" value="#d4af37" class="w-10 h-8 rounded cursor-pointer">
+              </div>
+              <div class="flex justify-between items-center bg-white p-2.5 rounded-xl border border-sage-100">
+                <label class="font-semibold">Colore Sfondo Base:</label>
+                <input type="color" id="styleBgColor" value="#fcfbf7" class="w-10 h-8 rounded cursor-pointer">
+              </div>
+            </div>
+
+            <div class="bg-sage-50 p-4 rounded-2xl border border-sage-200 space-y-4">
+              <h4 class="font-bold text-sage-800 text-sm">Font e Tipografia</h4>
+              <div>
+                <label class="block font-semibold mb-1">Font Titoli (Nomi e Intestazioni)</label>
+                <select id="styleTitleFont" class="w-full px-3 py-2 rounded-xl border border-sage-200 bg-white">
+                  <option value="'Cormorant Garamond', serif">Cormorant Garamond (Classico Elegante)</option>
+                  <option value="'Playfair Display', serif">Playfair Display (Moderno Chic)</option>
+                  <option value="'Cinzel', serif">Cinzel (Solenne & Regale)</option>
+                  <option value="'Sacramento', cursive">Sacramento (Corsivo Cromatico)</option>
+                  <option value="'Great Vibes', cursive">Great Vibes (Corsivo Elegante)</option>
+                </select>
+              </div>
+              <div>
+                <label class="block font-semibold mb-1">Font Testi Generali</label>
+                <select id="styleBodyFont" class="w-full px-3 py-2 rounded-xl border border-sage-200 bg-white">
+                  <option value="'Montserrat', sans-serif">Montserrat (Pulito & Moderno)</option>
+                  <option value="'Cormorant Garamond', serif">Cormorant Garamond (Serif Leggibile)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex gap-3">
+            <button onclick="saveStyleChanges()" class="flex-1 bg-sage-700 hover:bg-sage-800 text-white font-medium py-3 rounded-xl transition text-xs">
+              🎨 Applica Stile & Colori
+            </button>
+            <button onclick="resetStyleDefaults()" class="px-4 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium py-3 rounded-xl transition text-xs">
+              Ripristina
+            </button>
+          </div>
+        </div>
+
+        <!-- TAB 6: PERSONALIZZAZIONE SFONDO & AUDIO -->
+        <div id="tabBackground" class="hidden space-y-6">
+          <div class="grid md:grid-cols-2 gap-6">
+            <!-- Sfondo -->
+            <div class="bg-sage-50 p-6 rounded-2xl border border-sage-200 text-center space-y-4">
+              <div class="w-12 h-12 bg-sage-200 rounded-full flex items-center justify-center text-sage-800 mx-auto">
+                <i data-lucide="image" class="w-6 h-6"></i>
+              </div>
+              <h3 class="font-serif font-bold text-sage-900 text-lg">Immagine di Sfondo</h3>
+              <p class="text-xs text-sage-600">Carica una foto dal tuo dispositivo per impostarla come sfondo.</p>
+              
+              <div class="space-y-3 pt-2">
+                <input type="file" id="bgImageInput" accept="image/*" class="w-full text-xs text-sage-700 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-sage-700 file:text-white hover:file:bg-sage-800 cursor-pointer">
+                <div class="flex gap-2 pt-2">
+                  <button onclick="applyCustomBackground()" class="flex-1 bg-sage-700 hover:bg-sage-800 text-white text-xs py-2.5 rounded-xl font-medium transition">
+                    Applica Foto
+                  </button>
+                  <button onclick="removeCustomBackground()" class="px-3 bg-red-100 hover:bg-red-200 text-red-700 text-xs py-2.5 rounded-xl font-medium transition">
+                    Rimuovi
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Musica di sottofondo -->
+            <div class="bg-sage-50 p-6 rounded-2xl border border-sage-200 text-center space-y-4">
+              <div class="w-12 h-12 bg-sage-200 rounded-full flex items-center justify-center text-sage-800 mx-auto">
+                <i data-lucide="music" class="w-6 h-6"></i>
+              </div>
+              <h3 class="font-serif font-bold text-sage-900 text-lg">Musica di Sottofondo</h3>
+              <p class="text-xs text-sage-600">Inserisci l'URL di un file audio MP3 online per consentire agli ospiti di riprodurlo.</p>
+              
+              <div class="space-y-3 pt-2 text-left">
+                <input type="text" id="audioUrlInput" placeholder="https://esempio.com/branaudio.mp3" class="w-full px-3 py-2 text-xs rounded-xl border border-sage-200 bg-white">
+                <button onclick="saveAudioConfig()" class="w-full bg-sage-700 hover:bg-sage-800 text-white text-xs py-2.5 rounded-xl font-medium transition">
+                  Salva Brano Audio
                 </button>
               </div>
             </div>
@@ -779,40 +928,45 @@
 
   <script>
     const GOOGLE_SHEET_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzhofDrWGONjjjrpHlzdfI0mOSpD9ghaaBj2pNvFlqNxrTauVfMfQJCwiPm2Jq29vyQ/exec';
-    const defaultWeddingDate = new Date("2027-06-12T17:00:00").getTime();
+    
+    let defaultWeddingDate = new Date("2027-06-12T17:00:00").getTime();
 
-    // Elenco di 30 sfide individuali e di squadra
+    // Impostazioni di default editabili
+    let cmsConfig = JSON.parse(localStorage.getItem('wedding_cms_config')) || {
+      names: 'Simona & Marco',
+      dateIso: '2027-06-12T17:00',
+      dateText: 'Sabato 12 Giugno 2027',
+      timeText: 'Ore 17:00',
+      heroQuote: '"Immersi nella bellezza della natura, vi invitiamo a condividere con noi la gioia del nostro giorno speciale."',
+      locName: 'Ristorante Acquamatta',
+      locAddress: 'Cascina Molino della Raina, 6 - 27020 Semiana (PV)',
+      locMapsUrl: 'https://maps.google.com/?cid=1094651536832372958&g_mp=Cidnb29nbGUubWFwsy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQ',
+      locDesc: "Situato nel cuore della Lomellina a Semiana (PV), il Ristorante Acquamatta offre un'atmosfera unica immersa nella natura, ideale per celebrare il nostro giorno speciale insieme alle persone care.",
+      iban: 'IT00 X000 0000 0000 0000 0000 000',
+      giftOwner: 'Simona & Marco',
+      giftBank: '[Nome Banca]',
+      audioUrl: ''
+    };
+
+    let styleConfig = JSON.parse(localStorage.getItem('wedding_style_config')) || {
+      textColor: '#283728',
+      accentColor: '#d4af37',
+      bgColor: '#fcfbf7',
+      titleFont: "'Cormorant Garamond', serif",
+      bodyFont: "'Montserrat', sans-serif"
+    };
+
     const weddingChallenges = [
       "🏁 SFIDA DI SQUADRA: Create con il vostro tavolo la catena più lunga usando solo giacche, cravatte, cinture e tovaglioli!",
-      "🎶 SFIDA DI SQUADRA: Cantate insieme a tutto il tavolo una strofa di una canzone famosa dedicandola a Simona e Marco!",
+      "🎶 SFIDA DI SQUADRA: Cantate insieme a tutto il tavolo una strofa di una canzone famosa dedicandola agli sposi!",
       "📸 SFIDA DI SQUADRA: Scattate una foto di gruppo con tutto il tavolo come se foste sulla copertina di una rivista di alta moda!",
       "🍷 SFIDA DI SQUADRA: Inventate una poesia o uno stornello in rima per gli sposi e recitatelo al loro passaggio!",
       "💃 SFIDA DI SQUADRA: Portate contemporaneamente almeno la metà del vostro tavolo a ballare in pista!",
-      "🗼 SFIDA DI SQUADRA: Costruite la torre più alta possibile usando i tappi delle bottiglie o i bicchieri del tavolo!",
-      "🤝 SFIDA DI SQUADRA: Trovate un accordo con un altro tavolo e fate una foto di gruppo unita con almeno 15 persone!",
-      "🎬 SFIDA DI SQUADRA: Ricreate in 10 secondi una scena iconica di un film famoso coinvolgendo almeno 4 persone del tavolo!",
       "📸 Ruba uno scatto agli sposi mentre si guardano negli occhi o ridono spontaneamente (senza farti scoprire!).",
-      "selfie Arcobaleno: Fai un selfie con invitati che indossano almeno 4 colori di abiti diversi.",
       "👴 Scatta una foto insieme alla persona più giovane e a quella più anziana della festa.",
       "🕶️ Fai una foto di gruppo dove tutti indossano occhiali da sole con aria da agente segreto.",
-      "👠 Scatta una foto ravvicinata alle scarpe più stravaganti o eleganti della festa (senza ciabatte!).",
-      "💍 Riesci a fare un selfie ravvicinato con la mano degli sposi in primo piano con le fedi?",
-      "🌺 Trova e fotografa la decorazione floreale più bella della location.",
-      "🤩 Fai una foto con un testimone mentre fate entrambi la smorfia più buffa possibile.",
       "🥂 Fai un brindisi con un invitato di un altro tavolo che non avevi mai visto prima.",
-      "💡 Chiedi alla coppia sposata da più tempo nella sala il loro 'segreto' e invialo come risposta!",
-      "📜 Scrivi un consiglio divertente per la vita di coppia sul retro del tuo segnaposto.",
-      "🔍 Fatti raccontare da un amico d'infanzia dello sposo o della sposa un aneddoto divertente che non conoscevi.",
-      "❓ Scopri chi tra gli invitati conosce Simona e Marco da più anni in assoluto!",
-      "🌍 Trovate l'invitato che è venuto da più lontano per essere qui oggi e fatevi una foto insieme.",
-      "🎩 Scatta una foto all'invitato/a che secondo te vince il premio per il miglior outfit della giornata.",
-      "🎵 Vai dal DJ e richiedi una canzone che faccia alzare e ballare subito almeno 5 persone!",
-      "🚂 Avvia un trenino in pista da ballo durante il DJ set e fai unire almeno 8 persone.",
-      "🎸 Fai finta di suonare una chitarra elettrica da rockstar in mezzo alla pista per uno scatto!",
-      "🕺 Sii tra i primi 3 a lanciarti in pista non appena parte la musica del DJ!",
-      "👑 Fai un video di 5 secondi alla persona che sta dando il meglio (o il peggio!) di sé ballando.",
-      "👏 Organizza una standing ovation con il tuo tavolo quando gli sposi si alzano per il taglio della torta.",
-      "💚 Registra un micro-video di 5 secondi di auguri da inviare come prova della sfida!"
+      "📜 Scrivi un consiglio divertente per la vita di coppia sul retro del tuo segnaposto."
     ];
 
     let currentGeneratedChallenge = "";
@@ -826,6 +980,8 @@
 
     document.addEventListener('DOMContentLoaded', () => {
       lucide.createIcons();
+      applyCmsToPage();
+      applyStyleToPage();
       startCountdown();
       
       if (!localStorage.getItem('wedding_admin_pin')) {
@@ -838,6 +994,108 @@
         applyBgToBody(savedBg);
       }
     });
+
+    function applyCmsToPage() {
+      document.getElementById('docTitle').innerText = `${cmsConfig.names} - Invito di Nozze`;
+      document.getElementById('navInitials').innerText = cmsConfig.names.split('&').map(n => n.trim()[0]).join(' & ');
+      document.getElementById('heroNames').innerHTML = cmsConfig.names.replace('&', '<span class="font-script text-gold text-4xl md:text-6xl font-normal">&</span>');
+      document.getElementById('heroQuote').innerText = cmsConfig.heroQuote;
+      document.getElementById('heroDate').innerText = cmsConfig.dateText;
+      document.getElementById('heroTime').innerText = cmsConfig.timeText;
+      document.getElementById('heroLocationName').innerText = cmsConfig.locName;
+      document.getElementById('programSub').innerText = `${cmsConfig.dateText} • ${cmsConfig.locName}`;
+      
+      document.getElementById('locationTitle').innerText = cmsConfig.locName;
+      document.getElementById('locationDesc').innerText = cmsConfig.locDesc;
+      document.getElementById('locationAddress').innerText = cmsConfig.locAddress;
+      document.getElementById('locationMapsUrl').href = cmsConfig.locMapsUrl;
+
+      document.getElementById('ibanText').innerText = cmsConfig.iban;
+      document.getElementById('giftOwner').innerText = cmsConfig.giftOwner;
+      document.getElementById('giftBank').innerText = cmsConfig.giftBank;
+
+      document.getElementById('footerText').innerText = `${cmsConfig.names} • ${cmsConfig.dateText}`;
+      document.getElementById('footerSubText').innerText = cmsConfig.locName;
+
+      if (cmsConfig.dateIso) {
+        defaultWeddingDate = new Date(cmsConfig.dateIso).getTime();
+      }
+
+      // Audio
+      if (cmsConfig.audioUrl) {
+        const player = document.getElementById('bgAudioPlayer');
+        player.src = cmsConfig.audioUrl;
+        document.getElementById('audioToggleBtn').classList.remove('hidden');
+      }
+    }
+
+    function applyStyleToPage() {
+      const dynamicStyles = document.getElementById('customDynamicStyles');
+      dynamicStyles.innerHTML = `
+        h1, h2, h3, h4, .font-serif { font-family: ${styleConfig.titleFont} !important; }
+        body, p, label, input, button { font-family: ${styleConfig.bodyFont} !important; }
+        .text-sage-900, .text-sage-800 { color: ${styleConfig.textColor} !important; }
+        .text-gold { color: ${styleConfig.accentColor} !important; }
+        .bg-gold { background-color: ${styleConfig.accentColor} !important; }
+        .watercolor-bg { background-color: ${styleConfig.bgColor} !important; }
+      `;
+    }
+
+    function toggleAudioPlay() {
+      const player = document.getElementById('bgAudioPlayer');
+      const icon = document.getElementById('audioIcon');
+      if (player.paused) {
+        player.play();
+        icon.setAttribute('data-lucide', 'volume-2');
+      } else {
+        player.pause();
+        icon.setAttribute('data-lucide', 'volume-x');
+      }
+      lucide.createIcons();
+    }
+
+    function saveCmsChanges() {
+      cmsConfig.names = document.getElementById('cmsNamesInput').value.trim();
+      cmsConfig.dateIso = document.getElementById('cmsDateInput').value;
+      cmsConfig.dateText = document.getElementById('cmsDateText').value.trim();
+      cmsConfig.timeText = document.getElementById('cmsTimeText').value.trim();
+      cmsConfig.heroQuote = document.getElementById('cmsHeroQuote').value.trim();
+      cmsConfig.locName = document.getElementById('cmsLocName').value.trim();
+      cmsConfig.locAddress = document.getElementById('cmsLocAddress').value.trim();
+      cmsConfig.locMapsUrl = document.getElementById('cmsLocMapsUrl').value.trim();
+      cmsConfig.locDesc = document.getElementById('cmsLocDesc').value.trim();
+      cmsConfig.iban = document.getElementById('cmsIban').value.trim();
+      cmsConfig.giftOwner = document.getElementById('cmsGiftOwner').value.trim();
+      cmsConfig.giftBank = document.getElementById('cmsGiftBank').value.trim();
+
+      localStorage.setItem('wedding_cms_config', JSON.stringify(cmsConfig));
+      applyCmsToPage();
+      alert('Contenuti aggiornati con successo!');
+    }
+
+    function saveStyleChanges() {
+      styleConfig.textColor = document.getElementById('styleTextColor').value;
+      styleConfig.accentColor = document.getElementById('styleAccentColor').value;
+      styleConfig.bgColor = document.getElementById('styleBgColor').value;
+      styleConfig.titleFont = document.getElementById('styleTitleFont').value;
+      styleConfig.bodyFont = document.getElementById('styleBodyFont').value;
+
+      localStorage.setItem('wedding_style_config', JSON.stringify(styleConfig));
+      applyStyleToPage();
+      alert('Stile e colori aggiornati!');
+    }
+
+    function resetStyleDefaults() {
+      localStorage.removeItem('wedding_style_config');
+      location.reload();
+    }
+
+    function saveAudioConfig() {
+      cmsConfig.audioUrl = document.getElementById('audioUrlInput').value.trim();
+      localStorage.setItem('wedding_cms_config', JSON.stringify(cmsConfig));
+      applyCmsToPage();
+      alert('Configurazione audio salvata!');
+    }
 
     function generateRandomChallenge() {
       const randomIndex = Math.floor(Math.random() * weddingChallenges.length);
@@ -865,24 +1123,6 @@
 
       submittedChallenges.push(challengeData);
       localStorage.setItem('wedding_challenges_simona_marco', JSON.stringify(submittedChallenges));
-
-      try {
-        await fetch(GOOGLE_SHEET_SCRIPT_URL, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            name: `[SFIDA COMPLETATA] ${name}`,
-            contact: 'Wedding Challenge',
-            attendance: 'attending',
-            dietaryOptions: [`Sfida: ${currentGeneratedChallenge}`],
-            dietNotes: `Prova: ${proof}`,
-            message: 'Inviata per approvazione sposi'
-          })
-        });
-      } catch (e) {
-        console.error(e);
-      }
 
       confetti({ particleCount: 50, spread: 50, origin: { y: 0.7 } });
       alert('Sfida inviata agli sposi! La verificheranno al più presto 🎉');
@@ -1076,6 +1316,22 @@
       if (enteredPin === savedPin) {
         document.getElementById('pinView').classList.add('hidden');
         document.getElementById('adminDashboard').classList.remove('hidden');
+        
+        // Popola i campi del form CMS
+        document.getElementById('cmsNamesInput').value = cmsConfig.names;
+        document.getElementById('cmsDateInput').value = cmsConfig.dateIso || '';
+        document.getElementById('cmsDateText').value = cmsConfig.dateText;
+        document.getElementById('cmsTimeText').value = cmsConfig.timeText;
+        document.getElementById('cmsHeroQuote').value = cmsConfig.heroQuote;
+        document.getElementById('cmsLocName').value = cmsConfig.locName;
+        document.getElementById('cmsLocAddress').value = cmsConfig.locAddress;
+        document.getElementById('cmsLocMapsUrl').value = cmsConfig.locMapsUrl;
+        document.getElementById('cmsLocDesc').value = cmsConfig.locDesc;
+        document.getElementById('cmsIban').value = cmsConfig.iban;
+        document.getElementById('cmsGiftOwner').value = cmsConfig.giftOwner;
+        document.getElementById('cmsGiftBank').value = cmsConfig.giftBank;
+        document.getElementById('audioUrlInput').value = cmsConfig.audioUrl || '';
+
         renderAdminData();
       } else {
         alert('PIN errato!');
@@ -1139,26 +1395,33 @@
       document.getElementById('tabGuests').classList.add('hidden');
       document.getElementById('tabTables').classList.add('hidden');
       document.getElementById('tabChallenges').classList.add('hidden');
+      document.getElementById('tabCms').classList.add('hidden');
+      document.getElementById('tabStyle').classList.add('hidden');
       document.getElementById('tabBackground').classList.add('hidden');
-      document.getElementById('tabGuestsBtn').className = "px-4 py-2 rounded-xl font-medium text-sm text-sage-700 hover:bg-sage-100";
-      document.getElementById('tabTablesBtn').className = "px-4 py-2 rounded-xl font-medium text-sm text-sage-700 hover:bg-sage-100";
-      document.getElementById('tabChallengesBtn').className = "px-4 py-2 rounded-xl font-medium text-sm text-sage-700 hover:bg-sage-100";
-      document.getElementById('tabBgBtn').className = "px-4 py-2 rounded-xl font-medium text-sm text-sage-700 hover:bg-sage-100";
+
+      const tabs = ['tabGuestsBtn', 'tabTablesBtn', 'tabChallengesBtn', 'tabCmsBtn', 'tabStyleBtn', 'tabBgBtn'];
+      tabs.forEach(t => document.getElementById(t).className = "px-3 py-1.5 rounded-xl font-medium text-xs text-sage-700 hover:bg-sage-100");
 
       if (tab === 'guests') {
         document.getElementById('tabGuests').classList.remove('hidden');
-        document.getElementById('tabGuestsBtn').className = "px-4 py-2 rounded-xl font-medium text-sm bg-sage-700 text-white";
+        document.getElementById('tabGuestsBtn').className = "px-3 py-1.5 rounded-xl font-medium text-xs bg-sage-700 text-white";
       } else if (tab === 'tables') {
         document.getElementById('tabTables').classList.remove('hidden');
-        document.getElementById('tabTablesBtn').className = "px-4 py-2 rounded-xl font-medium text-sm bg-sage-700 text-white";
+        document.getElementById('tabTablesBtn').className = "px-3 py-1.5 rounded-xl font-medium text-xs bg-sage-700 text-white";
         renderTablesDashboard();
       } else if (tab === 'challenges') {
         document.getElementById('tabChallenges').classList.remove('hidden');
-        document.getElementById('tabChallengesBtn').className = "px-4 py-2 rounded-xl font-medium text-sm bg-sage-700 text-white";
+        document.getElementById('tabChallengesBtn').className = "px-3 py-1.5 rounded-xl font-medium text-xs bg-sage-700 text-white";
         renderChallengesDashboard();
+      } else if (tab === 'cms') {
+        document.getElementById('tabCms').classList.remove('hidden');
+        document.getElementById('tabCmsBtn').className = "px-3 py-1.5 rounded-xl font-medium text-xs bg-sage-700 text-white";
+      } else if (tab === 'style') {
+        document.getElementById('tabStyle').classList.remove('hidden');
+        document.getElementById('tabStyleBtn').className = "px-3 py-1.5 rounded-xl font-medium text-xs bg-sage-700 text-white";
       } else if (tab === 'background') {
         document.getElementById('tabBackground').classList.remove('hidden');
-        document.getElementById('tabBgBtn').className = "px-4 py-2 rounded-xl font-medium text-sm bg-sage-700 text-white";
+        document.getElementById('tabBgBtn').className = "px-3 py-1.5 rounded-xl font-medium text-xs bg-sage-700 text-white";
       }
     }
 
