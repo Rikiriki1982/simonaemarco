@@ -802,7 +802,7 @@
               <h4 class="font-bold text-sage-800 text-sm">Frasi, Lista Nozze & IBAN</h4>
               <div class="grid md:grid-cols-2 gap-4">
                 <div>
-                  <label class="block font-semibold mb-1">Citazione Hero principali</label>
+                  <label class="block font-semibold mb-1">Citazione Hero principale</label>
                   <textarea id="cmsHeroQuote" rows="2" class="w-full px-3 py-2 rounded-xl border border-sage-200 bg-white"></textarea>
                 </div>
                 <div>
@@ -821,8 +821,8 @@
             </div>
           </div>
 
-          <button onclick="saveCmsChanges()" class="w-full bg-sage-700 hover:bg-sage-800 text-white font-medium py-3 rounded-xl transition text-xs">
-            💾 Salva e Applica Modifiche Contenuti
+          <button id="cmsSaveBtn" onclick="saveCmsChanges()" class="w-full bg-sage-700 hover:bg-sage-800 text-white font-medium py-3 rounded-xl transition text-xs flex items-center justify-center space-x-2">
+            <span>💾 Salva e Pubblica Modifiche nel Cloud</span>
           </button>
         </div>
 
@@ -927,25 +927,24 @@
   </div>
 
   <script>
-    const GOOGLE_SHEET_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzhofDrWGONjjjrpHlzdfI0mOSpD9ghaaBj2pNvFlqNxrTauVfMfQJCwiPm2Jq29vyQ/exec';
+    const GOOGLE_SHEET_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxOl4dBz-fEJhWvESuKBUMYoQk0CV19FOI9TcqrUfE2eqzpY_dT9Rlgv_q4JIkL6xRw/exec';
     
     let defaultWeddingDate = new Date("2027-06-12T17:00:00").getTime();
 
-    // Impostazioni di default editabili
-    let cmsConfig = JSON.parse(localStorage.getItem('wedding_cms_config')) || {
-      names: 'Simona & Marco',
-      dateIso: '2027-06-12T17:00',
-      dateText: 'Sabato 12 Giugno 2027',
-      timeText: 'Ore 17:00',
-      heroQuote: '"Immersi nella bellezza della natura, vi invitiamo a condividere con noi la gioia del nostro giorno speciale."',
-      locName: 'Ristorante Acquamatta',
-      locAddress: 'Cascina Molino della Raina, 6 - 27020 Semiana (PV)',
-      locMapsUrl: 'https://maps.google.com/?cid=1094651536832372958&g_mp=Cidnb29nbGUubWFwsy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQ',
-      locDesc: "Situato nel cuore della Lomellina a Semiana (PV), il Ristorante Acquamatta offre un'atmosfera unica immersa nella natura, ideale per celebrare il nostro giorno speciale insieme alle persone care.",
-      iban: 'IT00 X000 0000 0000 0000 0000 000',
-      giftOwner: 'Simona & Marco',
-      giftBank: '[Nome Banca]',
-      audioUrl: ''
+    let cmsConfig = {
+      NomiSposi: 'Simona & Marco',
+      DataIso: '2027-06-12T17:00',
+      TestoData: 'Sabato 12 Giugno 2027',
+      Orario: 'Ore 17:00',
+      HeroQuote: '"Immersi nella bellezza della natura, vi invitiamo a condividere con noi la gioia del nostro giorno speciale."',
+      LocName: 'Ristorante Acquamatta',
+      LocAddress: 'Cascina Molino della Raina, 6 - 27020 Semiana (PV)',
+      LocMapsUrl: 'https://maps.google.com/?cid=1094651536832372958&g_mp=Cidnb29nbGUubWFwsy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQ',
+      LocDesc: "Situato nel cuore della Lomellina a Semiana (PV), il Ristorante Acquamatta offre un'atmosfera unica immersa nella natura, ideale per celebrare il nostro giorno speciale insieme alle persone care.",
+      IBAN: 'IT00 X000 0000 0000 0000 0000 000',
+      GiftOwner: 'Simona & Marco',
+      GiftBank: '[Nome Banca]',
+      AudioUrl: ''
     };
 
     let styleConfig = JSON.parse(localStorage.getItem('wedding_style_config')) || {
@@ -978,10 +977,28 @@
       { id: 't3', name: 'Tavolo Lavanda', capacity: 10 }
     ];
 
-    document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('DOMContentLoaded', async () => {
       lucide.createIcons();
-      applyCmsToPage();
       applyStyleToPage();
+      
+      // Caricamento forzato dal cloud ad ogni apertura
+      try {
+        const cloudUrl = `${GOOGLE_SHEET_SCRIPT_URL}?nocache=${Date.now()}`;
+        const response = await fetch(cloudUrl);
+        const remoteConfig = await response.json();
+        if (remoteConfig && !remoteConfig.status) {
+          cmsConfig = Object.assign(cmsConfig, remoteConfig);
+          localStorage.setItem('wedding_cms_config', JSON.stringify(cmsConfig));
+        }
+      } catch (err) {
+        console.warn('Caricamento remoto fallito, uso dati di default:', err);
+        const localCms = localStorage.getItem('wedding_cms_config');
+        if (localCms) {
+          cmsConfig = Object.assign(cmsConfig, JSON.parse(localCms));
+        }
+      }
+
+      applyCmsToPage();
       startCountdown();
       
       if (!localStorage.getItem('wedding_admin_pin')) {
@@ -996,35 +1013,35 @@
     });
 
     function applyCmsToPage() {
-      document.getElementById('docTitle').innerText = `${cmsConfig.names} - Invito di Nozze`;
-      document.getElementById('navInitials').innerText = cmsConfig.names.split('&').map(n => n.trim()[0]).join(' & ');
-      document.getElementById('heroNames').innerHTML = cmsConfig.names.replace('&', '<span class="font-script text-gold text-4xl md:text-6xl font-normal">&</span>');
-      document.getElementById('heroQuote').innerText = cmsConfig.heroQuote;
-      document.getElementById('heroDate').innerText = cmsConfig.dateText;
-      document.getElementById('heroTime').innerText = cmsConfig.timeText;
-      document.getElementById('heroLocationName').innerText = cmsConfig.locName;
-      document.getElementById('programSub').innerText = `${cmsConfig.dateText} • ${cmsConfig.locName}`;
-      
-      document.getElementById('locationTitle').innerText = cmsConfig.locName;
-      document.getElementById('locationDesc').innerText = cmsConfig.locDesc;
-      document.getElementById('locationAddress').innerText = cmsConfig.locAddress;
-      document.getElementById('locationMapsUrl').href = cmsConfig.locMapsUrl;
+      if (cmsConfig.NomiSposi) {
+        document.getElementById('docTitle').innerText = `${cmsConfig.NomiSposi} - Invito di Nozze`;
+        document.getElementById('navInitials').innerText = cmsConfig.NomiSposi.split('&').map(n => n.trim()[0]).join(' & ');
+        document.getElementById('heroNames').innerHTML = cmsConfig.NomiSposi.replace('&', '<span class="font-script text-gold text-4xl md:text-6xl font-normal">&</span>');
+        document.getElementById('footerText').innerText = `${cmsConfig.NomiSposi} • ${cmsConfig.TestoData || ''}`;
+      }
+      if (cmsConfig.HeroQuote) document.getElementById('heroQuote').innerText = cmsConfig.HeroQuote;
+      if (cmsConfig.TestoData) document.getElementById('heroDate').innerText = cmsConfig.TestoData;
+      if (cmsConfig.Orario) document.getElementById('heroTime').innerText = cmsConfig.Orario;
+      if (cmsConfig.LocName) {
+        document.getElementById('heroLocationName').innerText = cmsConfig.LocName;
+        document.getElementById('locationTitle').innerText = cmsConfig.LocName;
+        document.getElementById('footerSubText').innerText = cmsConfig.LocName;
+        document.getElementById('programSub').innerText = `${cmsConfig.TestoData || ''} • ${cmsConfig.LocName}`;
+      }
+      if (cmsConfig.LocDesc) document.getElementById('locationDesc').innerText = cmsConfig.LocDesc;
+      if (cmsConfig.LocAddress) document.getElementById('locationAddress').innerText = cmsConfig.LocAddress;
+      if (cmsConfig.LocMapsUrl) document.getElementById('locationMapsUrl').href = cmsConfig.LocMapsUrl;
+      if (cmsConfig.IBAN) document.getElementById('ibanText').innerText = cmsConfig.IBAN;
+      if (cmsConfig.GiftOwner) document.getElementById('giftOwner').innerText = cmsConfig.GiftOwner;
+      if (cmsConfig.GiftBank) document.getElementById('giftBank').innerText = cmsConfig.GiftBank;
 
-      document.getElementById('ibanText').innerText = cmsConfig.iban;
-      document.getElementById('giftOwner').innerText = cmsConfig.giftOwner;
-      document.getElementById('giftBank').innerText = cmsConfig.giftBank;
-
-      document.getElementById('footerText').innerText = `${cmsConfig.names} • ${cmsConfig.dateText}`;
-      document.getElementById('footerSubText').innerText = cmsConfig.locName;
-
-      if (cmsConfig.dateIso) {
-        defaultWeddingDate = new Date(cmsConfig.dateIso).getTime();
+      if (cmsConfig.DataIso) {
+        defaultWeddingDate = new Date(cmsConfig.DataIso).getTime();
       }
 
-      // Audio
-      if (cmsConfig.audioUrl) {
+      if (cmsConfig.AudioUrl) {
         const player = document.getElementById('bgAudioPlayer');
-        player.src = cmsConfig.audioUrl;
+        player.src = cmsConfig.AudioUrl;
         document.getElementById('audioToggleBtn').classList.remove('hidden');
       }
     }
@@ -1054,23 +1071,45 @@
       lucide.createIcons();
     }
 
-    function saveCmsChanges() {
-      cmsConfig.names = document.getElementById('cmsNamesInput').value.trim();
-      cmsConfig.dateIso = document.getElementById('cmsDateInput').value;
-      cmsConfig.dateText = document.getElementById('cmsDateText').value.trim();
-      cmsConfig.timeText = document.getElementById('cmsTimeText').value.trim();
-      cmsConfig.heroQuote = document.getElementById('cmsHeroQuote').value.trim();
-      cmsConfig.locName = document.getElementById('cmsLocName').value.trim();
-      cmsConfig.locAddress = document.getElementById('cmsLocAddress').value.trim();
-      cmsConfig.locMapsUrl = document.getElementById('cmsLocMapsUrl').value.trim();
-      cmsConfig.locDesc = document.getElementById('cmsLocDesc').value.trim();
-      cmsConfig.iban = document.getElementById('cmsIban').value.trim();
-      cmsConfig.giftOwner = document.getElementById('cmsGiftOwner').value.trim();
-      cmsConfig.giftBank = document.getElementById('cmsGiftBank').value.trim();
+    async function saveCmsChanges() {
+      const saveBtn = document.getElementById('cmsSaveBtn');
+      saveBtn.disabled = true;
+      saveBtn.innerText = "Sincronizzazione Cloud in corso...";
+
+      cmsConfig.NomiSposi = document.getElementById('cmsNamesInput').value.trim();
+      cmsConfig.DataIso = document.getElementById('cmsDateInput').value;
+      cmsConfig.TestoData = document.getElementById('cmsDateText').value.trim();
+      cmsConfig.Orario = document.getElementById('cmsTimeText').value.trim();
+      cmsConfig.HeroQuote = document.getElementById('cmsHeroQuote').value.trim();
+      cmsConfig.LocName = document.getElementById('cmsLocName').value.trim();
+      cmsConfig.LocAddress = document.getElementById('cmsLocAddress').value.trim();
+      cmsConfig.LocMapsUrl = document.getElementById('cmsLocMapsUrl').value.trim();
+      cmsConfig.LocDesc = document.getElementById('cmsLocDesc').value.trim();
+      cmsConfig.IBAN = document.getElementById('cmsIban').value.trim();
+      cmsConfig.GiftOwner = document.getElementById('cmsGiftOwner').value.trim();
+      cmsConfig.GiftBank = document.getElementById('cmsGiftBank').value.trim();
 
       localStorage.setItem('wedding_cms_config', JSON.stringify(cmsConfig));
       applyCmsToPage();
-      alert('Contenuti aggiornati con successo!');
+
+      try {
+        await fetch(GOOGLE_SHEET_SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'updateConfig',
+            config: cmsConfig
+          })
+        });
+        alert('Contenuti salvati nel cloud con successo! Saranno visibili a tutti gli invitati.');
+      } catch (err) {
+        console.error(err);
+        alert('Errore durante il salvataggio in cloud. Verificare la connessione.');
+      }
+
+      saveBtn.disabled = false;
+      saveBtn.innerText = "💾 Salva e Pubblica Modifiche nel Cloud";
     }
 
     function saveStyleChanges() {
@@ -1091,7 +1130,7 @@
     }
 
     function saveAudioConfig() {
-      cmsConfig.audioUrl = document.getElementById('audioUrlInput').value.trim();
+      cmsConfig.AudioUrl = document.getElementById('audioUrlInput').value.trim();
       localStorage.setItem('wedding_cms_config', JSON.stringify(cmsConfig));
       applyCmsToPage();
       alert('Configurazione audio salvata!');
@@ -1252,21 +1291,7 @@
           method: 'POST',
           mode: 'no-cors',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            name: newEntry.name,
-            contact: newEntry.contact,
-            attendance: newEntry.attendance,
-            hasPartner: newEntry.hasPartner,
-            partnerName: newEntry.partnerName,
-            hasKids: newEntry.hasKids,
-            kidsCount: newEntry.kidsCount,
-            highChairCount: newEntry.highChairCount,
-            kidsNotes: newEntry.kidsNotes,
-            dietaryOptions: [formattedDietarySummary],
-            dietNotes: '',
-            song: newEntry.song,
-            message: newEntry.message
-          })
+          body: JSON.stringify(newEntry)
         });
       } catch (err) {
         console.error('Errore invio Google Sheet:', err);
@@ -1317,20 +1342,19 @@
         document.getElementById('pinView').classList.add('hidden');
         document.getElementById('adminDashboard').classList.remove('hidden');
         
-        // Popola i campi del form CMS
-        document.getElementById('cmsNamesInput').value = cmsConfig.names;
-        document.getElementById('cmsDateInput').value = cmsConfig.dateIso || '';
-        document.getElementById('cmsDateText').value = cmsConfig.dateText;
-        document.getElementById('cmsTimeText').value = cmsConfig.timeText;
-        document.getElementById('cmsHeroQuote').value = cmsConfig.heroQuote;
-        document.getElementById('cmsLocName').value = cmsConfig.locName;
-        document.getElementById('cmsLocAddress').value = cmsConfig.locAddress;
-        document.getElementById('cmsLocMapsUrl').value = cmsConfig.locMapsUrl;
-        document.getElementById('cmsLocDesc').value = cmsConfig.locDesc;
-        document.getElementById('cmsIban').value = cmsConfig.iban;
-        document.getElementById('cmsGiftOwner').value = cmsConfig.giftOwner;
-        document.getElementById('cmsGiftBank').value = cmsConfig.giftBank;
-        document.getElementById('audioUrlInput').value = cmsConfig.audioUrl || '';
+        document.getElementById('cmsNamesInput').value = cmsConfig.NomiSposi || '';
+        document.getElementById('cmsDateInput').value = cmsConfig.DataIso || '';
+        document.getElementById('cmsDateText').value = cmsConfig.TestoData || '';
+        document.getElementById('cmsTimeText').value = cmsConfig.Orario || '';
+        document.getElementById('cmsHeroQuote').value = cmsConfig.HeroQuote || '';
+        document.getElementById('cmsLocName').value = cmsConfig.LocName || '';
+        document.getElementById('cmsLocAddress').value = cmsConfig.LocAddress || '';
+        document.getElementById('cmsLocMapsUrl').value = cmsConfig.LocMapsUrl || '';
+        document.getElementById('cmsLocDesc').value = cmsConfig.LocDesc || '';
+        document.getElementById('cmsIban').value = cmsConfig.IBAN || '';
+        document.getElementById('cmsGiftOwner').value = cmsConfig.GiftOwner || '';
+        document.getElementById('cmsGiftBank').value = cmsConfig.GiftBank || '';
+        document.getElementById('audioUrlInput').value = cmsConfig.AudioUrl || '';
 
         renderAdminData();
       } else {
