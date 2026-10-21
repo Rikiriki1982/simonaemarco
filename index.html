@@ -927,7 +927,7 @@
   </div>
 
   <script>
-    const GOOGLE_SHEET_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxv3d5b3O72EMbMhrVNcnzxS3DwGLyU74kc8rp6fNmjYc1lld-RersPkgEA-kfahQkk/exec';
+    const GOOGLE_SHEET_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzl2eQBEIE9GDFIpwxVYOQi_aIm003o5TjblFRcGvl3ZTvF5z81nAWyRHC-uDBGUTJ9/exec';
     
     let defaultWeddingDate = new Date("2027-06-12T17:00:00").getTime();
 
@@ -1092,22 +1092,42 @@
       applyCmsToPage();
 
       try {
-        const payload = JSON.stringify({
-          action: 'updateConfig',
-          config: cmsConfig
-        });
+        // Invio tramite Form nascosto + iframe per bypassare totalmente il blocco CORS del browser
+        const form = document.createElement('form');
+        form.action = GOOGLE_SHEET_SCRIPT_URL;
+        form.method = 'POST';
+        form.target = 'hidden_iframe';
+        form.style.display = 'none';
 
-        await fetch(GOOGLE_SHEET_SCRIPT_URL, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: payload
-        });
+        let iframe = document.getElementById('hidden_iframe');
+        if (!iframe) {
+          iframe = document.createElement('iframe');
+          iframe.name = 'hidden_iframe';
+          iframe.id = 'hidden_iframe';
+          iframe.style.display = 'none';
+          document.body.appendChild(iframe);
+        }
 
-        alert('Contenuti salvati e pubblicati online con successo!');
+        const actionInput = document.createElement('input');
+        actionInput.type = 'hidden';
+        actionInput.name = 'action';
+        actionInput.value = 'updateConfig';
+        form.appendChild(actionInput);
+
+        const configInput = document.createElement('input');
+        configInput.type = 'hidden';
+        configInput.name = 'config';
+        configInput.value = JSON.stringify(cmsConfig);
+        form.appendChild(configInput);
+
+        document.body.appendChild(form);
+        form.submit();
+        document.body.removeChild(form);
+
+        alert('Contenuti salvati e pubblicati online con successo! 🎉');
       } catch (err) {
         console.error(err);
-        alert('Errore di connessione durante il salvataggio in cloud.');
+        alert('Errore durante l\'invio al cloud.');
       }
 
       saveBtn.disabled = false;
