@@ -1098,16 +1098,38 @@
     }
 
     function toggleAudioPlay() {
-      const player = document.getElementById('bgAudioPlayer');
-      const icon = document.getElementById('audioIcon');
-      if (player.paused) {
-        player.play();
-        icon.setAttribute('data-lucide', 'volume-2');
-      } else {
-        player.pause();
-        icon.setAttribute('data-lucide', 'volume-x');
-      }
-      lucide.createIcons();
+  let ytIframe = document.getElementById('ytAudioFrame');
+  const icon = document.getElementById('audioIcon');
+  
+  if (!ytIframe) {
+    let videoId = cmsConfig.AudioUrl || '';
+    if (!videoId) {
+      alert("Nessun brano audio inserito nell'Area Sposi!");
+      return;
+    }
+
+    // Estrae l'ID dal link di YouTube
+    if (videoId.includes('v=')) {
+      videoId = videoId.split('v=')[1].split('&')[0];
+    } else if (videoId.includes('youtu.be/')) {
+      videoId = videoId.split('youtu.be/')[1].split('?')[0];
+    }
+    
+    // Crea il lettore YouTube invisibile in sottofondo
+    ytIframe = document.createElement('iframe');
+    ytIframe.id = 'ytAudioFrame';
+    ytIframe.style.display = 'none';
+    ytIframe.allow = 'autoplay';
+    ytIframe.src = `https://www.youtube.com/embed/${videoId}?enablejsapi=1&autoplay=1&loop=1`;
+    document.body.appendChild(ytIframe);
+    
+    if (icon) icon.setAttribute('data-lucide', 'volume-2');
+  } else {
+    // Spegne la musica
+    ytIframe.remove();
+    if (icon) icon.setAttribute('data-lucide', 'volume-x');
+  }
+  lucide.createIcons();
     }
 
     async function saveCmsChanges() {
