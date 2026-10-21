@@ -76,7 +76,7 @@
 
 <body id="pageBody" class="watercolor-bg text-gray-800 font-sans min-h-screen flex flex-col justify-between selection:bg-sage-200 selection:text-sage-900">
 
-  <!-- Audio Player Sottofondo -->
+  <!-- Audio Player MP3 Sottofondo -->
   <audio id="bgAudioPlayer" loop class="hidden"></audio>
 
   <!-- Navigation Bar -->
@@ -96,7 +96,7 @@
         <a href="#rsvp" class="bg-sage-600 hover:bg-sage-700 text-white px-3 py-1.5 rounded-full shadow-sm transition">RSVP</a>
         
         <!-- Toggle Audio Button -->
-        <button id="audioToggleBtn" onclick="toggleAudioPlay()" title="Musica di sottofondo" class="hidden p-1.5 text-sage-600 hover:text-sage-900 transition">
+        <button id="audioToggleBtn" onclick="toggleAudioPlay()" title="Musica di sottofondo" class="p-1.5 text-sage-600 hover:text-sage-900 transition">
           <i id="audioIcon" data-lucide="volume-x" class="w-4 h-4"></i>
         </button>
 
@@ -567,7 +567,7 @@
     <div class="max-w-4xl mx-auto px-4 space-y-2">
       <div class="flex justify-center items-center space-x-2 text-gold">
         <i data-lucide="sparkles" class="w-4 h-4"></i>
-        <span id="footerText" class="font-serif italic font-bold text-sage-800">Simona & Marco • 12 Giugno 2027</span>
+        <span id="footerText" class="font-serif italic font-bold text-sage-800">Simona & Marco • Sabato 12 Giugno 2027</span>
         <i data-lucide="leaf" class="w-4 h-4"></i>
       </div>
       <p id="footerSubText">Ristorante Acquamatta • Semiana (PV)</p>
@@ -931,10 +931,10 @@
                 <i data-lucide="music" class="w-6 h-6"></i>
               </div>
               <h3 class="font-serif font-bold text-sage-900 text-lg">Musica di Sottofondo</h3>
-              <p class="text-xs text-sage-600">Inserisci l'URL di un file audio MP3 online per consentire agli ospiti di riprodurlo.</p>
+              <p class="text-xs text-sage-600">Inserisci l'URL di un video YouTube o di un file MP3 per la musica di sottofondo.</p>
               
               <div class="space-y-3 pt-2 text-left">
-                <input type="text" id="audioUrlInput" placeholder="https://esempio.com/branaudio.mp3" class="w-full px-3 py-2 text-xs rounded-xl border border-sage-200 bg-white">
+                <input type="text" id="audioUrlInput" placeholder="Es. https://www.youtube.com/watch?v=... oppure canzone.mp3" class="w-full px-3 py-2 text-xs rounded-xl border border-sage-200 bg-white">
                 <button onclick="saveAudioConfig()" class="w-full bg-sage-700 hover:bg-sage-800 text-white text-xs py-2.5 rounded-xl font-medium transition">
                   Salva Brano Audio
                 </button>
@@ -1037,20 +1037,24 @@
       }
     });
 
+    // Funzione helper per evitare qualsiasi visualizzazione di stringhe ISO grezze (es. 2027-06-22T22:00:00.000Z)
+    function formatDateString(str) {
+      if (!str || str.includes('T') || str.includes('Z')) {
+        return 'Sabato 12 Giugno 2027';
+      }
+      return str;
+    }
+
     function applyCmsToPage() {
+      const displayDate = formatDateString(cmsConfig.TestoData);
+
       if (cmsConfig.NomiSposi) {
         document.getElementById('docTitle').innerText = `${cmsConfig.NomiSposi} - Invito di Nozze`;
         document.getElementById('navInitials').innerText = cmsConfig.NomiSposi.split('&').map(n => n.trim()[0]).join(' & ');
         document.getElementById('heroNames').innerHTML = cmsConfig.NomiSposi.replace('&', '<span class="font-script text-gold text-4xl md:text-6xl font-normal">&</span>');
-        document.getElementById('footerText').innerText = `${cmsConfig.NomiSposi} • ${cmsConfig.TestoData || ''}`;
+        document.getElementById('footerText').innerText = `${cmsConfig.NomiSposi} • ${displayDate}`;
       }
       if (cmsConfig.HeroQuote) document.getElementById('heroQuote').innerText = cmsConfig.HeroQuote;
-      
-      // Controllo di sicurezza: se TestoData è vuoto o contiene una stringa ISO grezza, usiamo un testo leggibile
-      let displayDate = cmsConfig.TestoData;
-      if (!displayDate || displayDate.includes('T') || displayDate.includes('Z')) {
-        displayDate = 'Sabato 12 Giugno 2027';
-      }
 
       document.getElementById('heroDate').innerText = displayDate;
       document.getElementById('programSub').innerText = `${displayDate} • ${cmsConfig.LocName || 'Ristorante Acquamatta'}`;
@@ -1077,12 +1081,6 @@
       if (cmsConfig.DataIso) {
         defaultWeddingDate = new Date(cmsConfig.DataIso).getTime();
       }
-
-      if (cmsConfig.AudioUrl) {
-        const player = document.getElementById('bgAudioPlayer');
-        player.src = cmsConfig.AudioUrl;
-        document.getElementById('audioToggleBtn').classList.remove('hidden');
-      }
     }
 
     function applyStyleToPage() {
@@ -1097,39 +1095,54 @@
       `;
     }
 
+    // Gestione universale dell'audio: supporta sia file MP3 che Link YouTube
     function toggleAudioPlay() {
-  let ytIframe = document.getElementById('ytAudioFrame');
-  const icon = document.getElementById('audioIcon');
-  
-  if (!ytIframe) {
-    let videoId = cmsConfig.AudioUrl || '';
-    if (!videoId) {
-      alert("Nessun brano audio inserito nell'Area Sposi!");
-      return;
-    }
+      const icon = document.getElementById('audioIcon');
+      const audioUrl = cmsConfig.AudioUrl || '';
 
-    // Estrae l'ID dal link di YouTube
-    if (videoId.includes('v=')) {
-      videoId = videoId.split('v=')[1].split('&')[0];
-    } else if (videoId.includes('youtu.be/')) {
-      videoId = videoId.split('youtu.be/')[1].split('?')[0];
-    }
-    
-    // Crea il lettore YouTube invisibile in sottofondo
-    ytIframe = document.createElement('iframe');
-    ytIframe.id = 'ytAudioFrame';
-    ytIframe.style.display = 'none';
-    ytIframe.allow = 'autoplay';
-    ytIframe.src = `https://www.youtube.com/embed/${videoId}?enablejsapi=1&autoplay=1&loop=1`;
-    document.body.appendChild(ytIframe);
-    
-    if (icon) icon.setAttribute('data-lucide', 'volume-2');
-  } else {
-    // Spegne la musica
-    ytIframe.remove();
-    if (icon) icon.setAttribute('data-lucide', 'volume-x');
-  }
-  lucide.createIcons();
+      if (!audioUrl) {
+        alert("Nessun brano o link audio inserito nell'Area Sposi!");
+        return;
+      }
+
+      // Se il link inserito è di YouTube
+      if (audioUrl.includes('youtube.com') || audioUrl.includes('youtu.be')) {
+        let ytIframe = document.getElementById('ytAudioFrame');
+        if (!ytIframe) {
+          let videoId = audioUrl;
+          if (videoId.includes('v=')) {
+            videoId = videoId.split('v=')[1].split('&')[0];
+          } else if (videoId.includes('youtu.be/')) {
+            videoId = videoId.split('youtu.be/')[1].split('?')[0];
+          }
+
+          ytIframe = document.createElement('iframe');
+          ytIframe.id = 'ytAudioFrame';
+          ytIframe.style.display = 'none';
+          ytIframe.allow = 'autoplay';
+          ytIframe.src = `https://www.youtube.com/embed/${videoId}?enablejsapi=1&autoplay=1&loop=1`;
+          document.body.appendChild(ytIframe);
+          if (icon) icon.setAttribute('data-lucide', 'volume-2');
+        } else {
+          ytIframe.remove();
+          if (icon) icon.setAttribute('data-lucide', 'volume-x');
+        }
+      } else {
+        // Altrimenti trattalo come file MP3 standard
+        const player = document.getElementById('bgAudioPlayer');
+        if (player.src !== audioUrl) {
+          player.src = audioUrl;
+        }
+
+        if (player.paused) {
+          player.play();
+          if (icon) icon.setAttribute('data-lucide', 'volume-2');
+        } else {
+          player.pause();
+          if (icon) icon.setAttribute('data-lucide', 'volume-x');
+        }
+      }
+      lucide.createIcons();
     }
 
     async function saveCmsChanges() {
@@ -1139,7 +1152,7 @@
 
       cmsConfig.NomiSposi = document.getElementById('cmsNamesInput').value.trim();
       cmsConfig.DataIso = document.getElementById('cmsDateInput').value;
-      cmsConfig.TestoData = document.getElementById('cmsDateText').value.trim();
+      cmsConfig.TestoData = formatDateString(document.getElementById('cmsDateText').value.trim());
       cmsConfig.Orario = document.getElementById('cmsTimeText').value.trim();
       cmsConfig.ProgTime1 = document.getElementById('cmsProgTime1').value.trim();
       cmsConfig.ProgTime2 = document.getElementById('cmsProgTime2').value.trim();
