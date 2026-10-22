@@ -131,15 +131,11 @@
         "Immersi nella bellezza della natura, vi invitiamo a condividere con noi la gioia del nostro giorno speciale."
       </p>
 
+      <!-- UNICA DATA ED ORARIO CORRISPONDENTE AL COUNTDOWN -->
       <div class="inline-flex flex-col sm:flex-row items-center justify-center gap-4 bg-white/90 border border-gold/30 rounded-2xl p-4 shadow-md mb-10">
         <div class="flex items-center space-x-2 text-sage-800 font-medium">
           <i data-lucide="calendar" class="w-5 h-5 text-gold"></i>
-          <span id="heroDate">Sabato 12 Giugno 2027</span>
-        </div>
-        <span class="hidden sm:inline text-sage-300">•</span>
-        <div class="flex items-center space-x-2 text-sage-800 font-medium">
-          <i data-lucide="clock" class="w-5 h-5 text-gold"></i>
-          <span id="heroTime">Ore 17:00</span>
+          <span id="heroDate">Sabato 12 Giugno 2027 • Ore 17:00</span>
         </div>
         <span class="hidden sm:inline text-sage-300">•</span>
         <div class="flex items-center space-x-2 text-sage-800 font-medium">
@@ -753,7 +749,7 @@
           </div>
         </div>
 
-        <!-- TAB 4: CMS EDITABILE IN AUTONOMIA (INFO, DATE, ORARI, FAQ, CONTATTI) -->
+        <!-- TAB 4: CMS EDITABILE IN AUTONOMIA -->
         <div id="tabCms" class="hidden space-y-6">
           <h3 class="font-serif font-bold text-sage-900 text-lg border-b border-sage-200 pb-2">Editore Contenuti & Informazioni</h3>
           
@@ -769,12 +765,8 @@
                 <input type="datetime-local" id="cmsDateInput" class="w-full px-3 py-2 rounded-xl border border-sage-200 bg-white">
               </div>
               <div>
-                <label class="block font-semibold mb-1">Data Formattata (es. Sabato 12 Giugno 2027)</label>
+                <label class="block font-semibold mb-1">Data e Orario Visualizzati (es. Sabato 12 Giugno 2027 • Ore 17:00)</label>
                 <input type="text" id="cmsDateText" class="w-full px-3 py-2 rounded-xl border border-sage-200 bg-white">
-              </div>
-              <div>
-                <label class="block font-semibold mb-1">Orario di Inizio Generale (es. Ore 17:00)</label>
-                <input type="text" id="cmsTimeText" class="w-full px-3 py-2 rounded-xl border border-sage-200 bg-white">
               </div>
             </div>
 
@@ -820,7 +812,6 @@
               </div>
             </div>
 
-            <!-- NUOVA SEZIONE FAQ & DRESS CODE EDITABILE -->
             <div class="bg-sage-50 p-4 rounded-2xl border border-sage-200 space-y-3 text-xs md:col-span-2">
               <h4 class="font-bold text-sage-800 text-sm">FAQ & Contatti d'Emergenza</h4>
               <div class="space-y-3">
@@ -997,8 +988,7 @@
     let cmsConfig = {
       NomiSposi: 'Simona & Marco',
       DataIso: '2027-06-12T17:00',
-      TestoData: 'Sabato 12 Giugno 2027',
-      Orario: 'Ore 17:00',
+      TestoData: 'Sabato 12 Giugno 2027 • Ore 17:00',
       ProgTime1: 'Ore 17:00',
       ProgTime2: 'Ore 18:30',
       ProgTime3: 'Ore 20:00',
@@ -1093,7 +1083,7 @@
 
     function formatDateString(str) {
       if (!str || str.includes('T') || str.includes('Z')) {
-        return 'Sabato 12 Giugno 2027';
+        return 'Sabato 12 Giugno 2027 • Ore 17:00';
       }
       return str;
     }
@@ -1112,8 +1102,6 @@
       document.getElementById('heroDate').innerText = displayDate;
       document.getElementById('programSub').innerText = `${displayDate} • ${cmsConfig.LocName || 'Ristorante Acquamatta'}`;
 
-      if (cmsConfig.Orario) document.getElementById('heroTime').innerText = cmsConfig.Orario;
-      
       if (cmsConfig.ProgTime1) document.getElementById('progTime1').innerText = cmsConfig.ProgTime1;
       if (cmsConfig.ProgTime2) document.getElementById('progTime2').innerText = cmsConfig.ProgTime2;
       if (cmsConfig.ProgTime3) document.getElementById('progTime3').innerText = cmsConfig.ProgTime3;
@@ -1210,7 +1198,6 @@
       cmsConfig.NomiSposi = document.getElementById('cmsNamesInput').value.trim();
       cmsConfig.DataIso = document.getElementById('cmsDateInput').value;
       cmsConfig.TestoData = formatDateString(document.getElementById('cmsDateText').value.trim());
-      cmsConfig.Orario = document.getElementById('cmsTimeText').value.trim();
       cmsConfig.ProgTime1 = document.getElementById('cmsProgTime1').value.trim();
       cmsConfig.ProgTime2 = document.getElementById('cmsProgTime2').value.trim();
       cmsConfig.ProgTime3 = document.getElementById('cmsProgTime3').value.trim();
@@ -1551,7 +1538,6 @@
         document.getElementById('cmsNamesInput').value = cmsConfig.NomiSposi || '';
         document.getElementById('cmsDateInput').value = cmsConfig.DataIso || '';
         document.getElementById('cmsDateText').value = cmsConfig.TestoData || '';
-        document.getElementById('cmsTimeText').value = cmsConfig.Orario || '';
         document.getElementById('cmsProgTime1').value = cmsConfig.ProgTime1 || 'Ore 17:00';
         document.getElementById('cmsProgTime2').value = cmsConfig.ProgTime2 || 'Ore 18:30';
         document.getElementById('cmsProgTime3').value = cmsConfig.ProgTime3 || 'Ore 20:00';
