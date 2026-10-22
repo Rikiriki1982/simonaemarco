@@ -5,10 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title id="docTitle">Simona & Marco - Invito di Nozze</title>
   
+  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Montserrat:wght@300;400;500;600;700&family=Sacramento&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Great+Vibes&family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons & Canvas Confetti -->
   <script src="https://unpkg.com/lucide@latest"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
@@ -17,8 +22,23 @@
       theme: {
         extend: {
           colors: {
-            sage: { 50: '#f4f7f4', 100: '#e3eae3', 200: '#c7d6c7', 300: '#a3bba3', 400: '#7c9d7c', 500: '#5c7f5c', 600: '#476547', 700: '#395039', 800: '#2f412f', 900: '#283728' },
-            gold: { DEFAULT: '#d4af37', light: '#f3e5ab', dark: '#aa8c2c' }
+            sage: {
+              50: '#f4f7f4',
+              100: '#e3eae3',
+              200: '#c7d6c7',
+              300: '#a3bba3',
+              400: '#7c9d7c',
+              500: '#5c7f5c',
+              600: '#476547',
+              700: '#395039',
+              800: '#2f412f',
+              900: '#283728'
+            },
+            gold: {
+              DEFAULT: '#d4af37',
+              light: '#f3e5ab',
+              dark: '#aa8c2c'
+            }
           },
           fontFamily: {
             serif: ['Cormorant Garamond', 'serif'],
@@ -36,25 +56,37 @@
   <style id="customDynamicStyles">
     .watercolor-bg {
       background-color: #fcfbf7;
-      background-image: radial-gradient(circle at 10% 20%, rgba(139, 168, 136, 0.12) 0%, transparent 40%), radial-gradient(circle at 90% 80%, rgba(212, 175, 55, 0.1) 0%, transparent 40%), radial-gradient(circle at 50% 50%, rgba(199, 214, 199, 0.15) 0%, transparent 60%);
-      background-size: cover; background-position: center; background-attachment: fixed;
+      background-image: 
+        radial-gradient(circle at 10% 20%, rgba(139, 168, 136, 0.12) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(212, 175, 55, 0.1) 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(199, 214, 199, 0.15) 0%, transparent 60%);
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
     }
+
     .card-watercolor {
-      background: rgba(255, 255, 255, 0.88); backdrop-filter: blur(8px);
-      border: 1px solid rgba(212, 175, 55, 0.25); box-shadow: 0 10px 30px -5px rgba(60, 80, 60, 0.08);
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(212, 175, 55, 0.25);
+      box-shadow: 0 10px 30px -5px rgba(60, 80, 60, 0.08);
     }
   </style>
 </head>
 
 <body id="pageBody" class="watercolor-bg text-gray-800 font-sans min-h-screen flex flex-col justify-between selection:bg-sage-200 selection:text-sage-900">
+
+  <!-- Audio Player MP3 Sottofondo -->
   <audio id="bgAudioPlayer" loop class="hidden"></audio>
 
+  <!-- Navigation Bar -->
   <header class="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-sage-100 shadow-sm">
     <div class="max-w-5xl mx-auto px-4 py-3 flex justify-between items-center">
       <div class="flex items-center space-x-2">
         <i data-lucide="heart" class="w-5 h-5 text-gold fill-gold"></i>
         <span id="navInitials" class="font-serif text-xl font-bold tracking-wider text-sage-800">S & M</span>
       </div>
+      
       <nav class="flex items-center space-x-2 md:space-x-4 text-xs md:text-sm font-medium">
         <a href="#dettagli" class="text-sage-700 hover:text-sage-900 transition">Evento</a>
         <a href="#location" class="text-sage-700 hover:text-sage-900 transition">Dove</a>
@@ -62,9 +94,12 @@
         <a href="#regalo" class="text-sage-700 hover:text-sage-900 transition hidden sm:inline">Lista Nozze</a>
         <a href="#faq" class="text-sage-700 hover:text-sage-900 transition hidden sm:inline">FAQ</a>
         <a href="#rsvp" class="bg-sage-600 hover:bg-sage-700 text-white px-3 py-1.5 rounded-full shadow-sm transition">RSVP</a>
+        
+        <!-- Toggle Audio Button -->
         <button id="audioToggleBtn" onclick="toggleAudioPlay()" title="Musica di sottofondo" class="p-1.5 text-sage-600 hover:text-sage-900 transition">
           <i id="audioIcon" data-lucide="volume-x" class="w-4 h-4"></i>
         </button>
+
         <button onclick="toggleAdminModal()" title="Area Sposi" class="p-1.5 text-sage-300 hover:text-sage-600 transition">
           <i data-lucide="key" class="w-3.5 h-3.5"></i>
         </button>
@@ -72,405 +107,1777 @@
     </div>
   </header>
 
+  <!-- Hero Section -->
   <section class="relative pt-12 pb-16 px-4 text-center overflow-hidden">
     <div class="max-w-3xl mx-auto relative z-10">
+      
       <div class="flex justify-center items-center space-x-3 mb-4">
         <span class="h-px w-12 bg-gold/50"></span>
-        <div class="flex items-center space-x-2 text-sage-600"><i data-lucide="leaf" class="w-4 h-4"></i><i data-lucide="sparkles" class="w-5 h-5 text-gold"></i><i data-lucide="leaf" class="w-4 h-4"></i></div>
+        <div class="flex items-center space-x-2 text-sage-600">
+          <i data-lucide="leaf" class="w-4 h-4"></i>
+          <i data-lucide="sparkles" class="w-5 h-5 text-gold"></i>
+          <i data-lucide="leaf" class="w-4 h-4"></i>
+        </div>
         <span class="h-px w-12 bg-gold/50"></span>
       </div>
+
       <p class="text-sm uppercase tracking-widest text-sage-600 font-semibold mb-2">Ci Sposiamo!</p>
-      <h1 id="heroNames" class="font-serif text-5xl md:text-7xl text-sage-900 font-bold mb-4 tracking-tight">Simona <span class="font-script text-gold text-4xl md:text-6xl font-normal">&</span> Marco</h1>
-      <p id="heroQuote" class="font-serif italic text-lg md:text-2xl text-sage-700 mb-8 max-w-xl mx-auto">"Immersi nella bellezza della natura, vi invitiamo a condividere con noi la gioia del nostro giorno speciale."</p>
+      
+      <h1 id="heroNames" class="font-serif text-5xl md:text-7xl text-sage-900 font-bold mb-4 tracking-tight">
+        Simona <span class="font-script text-gold text-4xl md:text-6xl font-normal">&</span> Marco
+      </h1>
+
+      <p id="heroQuote" class="font-serif italic text-lg md:text-2xl text-sage-700 mb-8 max-w-xl mx-auto">
+        "Immersi nella bellezza della natura, vi invitiamo a condividere con noi la gioia del nostro giorno speciale."
+      </p>
 
       <div class="inline-flex flex-col sm:flex-row items-center justify-center gap-4 bg-white/90 border border-gold/30 rounded-2xl p-4 shadow-md mb-10">
-        <div class="flex items-center space-x-2 text-sage-800 font-medium"><i data-lucide="calendar" class="w-5 h-5 text-gold"></i><span id="heroDate">Sabato 12 Giugno 2027</span></div>
+        <div class="flex items-center space-x-2 text-sage-800 font-medium">
+          <i data-lucide="calendar" class="w-5 h-5 text-gold"></i>
+          <span id="heroDate">Sabato 12 Giugno 2027</span>
+        </div>
         <span class="hidden sm:inline text-sage-300">•</span>
-        <div class="flex items-center space-x-2 text-sage-800 font-medium"><i data-lucide="clock" class="w-5 h-5 text-gold"></i><span id="heroTime">Ore 17:00</span></div>
+        <div class="flex items-center space-x-2 text-sage-800 font-medium">
+          <i data-lucide="clock" class="w-5 h-5 text-gold"></i>
+          <span id="heroTime">Ore 17:00</span>
+        </div>
         <span class="hidden sm:inline text-sage-300">•</span>
-        <div class="flex items-center space-x-2 text-sage-800 font-medium"><i data-lucide="map-pin" class="w-5 h-5 text-gold"></i><span id="heroLocationName">Ristorante Acquamatta (Semiana, PV)</span></div>
+        <div class="flex items-center space-x-2 text-sage-800 font-medium">
+          <i data-lucide="map-pin" class="w-5 h-5 text-gold"></i>
+          <span id="heroLocationName">Ristorante Acquamatta (Semiana, PV)</span>
+        </div>
       </div>
 
+      <!-- Countdown -->
       <div id="countdown" class="grid grid-cols-4 gap-2 max-w-xs mx-auto mb-8">
-        <div class="bg-white/80 p-2 rounded-xl border border-sage-200 shadow-sm text-center"><span id="days" class="block font-serif text-2xl font-bold text-sage-800">--</span><span class="text-[10px] uppercase text-sage-500 font-medium">Giorni</span></div>
-        <div class="bg-white/80 p-2 rounded-xl border border-sage-200 shadow-sm text-center"><span id="hours" class="block font-serif text-2xl font-bold text-sage-800">--</span><span class="text-[10px] uppercase text-sage-500 font-medium">Ore</span></div>
-        <div class="bg-white/80 p-2 rounded-xl border border-sage-200 shadow-sm text-center"><span id="minutes" class="block font-serif text-2xl font-bold text-sage-800">--</span><span class="text-[10px] uppercase text-sage-500 font-medium">Minuti</span></div>
-        <div class="bg-white/80 p-2 rounded-xl border border-sage-200 shadow-sm text-center"><span id="seconds" class="block font-serif text-2xl font-bold text-sage-800">--</span><span class="text-[10px] uppercase text-sage-500 font-medium">Secondi</span></div>
+        <div class="bg-white/80 p-2 rounded-xl border border-sage-200 shadow-sm text-center">
+          <span id="days" class="block font-serif text-2xl font-bold text-sage-800">--</span>
+          <span class="text-[10px] uppercase text-sage-500 font-medium">Giorni</span>
+        </div>
+        <div class="bg-white/80 p-2 rounded-xl border border-sage-200 shadow-sm text-center">
+          <span id="hours" class="block font-serif text-2xl font-bold text-sage-800">--</span>
+          <span class="text-[10px] uppercase text-sage-500 font-medium">Ore</span>
+        </div>
+        <div class="bg-white/80 p-2 rounded-xl border border-sage-200 shadow-sm text-center">
+          <span id="minutes" class="block font-serif text-2xl font-bold text-sage-800">--</span>
+          <span class="text-[10px] uppercase text-sage-500 font-medium">Minuti</span>
+        </div>
+        <div class="bg-white/80 p-2 rounded-xl border border-sage-200 shadow-sm text-center">
+          <span id="seconds" class="block font-serif text-2xl font-bold text-sage-800">--</span>
+          <span class="text-[10px] uppercase text-sage-500 font-medium">Secondi</span>
+        </div>
       </div>
 
-      <a href="#rsvp" class="inline-flex items-center space-x-2 bg-gold hover:bg-gold-dark text-white font-medium px-8 py-3.5 rounded-full shadow-lg transition transform hover:-translate-y-0.5">
-        <i data-lucide="check-circle-2" class="w-5 h-5"></i><span>Conferma la tua Presenza</span>
+      <a href="#rsvp" class="inline-flex items-center space-x-2 bg-gold hover:bg-gold-dark text-white font-medium px-8 py-3.5 rounded-full shadow-lg hover:shadow-xl transition transform hover:-translate-y-0.5">
+        <i data-lucide="check-circle-2" class="w-5 h-5"></i>
+        <span>Conferma la tua Presenza</span>
       </a>
+
     </div>
   </section>
 
+  <!-- Dettagli Programma Section -->
   <section id="dettagli" class="py-12 px-4 max-w-4xl mx-auto w-full">
     <div class="text-center mb-10">
       <h2 class="font-serif text-3xl md:text-4xl font-bold text-sage-900 mb-2">Programma della Giornata</h2>
       <p id="programSub" class="text-sage-600 text-sm">Sabato 12 Giugno 2027 • Ristorante Acquamatta</p>
     </div>
+
     <div class="grid md:grid-cols-4 gap-6">
       <div class="card-watercolor p-6 rounded-2xl text-center flex flex-col items-center">
-        <div class="w-12 h-12 bg-sage-100 rounded-full flex items-center justify-center text-sage-700 mb-4"><i data-lucide="sparkles" class="w-6 h-6"></i></div>
+        <div class="w-12 h-12 bg-sage-100 rounded-full flex items-center justify-center text-sage-700 mb-4">
+          <i data-lucide="sparkles" class="w-6 h-6"></i>
+        </div>
         <span id="progTime1" class="text-xs font-bold text-gold tracking-widest uppercase mb-1">Ore 17:00</span>
-        <h3 class="font-serif font-bold text-lg text-sage-900 mb-2">Cerimonia</h3><p class="text-xs text-sage-600">Rito simbolico immerso nel verde del giardino.</p>
+        <h3 class="font-serif font-bold text-lg text-sage-900 mb-2">Accoglienza & Cerimonia</h3>
+        <p class="text-xs text-sage-600">Rito simbolico immerso nel verde del giardino e circondati dalla natura.</p>
       </div>
+
       <div class="card-watercolor p-6 rounded-2xl text-center flex flex-col items-center">
-        <div class="w-12 h-12 bg-sage-100 rounded-full flex items-center justify-center text-sage-700 mb-4"><i data-lucide="wine" class="w-6 h-6"></i></div>
+        <div class="w-12 h-12 bg-sage-100 rounded-full flex items-center justify-center text-sage-700 mb-4">
+          <i data-lucide="wine" class="w-6 h-6"></i>
+        </div>
         <span id="progTime2" class="text-xs font-bold text-gold tracking-widest uppercase mb-1">Ore 18:30</span>
-        <h3 class="font-serif font-bold text-lg text-sage-900 mb-2">Aperitivo</h3><p class="text-xs text-sage-600">Cocktail di benvenuto e musica nel parco.</p>
+        <h3 class="font-serif font-bold text-lg text-sage-900 mb-2">Aperitivo al Tramonto</h3>
+        <p class="text-xs text-sage-600">Cocktail di benvenuto, sfizi gourmet e musica di sottofondo nel parco.</p>
       </div>
+
       <div class="card-watercolor p-6 rounded-2xl text-center flex flex-col items-center">
-        <div class="w-12 h-12 bg-sage-100 rounded-full flex items-center justify-center text-sage-700 mb-4"><i data-lucide="utensils" class="w-6 h-6"></i></div>
+        <div class="w-12 h-12 bg-sage-100 rounded-full flex items-center justify-center text-sage-700 mb-4">
+          <i data-lucide="utensils" class="w-6 h-6"></i>
+        </div>
         <span id="progTime3" class="text-xs font-bold text-gold tracking-widest uppercase mb-1">Ore 20:00</span>
-        <h3 class="font-serif font-bold text-lg text-sage-900 mb-2">Banchetto</h3><p class="text-xs text-sage-600">Cena nelle sale del Ristorante Acquamatta.</p>
+        <h3 class="font-serif font-bold text-lg text-sage-900 mb-2">Banchetto Nuziale</h3>
+        <p class="text-xs text-sage-600">Cena collocata nelle sale del Ristorante Acquamatta con prodotti tipici del territorio.</p>
       </div>
+
       <div class="card-watercolor p-6 rounded-2xl text-center flex flex-col items-center">
-        <div class="w-12 h-12 bg-sage-100 rounded-full flex items-center justify-center text-sage-700 mb-4"><i data-lucide="music" class="w-6 h-6"></i></div>
+        <div class="w-12 h-12 bg-sage-100 rounded-full flex items-center justify-center text-sage-700 mb-4">
+          <i data-lucide="music" class="w-6 h-6"></i>
+        </div>
         <span id="progTime4" class="text-xs font-bold text-gold tracking-widest uppercase mb-1">Ore 23:00</span>
-        <h3 class="font-serif font-bold text-lg text-sage-900 mb-2">Torta & Party</h3><p class="text-xs text-sage-600">Taglio torta e DJ set fino a tarda notte.</p>
+        <h3 class="font-serif font-bold text-lg text-sage-900 mb-2">Torta & Party</h3>
+        <p class="text-xs text-sage-600">Taglio della torta, brindisi e DJ set per ballare fino a tarda notte.</p>
       </div>
     </div>
   </section>
 
+  <!-- Location Section -->
   <section id="location" class="py-12 px-4 max-w-4xl mx-auto w-full">
-    <div class="card-watercolor rounded-3xl p-6 md:p-8">
+    <div class="card-watercolor rounded-3xl p-6 md:p-8 overflow-hidden relative">
       <div class="grid md:grid-cols-2 gap-8 items-center">
         <div>
-          <div class="inline-flex items-center space-x-2 text-sage-600 font-medium text-xs uppercase tracking-wider mb-2"><i data-lucide="map-pin" class="w-4 h-4 text-gold"></i><span>Location</span></div>
+          <div class="inline-flex items-center space-x-2 text-sage-600 font-medium text-xs uppercase tracking-wider mb-2">
+            <i data-lucide="map-pin" class="w-4 h-4 text-gold"></i>
+            <span>La Location del Matrimonio</span>
+          </div>
           <h2 id="locationTitle" class="font-serif text-3xl font-bold text-sage-900 mb-4">Ristorante Acquamatta</h2>
-          <p id="locationDesc" class="text-sm text-sage-700 mb-4 leading-relaxed">Situato nel cuore della Lomellina a Semiana (PV), atmosfera unica immersa nella natura.</p>
+          <p id="locationDesc" class="text-sm text-sage-700 mb-4 leading-relaxed">
+            Situato nel cuore della Lomellina a Semiana (PV), il Ristorante Acquamatta offre un'atmosfera unica immersa nella natura, ideale per celebrare il nostro giorno speciale insieme alle persone care.
+          </p>
+          
           <div class="text-xs text-sage-600 space-y-1 mb-6">
             <p><strong>Indirizzo:</strong> <span id="locationAddress">Cascina Molino della Raina, 6 - 27020 Semiana (PV)</span></p>
+            <p><strong>Note:</strong> Ampio parcheggio riservato agli ospiti all'interno della struttura.</p>
           </div>
-          <a id="locationMapsUrl" href="https://maps.google.com/?cid=1094651536832372958" target="_blank" rel="noopener noreferrer" class="inline-flex items-center space-x-2 bg-sage-700 hover:bg-sage-800 text-white text-sm font-medium px-5 py-2.5 rounded-full transition shadow-sm">
-            <i data-lucide="navigation" class="w-4 h-4"></i><span>Apri su Google Maps</span>
+
+          <a id="locationMapsUrl" href="https://maps.google.com/?cid=1094651536832372958&g_mp=Cidnb29nbGUubWFwsy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQ" target="_blank" rel="noopener noreferrer" class="inline-flex items-center space-x-2 bg-sage-700 hover:bg-sage-800 text-white text-sm font-medium px-5 py-2.5 rounded-full transition shadow-sm">
+            <i data-lucide="navigation" class="w-4 h-4"></i>
+            <span>Apri su Google Maps</span>
           </a>
         </div>
+
         <div class="bg-sage-100 rounded-2xl p-4 border border-sage-200 text-center flex flex-col justify-center items-center min-h-[220px]">
-          <div class="w-16 h-16 rounded-full bg-white flex items-center justify-center text-sage-700 shadow-md mb-3"><i data-lucide="trees" class="w-8 h-8 text-sage-600"></i></div>
+          <div class="w-16 h-16 rounded-full bg-white flex items-center justify-center text-sage-700 shadow-md mb-3">
+            <i data-lucide="trees" class="w-8 h-8 text-sage-600"></i>
+          </div>
           <h3 class="font-serif font-bold text-sage-900 text-lg">Ambiente Country & Elegant</h3>
+          <p class="text-xs text-sage-600 max-w-xs mt-1">Un’oasi verde circondata da specchi d'acqua e natura incontaminata.</p>
         </div>
       </div>
     </div>
   </section>
 
+  <!-- SEZIONE WEDDING CHALLENGE & GIOCHI RANDOM -->
   <section id="challenge" class="py-12 px-4 max-w-3xl mx-auto w-full">
     <div class="card-watercolor rounded-3xl p-6 md:p-10 text-center space-y-6">
-      <div class="w-12 h-12 bg-gold/20 text-gold rounded-full flex items-center justify-center mx-auto"><i data-lucide="dices" class="w-6 h-6 text-gold"></i></div>
-      <div><h2 class="font-serif text-3xl font-bold text-sage-900">Wedding Challenge 🎲</h2><p class="text-xs text-sage-600 mt-1">Estrai la tua missione per la giornata!</p></div>
-      <div class="bg-white/80 p-6 rounded-2xl border border-sage-200 max-w-md mx-auto space-y-4 shadow-sm">
-        <p id="challengeText" class="font-serif text-lg font-semibold text-sage-900 italic">"Clicca per scoprire la tua sfida misteriosa!"</p>
-        <button onclick="generateRandomChallenge()" class="bg-gold hover:bg-gold-dark text-white font-medium px-6 py-2.5 rounded-full text-xs uppercase tracking-wider transition">🎲 Estrai Sfida</button>
+      <div class="w-12 h-12 bg-gold/20 text-gold rounded-full flex items-center justify-center mx-auto">
+        <i data-lucide="dices" class="w-6 h-6 text-gold"></i>
       </div>
+      <div>
+        <h2 class="font-serif text-3xl font-bold text-sage-900">Wedding Challenge 🎲</h2>
+        <p class="text-xs text-sage-600 mt-1">Sfide individuali e di squadra per tutti gli invitati! Estrai la tua missione per la giornata.</p>
+      </div>
+
+      <!-- Box Generatore Sfide -->
+      <div class="bg-white/80 p-6 rounded-2xl border border-sage-200 max-w-md mx-auto space-y-4 shadow-sm">
+        <p id="challengeText" class="font-serif text-lg font-semibold text-sage-900 italic">
+          "Clicca sul pulsante qui sotto per scoprire la tua sfida misteriosa!"
+        </p>
+        
+        <button onclick="generateRandomChallenge()" class="bg-gold hover:bg-gold-dark text-white font-medium px-6 py-2.5 rounded-full text-xs uppercase tracking-wider transition shadow">
+          🎲 Estrai una Sfida Random
+        </button>
+      </div>
+
+      <!-- Form Invio Verifica Sfida -->
       <div id="verifyChallengeBox" class="hidden max-w-md mx-auto bg-sage-50 p-4 rounded-2xl border border-sage-200 text-left space-y-3">
-        <h4 class="font-serif font-bold text-sage-900 text-sm">Hai completato la sfida? Inviala agli sposi:</h4>
-        <input type="text" id="challengerName" placeholder="Tuo Nome e Tavolo" class="w-full px-3 py-2 text-xs rounded-xl border border-sage-200 bg-white">
-        <input type="text" id="challengeProof" placeholder="Prova (es. foto scattata)" class="w-full px-3 py-2 text-xs rounded-xl border border-sage-200 bg-white">
-        <button onclick="submitChallengeVerification()" class="w-full bg-sage-700 text-white text-xs py-2 rounded-xl">Invia Sfida 🚀</button>
+        <h4 class="font-serif font-bold text-sage-900 text-sm flex items-center space-x-1">
+          <i data-lucide="check-circle" class="w-4 h-4 text-sage-700"></i>
+          <span>Hai completato la sfida? Inviala agli sposi per la verifica!</span>
+        </h4>
+        <input type="text" id="challengerName" placeholder="Il tuo Nome e Cognome / Tavolo" class="w-full px-3 py-2 text-xs rounded-xl border border-sage-200 bg-white">
+        <input type="text" id="challengeProof" placeholder="Es. Ho scattato la foto col tavolo 4! (o inserisci un link foto)" class="w-full px-3 py-2 text-xs rounded-xl border border-sage-200 bg-white">
+        <button onclick="submitChallengeVerification()" class="w-full bg-sage-700 hover:bg-sage-800 text-white text-xs py-2 rounded-xl font-medium transition">
+          Invia Sfida per Approvazione 🚀
+        </button>
       </div>
     </div>
   </section>
 
+  <!-- LISTA NOZZE / IBAN SECTION -->
   <section id="regalo" class="py-12 px-4 max-w-3xl mx-auto w-full">
     <div class="card-watercolor rounded-3xl p-6 md:p-10 text-center space-y-4">
-      <div class="w-12 h-12 bg-sage-100 text-sage-700 rounded-full flex items-center justify-center mx-auto"><i data-lucide="gift" class="w-6 h-6 text-gold"></i></div>
+      <div class="w-12 h-12 bg-sage-100 text-sage-700 rounded-full flex items-center justify-center mx-auto">
+        <i data-lucide="gift" class="w-6 h-6 text-gold"></i>
+      </div>
       <h2 class="font-serif text-3xl font-bold text-sage-900">Lista Nozze & Viaggio</h2>
-      <p class="text-sm text-sage-700 max-w-lg mx-auto">La vostra presenza è il regalo più importante. Per il nostro viaggio:</p>
+      <p id="giftDesc" class="text-sm text-sage-700 max-w-lg mx-auto">
+        La vostra presenza è il regalo più importante. Per chi desidera contribuire al nostro viaggio di nozze o ai nostri progetti futuri, abbiamo predisposto un conto dedicato:
+      </p>
+
       <div class="bg-white p-4 rounded-2xl border border-sage-200 max-w-md mx-auto space-y-2 text-left">
         <p class="text-xs text-sage-600"><strong>Intestato a:</strong> <span id="giftOwner">Simona & Marco</span></p>
         <p class="text-xs text-sage-600"><strong>Banca:</strong> <span id="giftBank">[Nome Banca]</span></p>
         <div class="flex items-center justify-between bg-sage-50 p-2.5 rounded-xl border border-sage-100">
-          <span id="ibanText" class="text-xs font-mono font-bold text-sage-900">IT00 X000 0000 0000 0000 0000 000</span>
-          <button onclick="copyIban()" class="bg-sage-700 text-white text-[11px] py-1.5 px-3 rounded-lg">Copia IBAN</button>
+          <span id="ibanText" class="text-xs font-mono font-bold text-sage-900 tracking-wider">IT00 X000 0000 0000 0000 0000 000</span>
+          <button onclick="copyIban()" class="bg-sage-700 hover:bg-sage-800 text-white text-[11px] py-1.5 px-3 rounded-lg transition flex items-center space-x-1">
+            <i data-lucide="copy" class="w-3 h-3"></i>
+            <span>Copia IBAN</span>
+          </button>
         </div>
       </div>
     </div>
   </section>
 
+  <!-- FAQ / INFORMAZIONI UTILI -->
   <section id="faq" class="py-12 px-4 max-w-3xl mx-auto w-full">
-    <div class="text-center mb-8"><h2 class="font-serif text-3xl font-bold text-sage-900">FAQ</h2></div>
-    <div class="space-y-4">
+    <div class="text-center mb-8">
+      <h2 class="font-serif text-3xl font-bold text-sage-900">Domande Frequenti (FAQ)</h2>
+      <p class="text-xs text-sage-600 mt-1">Tutto quello che c'è da sapere per godersi al meglio la giornata</p>
+    </div>
+
+    <div id="faqContainer" class="space-y-4">
       <div class="card-watercolor p-5 rounded-2xl">
-        <h3 class="font-serif font-bold text-base text-sage-900">Dress code?</h3>
-        <p class="text-xs text-sage-700 mt-1">Elegante ma comodo per il giardino. <strong>⚠️ Evitare ciabatte o infradito!</strong></p>
+        <h3 class="font-serif font-bold text-base text-sage-900 flex items-center space-x-2 mb-1">
+          <i data-lucide="shirt" class="w-4 h-4 text-gold"></i>
+          <span>C'è un dress code consigliato?</span>
+        </h3>
+        <p class="text-xs text-sage-700 pl-6">
+          Consigliamo un abbigliamento elegante e raffinato, ma comodo per festeggiare all'aperto in giardino. 
+          <strong class="text-sage-900 block mt-1">⚠️ Nota sul dress code: Vi chiediamo gentilmente di evitare le ciabatte o infradito per la cerimonia e il ricevimento! 😉</strong>
+        </p>
+      </div>
+
+      <div class="card-watercolor p-5 rounded-2xl">
+        <h3 class="font-serif font-bold text-base text-sage-900 flex items-center space-x-2 mb-1">
+          <i data-lucide="phone-call" class="w-4 h-4 text-gold"></i>
+          <span>A chi posso rivolgermi il giorno del matrimonio in caso di emergenza?</span>
+        </h3>
+        <p class="text-xs text-sage-700 pl-6">Potete contattare i nostri testimoni o coordinatori di sala ai numeri di emergenza che trovate qui sotto.</p>
       </div>
     </div>
   </section>
 
+  <!-- CONTATTI UTILI GIORNO NOZZE -->
+  <section class="py-6 px-4 max-w-3xl mx-auto w-full">
+    <div class="bg-sage-100/60 border border-sage-200 rounded-2xl p-5 text-center space-y-2">
+      <h3 class="font-serif font-bold text-sage-900 text-sm uppercase tracking-wider">Numeri Utili per il Giorno delle Nozze</h3>
+      <p class="text-xs text-sage-700">Per qualsiasi imprevisto o ritardo dell'ultimo minuto:</p>
+      <div id="emergencyContactsList" class="flex justify-center gap-6 pt-1 text-xs font-semibold text-sage-900">
+        <div>📞 Testimone (Marco): 333 0000000</div>
+        <div>📞 Testimone (Simona): 333 0000000</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RSVP Form Section -->
   <section id="rsvp" class="py-12 px-4 max-w-3xl mx-auto w-full">
-    <div class="card-watercolor rounded-3xl p-6 md:p-10">
+    <div class="card-watercolor rounded-3xl p-6 md:p-10 relative">
       <div class="text-center mb-8">
+        <div class="inline-flex items-center space-x-2 text-gold font-semibold text-xs uppercase tracking-widest mb-1">
+          <i data-lucide="mail-check" class="w-4 h-4"></i>
+          <span>RSVP - Conferma Partecipazione</span>
+        </div>
         <h2 class="font-serif text-3xl md:text-4xl font-bold text-sage-900">Ci sarai?</h2>
-        <p class="text-xs text-sage-600 mt-2">Conferma entro il <strong>1° Maggio 2027</strong></p>
+        <p class="text-xs text-sage-600 mt-2">Ti chiediamo gentilmente di confermare entro il <strong>1° Maggio 2027</strong></p>
       </div>
+
       <form id="rsvpForm" onsubmit="handleFormSubmit(event)" class="space-y-6">
-        <div class="bg-white/60 p-4 rounded-2xl border border-sage-200 space-y-4">
-          <h3 class="font-serif font-bold text-base text-sage-900">Ospite Principale</h3>
+        <div class="bg-white/60 p-4 rounded-2xl border border-sage-200/80 space-y-4">
+          <h3 class="font-serif font-bold text-base text-sage-900 flex items-center space-x-2">
+            <i data-lucide="user" class="w-4 h-4 text-gold"></i>
+            <span>Ospite Principale</span>
+          </h3>
+
           <div class="grid md:grid-cols-2 gap-4">
-            <div><label class="block text-xs font-semibold mb-1">Nome e Cognome *</label><input type="text" id="guestName" required class="w-full px-4 py-2 rounded-xl border border-sage-200 text-sm bg-white"></div>
-            <div><label class="block text-xs font-semibold mb-1">Email / Telefono *</label><input type="text" id="guestContact" required class="w-full px-4 py-2 rounded-xl border border-sage-200 text-sm bg-white"></div>
-          </div>
-          <div>
-            <label class="block text-xs font-semibold mb-1.5">Intolleranze</label>
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-2 text-xs">
-              <label class="flex items-center space-x-1 bg-white p-2 rounded-lg border cursor-pointer"><input type="checkbox" value="Vegetariano" class="main-diet-option"><span>Vegetariano</span></label>
-              <label class="flex items-center space-x-1 bg-white p-2 rounded-lg border cursor-pointer"><input type="checkbox" value="Vegano" class="main-diet-option"><span>Vegano</span></label>
-              <label class="flex items-center space-x-1 bg-white p-2 rounded-lg border cursor-pointer"><input type="checkbox" value="Senza Glutine" class="main-diet-option"><span>Senza Glutine</span></label>
-              <label class="flex items-center space-x-1 bg-white p-2 rounded-lg border cursor-pointer"><input type="checkbox" value="Senza Lattosio" class="main-diet-option"><span>Senza Lattosio</span></label>
+            <div>
+              <label class="block text-xs font-semibold text-sage-800 mb-1">Nome e Cognome *</label>
+              <input type="text" id="guestName" required placeholder="Es. Mario Rossi" class="w-full px-4 py-2 rounded-xl border border-sage-200 focus:outline-none focus:ring-2 focus:ring-sage-400 text-sm bg-white">
             </div>
-            <input type="text" id="mainDietNotes" placeholder="Altre allergie o note..." class="w-full px-3 py-1.5 rounded-xl border text-xs bg-white">
+            <div>
+              <label class="block text-xs font-semibold text-sage-800 mb-1">Email / Telefono *</label>
+              <input type="text" id="guestContact" required placeholder="Es. mario.rossi@email.it o 3331234567" class="w-full px-4 py-2 rounded-xl border border-sage-200 focus:outline-none focus:ring-2 focus:ring-sage-400 text-sm bg-white">
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-sage-800 mb-1.5">Intolleranze / Regimi Alimentari dell'Ospite Principale</label>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-2">
+              <label class="flex items-center text-xs text-sage-800 space-x-1.5 bg-white p-2 rounded-lg border border-sage-100 cursor-pointer">
+                <input type="checkbox" value="Vegetariano" class="main-diet-option accent-sage-600">
+                <span>Vegetariano</span>
+              </label>
+              <label class="flex items-center text-xs text-sage-800 space-x-1.5 bg-white p-2 rounded-lg border border-sage-100 cursor-pointer">
+                <input type="checkbox" value="Vegano" class="main-diet-option accent-sage-600">
+                <span>Vegano</span>
+              </label>
+              <label class="flex items-center text-xs text-sage-800 space-x-1.5 bg-white p-2 rounded-lg border border-sage-100 cursor-pointer">
+                <input type="checkbox" value="Senza Glutine" class="main-diet-option accent-sage-600">
+                <span>Senza Glutine</span>
+              </label>
+              <label class="flex items-center text-xs text-sage-800 space-x-1.5 bg-white p-2 rounded-lg border border-sage-100 cursor-pointer">
+                <input type="checkbox" value="Senza Lattosio" class="main-diet-option accent-sage-600">
+                <span>Senza Lattosio</span>
+              </label>
+              <label class="flex items-center text-xs text-sage-800 space-x-1.5 bg-white p-2 rounded-lg border border-sage-100 cursor-pointer">
+                <input type="checkbox" value="No Pesce" class="main-diet-option accent-sage-600">
+                <span>No Pesce</span>
+              </label>
+              <label class="flex items-center text-xs text-sage-800 space-x-1.5 bg-white p-2 rounded-lg border border-sage-100 cursor-pointer">
+                <input type="checkbox" value="No Carne" class="main-diet-option accent-sage-600">
+                <span>No Carne</span>
+              </label>
+              <label class="flex items-center text-xs text-sage-800 space-x-1.5 bg-white p-2 rounded-lg border border-sage-100 cursor-pointer">
+                <input type="checkbox" value="Allergia Crostacei" class="main-diet-option accent-sage-600">
+                <span>Crostacei</span>
+              </label>
+              <label class="flex items-center text-xs text-sage-800 space-x-1.5 bg-white p-2 rounded-lg border border-sage-100 cursor-pointer">
+                <input type="checkbox" value="Allergia Molluschi" class="main-diet-option accent-sage-600">
+                <span>Molluschi</span>
+              </label>
+            </div>
+            <input type="text" id="mainDietNotes" placeholder="Altre allergie o note per la cucina..." class="w-full px-3 py-1.5 rounded-xl border border-sage-200 text-xs bg-white">
           </div>
         </div>
+
         <div>
-          <label class="block text-xs font-semibold mb-2">Partecipazione *</label>
+          <label class="block text-xs font-semibold text-sage-800 mb-2">Conferma Partecipazione *</label>
           <div class="grid grid-cols-2 gap-4">
-            <label class="flex items-center justify-center p-3 rounded-xl border bg-white cursor-pointer"><input type="radio" name="attendance" value="attending" checked onclick="toggleAttendanceFields(true)" class="mr-2"><span>Sì, presente! 🎉</span></label>
-            <label class="flex items-center justify-center p-3 rounded-xl border bg-white cursor-pointer"><input type="radio" name="attendance" value="declined" onclick="toggleAttendanceFields(false)" class="mr-2"><span>Non potrò 😢</span></label>
+            <label class="flex items-center justify-center p-3 rounded-xl border border-sage-200 bg-white cursor-pointer hover:border-sage-400 transition">
+              <input type="radio" name="attendance" value="attending" checked onclick="toggleAttendanceFields(true)" class="accent-sage-600 mr-2">
+              <span class="text-sm font-medium text-sage-900">Sì, sarò presente! 🎉</span>
+            </label>
+            <label class="flex items-center justify-center p-3 rounded-xl border border-sage-200 bg-white cursor-pointer hover:border-sage-400 transition">
+              <input type="radio" name="attendance" value="declined" onclick="toggleAttendanceFields(false)" class="accent-sage-600 mr-2">
+              <span class="text-sm font-medium text-sage-700">Purtroppo non potrò 😢</span>
+            </label>
           </div>
         </div>
-        <div id="attendanceDetails" class="space-y-6 border-t pt-6">
+
+        <div id="attendanceDetails" class="space-y-6 border-t border-sage-200/60 pt-6">
           <div>
-            <label class="flex items-center space-x-2 text-sm font-semibold cursor-pointer mb-2">
-              <input type="checkbox" id="hasPartner" onchange="togglePartnerFields(this.checked)" class="w-4 h-4"><span>Accompagnatore / Partner?</span>
+            <label class="flex items-center space-x-2 text-sm font-semibold text-sage-800 cursor-pointer mb-2">
+              <input type="checkbox" id="hasPartner" onchange="togglePartnerFields(this.checked)" class="rounded accent-sage-600 w-4 h-4">
+              <span>Porti un accompagnatore / partner?</span>
             </label>
-            <div id="partnerContainer" class="hidden mt-3 pl-4 border-l-2 space-y-3 bg-white/60 p-3 rounded-r-2xl">
-              <input type="text" id="partnerName" placeholder="Nome Accompagnatore" class="w-full px-3 py-2 rounded-xl border text-sm bg-white">
-              <input type="text" id="partnerDietNotes" placeholder="Intolleranze accompagnatore..." class="w-full px-3 py-1.5 rounded-xl border text-xs bg-white">
+            
+            <div id="partnerContainer" class="hidden mt-3 pl-4 border-l-2 border-sage-300 space-y-3 bg-white/60 p-3 rounded-r-2xl">
+              <div>
+                <label class="block text-xs font-semibold text-sage-800 mb-1">Nome e Cognome Accompagnatore</label>
+                <input type="text" id="partnerName" placeholder="Es. Laura Bianchi" class="w-full px-3 py-2 rounded-xl border border-sage-200 text-sm bg-white">
+              </div>
+
+              <div>
+                <label class="block text-xs font-semibold text-sage-800 mb-1">Intolleranze dell'accompagnatore</label>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-2">
+                  <label class="flex items-center text-xs text-sage-800 space-x-1.5 bg-white p-2 rounded-lg border border-sage-100 cursor-pointer">
+                    <input type="checkbox" value="Vegetariano" class="partner-diet-option accent-sage-600">
+                    <span>Vegetariano</span>
+                  </label>
+                  <label class="flex items-center text-xs text-sage-800 space-x-1.5 bg-white p-2 rounded-lg border border-sage-100 cursor-pointer">
+                    <input type="checkbox" value="Vegano" class="partner-diet-option accent-sage-600">
+                    <span>Vegano</span>
+                  </label>
+                  <label class="flex items-center text-xs text-sage-800 space-x-1.5 bg-white p-2 rounded-lg border border-sage-100 cursor-pointer">
+                    <input type="checkbox" value="Senza Glutine" class="partner-diet-option accent-sage-600">
+                    <span>Senza Glutine</span>
+                  </label>
+                  <label class="flex items-center text-xs text-sage-800 space-x-1.5 bg-white p-2 rounded-lg border border-sage-100 cursor-pointer">
+                    <input type="checkbox" value="Senza Lattosio" class="partner-diet-option accent-sage-600">
+                    <span>Senza Lattosio</span>
+                  </label>
+                  <label class="flex items-center text-xs text-sage-800 space-x-1.5 bg-white p-2 rounded-lg border border-sage-100 cursor-pointer">
+                    <input type="checkbox" value="No Pesce" class="partner-diet-option accent-sage-600">
+                    <span>No Pesce</span>
+                  </label>
+                  <label class="flex items-center text-xs text-sage-800 space-x-1.5 bg-white p-2 rounded-lg border border-sage-100 cursor-pointer">
+                    <input type="checkbox" value="No Carne" class="partner-diet-option accent-sage-600">
+                    <span>No Carne</span>
+                  </label>
+                  <label class="flex items-center text-xs text-sage-800 space-x-1.5 bg-white p-2 rounded-lg border border-sage-100 cursor-pointer">
+                    <input type="checkbox" value="Allergia Crostacei" class="partner-diet-option accent-sage-600">
+                    <span>Crostacei</span>
+                  </label>
+                  <label class="flex items-center text-xs text-sage-800 space-x-1.5 bg-white p-2 rounded-lg border border-sage-100 cursor-pointer">
+                    <input type="checkbox" value="Allergia Molluschi" class="partner-diet-option accent-sage-600">
+                    <span>Molluschi</span>
+                  </label>
+                </div>
+                <input type="text" id="partnerDietNotes" placeholder="Note cibo o altre allergie dell'accompagnatore..." class="w-full px-3 py-1.5 rounded-xl border border-sage-200 text-xs bg-white">
+              </div>
             </div>
           </div>
-          <div class="grid md:grid-cols-2 gap-4">
-            <div><label class="block text-xs font-semibold mb-1">Canzone DJ Set 🎵</label><input type="text" id="songRequest" placeholder="Titolo e Artista" class="w-full px-4 py-2 rounded-xl border text-sm bg-white"></div>
-            <div><label class="block text-xs font-semibold mb-1">Messaggio per gli Sposi 💚</label><input type="text" id="guestMessage" placeholder="Un pensiero..." class="w-full px-4 py-2 rounded-xl border text-sm bg-white"></div>
+
+          <div>
+            <label class="flex items-center space-x-2 text-sm font-semibold text-sage-800 cursor-pointer mb-2">
+              <input type="checkbox" id="hasKids" onchange="toggleKidsFields(this.checked)" class="rounded accent-sage-600 w-4 h-4">
+              <span>Verranno bambini con te?</span>
+            </label>
+            
+            <div id="kidsContainer" class="hidden mt-3 pl-4 border-l-2 border-sage-300 space-y-3 bg-white/60 p-3 rounded-r-2xl">
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-xs font-semibold text-sage-800 mb-1">Numero Bambini</label>
+                  <input type="number" id="kidsCount" min="1" max="6" value="1" class="w-full px-3 py-2 rounded-xl border border-sage-200 text-sm bg-white">
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-sage-800 mb-1">Necessità Seggiolone?</label>
+                  <select id="highChairCount" class="w-full px-3 py-2 rounded-xl border border-sage-200 text-sm bg-white">
+                    <option value="0">Nessuno</option>
+                    <option value="1">1 Seggiolone</option>
+                    <option value="2">2 Seggioloni</option>
+                  </select>
+                </div>
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-sage-800 mb-1">Menu bimbi, età ed eventuali intolleranze dei bambini</label>
+                <input type="text" id="kidsMenuNotes" placeholder="Es. Marco (5 anni) senza lattosio, Sofia (2 anni) seggiolone" class="w-full px-3 py-2 rounded-xl border border-sage-200 text-sm bg-white">
+              </div>
+            </div>
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-4 pt-2">
+            <div>
+              <label class="block text-xs font-semibold text-sage-800 mb-1">Canzone da far ballare al DJ Set 🎵</label>
+              <input type="text" id="songRequest" placeholder="Es. Titolo e Artista" class="w-full px-4 py-2 rounded-xl border border-sage-200 text-sm bg-white">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-sage-800 mb-1">Messaggio o Auguri per gli Sposi 💚</label>
+              <input type="text" id="guestMessage" placeholder="Un pensiero speciale..." class="w-full px-4 py-2 rounded-xl border border-sage-200 text-sm bg-white">
+            </div>
           </div>
         </div>
-        <button type="submit" id="submitBtn" class="w-full bg-sage-700 hover:bg-sage-800 text-white font-medium py-3.5 rounded-2xl shadow-md transition text-sm">Invia Conferma RSVP</button>
+
+        <button type="submit" id="submitBtn" class="w-full bg-sage-700 hover:bg-sage-800 text-white font-medium py-3.5 rounded-2xl shadow-md transition text-sm flex items-center justify-center space-x-2">
+          <i data-lucide="send" class="w-4 h-4"></i>
+          <span>Invia Conferma RSVP</span>
+        </button>
+
       </form>
+
       <div id="rsvpSuccess" class="hidden text-center py-8 space-y-4">
-        <h3 class="font-serif text-3xl font-bold text-sage-900">Grazie per la risposta!</h3>
-        <button onclick="resetRsvpForm()" class="text-xs text-sage-600 underline">Invia un'altra risposta</button>
+        <div class="w-16 h-16 bg-sage-100 text-sage-700 rounded-full flex items-center justify-center mx-auto mb-2">
+          <i data-lucide="check" class="w-8 h-8 text-sage-700"></i>
+        </div>
+        <h3 class="font-serif text-3xl font-bold text-sage-900">Grazie per la tua risposta!</h3>
+        <p class="text-sm text-sage-700 max-w-md mx-auto">
+          Abbiamo registrato la tua conferma. Non vediamo l'ora di festeggiare insieme a te!
+        </p>
+        <button onclick="resetRsvpForm()" class="text-xs text-sage-600 underline hover:text-sage-800">
+          Invia un'altra risposta o modifica
+        </button>
       </div>
+
     </div>
   </section>
 
-  <footer class="py-8 text-center text-xs text-sage-600 border-t bg-white/50">
-    <span id="footerText" class="font-serif italic font-bold text-sage-800">Simona & Marco • Sabato 12 Giugno 2027</span>
+  <!-- Footer -->
+  <footer class="py-8 text-center text-xs text-sage-600 border-t border-sage-200/50 bg-white/50">
+    <div class="max-w-4xl mx-auto px-4 space-y-2">
+      <div class="flex justify-center items-center space-x-2 text-gold">
+        <i data-lucide="sparkles" class="w-4 h-4"></i>
+        <span id="footerText" class="font-serif italic font-bold text-sage-800">Simona & Marco • Sabato 12 Giugno 2027</span>
+        <i data-lucide="leaf" class="w-4 h-4"></i>
+      </div>
+      <p id="footerSubText">Ristorante Acquamatta • Semiana (PV)</p>
+    </div>
   </footer>
 
-  <!-- MODALE AREA SPOSI -->
+  <!-- MODALE AREA RISERVATA SPOSI & CMS EDITABILE -->
   <div id="adminModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-white rounded-3xl max-w-5xl w-full max-h-[90vh] overflow-y-auto p-6 shadow-2xl">
-      <div class="flex justify-between items-center border-b pb-4 mb-6">
-        <h2 class="font-serif text-2xl font-bold text-sage-900">Area Riservata Sposi</h2>
-        <button onclick="toggleAdminModal()"><i data-lucide="x" class="w-6 h-6"></i></button>
+    <div class="bg-white rounded-3xl max-w-5xl w-full max-h-[90vh] overflow-y-auto p-6 md:p-8 shadow-2xl border border-sage-200">
+      
+      <div class="flex justify-between items-center border-b border-sage-100 pb-4 mb-6">
+        <div class="flex items-center space-x-2">
+          <i data-lucide="shield-check" class="w-6 h-6 text-gold"></i>
+          <h2 class="font-serif text-2xl font-bold text-sage-900">Area Riservata Sposi & Gestione</h2>
+        </div>
+        <button onclick="toggleAdminModal()" class="text-gray-400 hover:text-gray-600 p-1">
+          <i data-lucide="x" class="w-6 h-6"></i>
+        </button>
       </div>
+
+      <!-- Form PIN -->
       <div id="pinView" class="text-center py-6 max-w-sm mx-auto space-y-4">
-        <input type="password" id="adminPin" placeholder="PIN Sposi" class="w-full text-center px-4 py-2 rounded-xl border text-lg mb-3">
-        <button onclick="verifyPin()" class="w-full bg-sage-700 text-white py-2.5 rounded-xl text-sm">Sblocca</button>
-      </div>
-      <div id="adminDashboard" class="hidden space-y-6">
-        <div class="flex space-x-2 border-b pb-2 flex-wrap gap-1">
-          <button id="tabGuestsBtn" onclick="switchAdminTab('guests')" class="px-3 py-1.5 rounded-xl text-xs bg-sage-700 text-white">👥 Ospiti</button>
-          <button id="tabTablesBtn" onclick="switchAdminTab('tables')" class="px-3 py-1.5 rounded-xl text-xs">🍽️ Tavoli</button>
-          <button id="tabChallengesBtn" onclick="switchAdminTab('challenges')" class="px-3 py-1.5 rounded-xl text-xs">🎲 Sfide</button>
-          <button id="tabCmsBtn" onclick="switchAdminTab('cms')" class="px-3 py-1.5 rounded-xl text-xs">✏️ Contenuti</button>
-          <button id="tabStyleBtn" onclick="switchAdminTab('style')" class="px-3 py-1.5 rounded-xl text-xs">🎨 Colori & Font</button>
-          <button id="tabBgBtn" onclick="switchAdminTab('background')" class="px-3 py-1.5 rounded-xl text-xs">🖼️ Sfondo & Audio</button>
+        <div id="pinPromptContainer">
+          <i data-lucide="lock" class="w-12 h-12 text-sage-400 mx-auto mb-3"></i>
+          <h3 id="pinPromptTitle" class="font-serif text-xl font-bold text-sage-800 mb-1">Inserisci il PIN Sposi</h3>
+          <p id="pinPromptDesc" class="text-xs text-sage-500 mb-4">Inserisci il codice segreto per accedere alla gestione</p>
+          
+          <input type="password" id="adminPin" placeholder="Inserisci PIN" class="w-full text-center tracking-widest px-4 py-2.5 rounded-xl border border-sage-200 text-lg mb-3 focus:outline-none focus:ring-2 focus:ring-sage-400">
+          <button onclick="verifyPin()" class="w-full bg-sage-700 hover:bg-sage-800 text-white font-medium py-2.5 rounded-xl transition text-sm mb-3">
+            Sblocca Dashboard
+          </button>
+          
+          <div class="flex justify-between text-xs text-sage-600 px-1">
+            <button onclick="showForgotPin()" class="hover:underline">PIN dimenticato?</button>
+            <button onclick="showSetupPin()" class="hover:underline">Imposta / Cambia PIN</button>
+          </div>
         </div>
 
-        <div id="tabGuests" class="space-y-4">
-          <div class="flex justify-between"><input type="text" id="searchGuest" onkeyup="filterGuestTable()" placeholder="Cerca ospite..." class="px-3 py-1.5 text-xs rounded-xl border w-64"><button onclick="exportCSV()" class="bg-sage-600 text-white text-xs px-3 py-1.5 rounded-xl">Esporta CSV</button></div>
-          <div class="overflow-x-auto border rounded-2xl"><table class="w-full text-left text-xs"><tbody id="guestTableBody"></tbody></table></div>
-        </div>
-
-        <div id="tabTables" class="hidden space-y-4">
-          <div class="flex gap-2"><input type="text" id="newTableName" placeholder="Nome Tavolo" class="px-3 py-1.5 text-xs border rounded-xl"><button onclick="addTable()" class="bg-sage-700 text-white text-xs px-3 py-1.5 rounded-xl">+ Aggiungi</button></div>
-          <div id="tablesGrid" class="grid sm:grid-cols-2 gap-4"></div>
-        </div>
-
-        <div id="tabChallenges" class="hidden space-y-4"><div class="overflow-x-auto border rounded-2xl"><table class="w-full text-left text-xs"><tbody id="challengesTableBody"></tbody></table></div></div>
-
-        <div id="tabCms" class="hidden space-y-4 text-xs">
-          <input type="text" id="cmsNamesInput" placeholder="Nomi Sposi" class="w-full p-2 border rounded-xl">
-          <input type="text" id="cmsDateText" placeholder="Data Testo (es. Sabato 12 Giugno 2027)" class="w-full p-2 border rounded-xl">
-          <button id="cmsSaveBtn" onclick="saveCmsChanges()" class="w-full bg-sage-700 text-white py-3 rounded-xl">Salva Contenuti</button>
-        </div>
-
-        <!-- TAB STYLE & FONT SIZE -->
-        <div id="tabStyle" class="hidden space-y-4 text-xs">
-          <h4 class="font-bold text-sm">Modifica Dimensione Font</h4>
+        <div id="forgotPinContainer" class="hidden text-left bg-sage-50 p-4 rounded-2xl border border-sage-200 space-y-3">
+          <h4 class="font-serif font-bold text-sage-900 text-sm">Recupero PIN tramite Parola Segreta</h4>
+          <p class="text-[11px] text-sage-600">Rispondi alla domanda di sicurezza per impostare un nuovo PIN.</p>
           <div>
-            <label class="block mb-1">Grandezza Testi Generali:</label>
-            <select id="styleBodySize" class="w-full p-2 border rounded-xl bg-white">
-              <option value="14px">Normale (14px)</option>
-              <option value="16px" selected>Medio/Grande (16px)</option>
-              <option value="18px">Grande (18px)</option>
-            </select>
+            <label class="block text-[11px] font-semibold text-sage-800 mb-1">Parola segreta stabilita</label>
+            <input type="text" id="recoveryAnswerInput" placeholder="Risposta segreta" class="w-full px-3 py-2 text-xs rounded-xl border border-sage-200 bg-white">
+          </div>
+          <div class="flex space-x-2 pt-1">
+            <button onclick="verifyRecoveryAnswer()" class="flex-1 bg-sage-700 text-white text-xs py-2 rounded-xl">Verifica</button>
+            <button onclick="cancelForgotPin()" class="px-3 bg-gray-200 text-gray-700 text-xs py-2 rounded-xl">Annulla</button>
+          </div>
+        </div>
+
+        <div id="setupPinContainer" class="hidden text-left bg-sage-50 p-4 rounded-2xl border border-sage-200 space-y-3">
+          <h4 class="font-serif font-bold text-sage-900 text-sm">Imposta o Cambia il tuo PIN</h4>
+          <div>
+            <label class="block text-[11px] font-semibold text-sage-800 mb-1">Nuovo PIN</label>
+            <input type="password" id="newPinInput" placeholder="Nuovo PIN" class="w-full px-3 py-2 text-xs rounded-xl border border-sage-200 bg-white">
           </div>
           <div>
-            <label class="block mb-1">Grandezza Titoli Principali:</label>
-            <select id="styleTitleSize" class="w-full p-2 border rounded-xl bg-white">
-              <option value="2.5rem">Standard</option>
-              <option value="3rem" selected>Grande (3rem)</option>
-              <option value="3.5rem">Molto Grande (3.5rem)</option>
-            </select>
+            <label class="block text-[11px] font-semibold text-sage-800 mb-1">Parola segreta di recupero</label>
+            <input type="text" id="newSecretWord" placeholder="Es. luogo del primo bacio" class="w-full px-3 py-2 text-xs rounded-xl border border-sage-200 bg-white">
           </div>
-          <button onclick="saveStyleChanges()" class="w-full bg-sage-700 text-white py-2.5 rounded-xl">Applica Modifiche Font</button>
+          <div class="flex space-x-2 pt-1">
+            <button onclick="saveNewPinConfig()" class="flex-1 bg-sage-700 text-white text-xs py-2 rounded-xl">Salva PIN</button>
+            <button onclick="cancelSetupPin()" class="px-3 bg-gray-200 text-gray-700 text-xs py-2 rounded-xl">Annulla</button>
+          </div>
         </div>
 
-        <div id="tabBackground" class="hidden space-y-4 text-xs">
-          <input type="text" id="audioUrlInput" placeholder="Link YouTube o MP3" class="w-full p-2 border rounded-xl">
-          <button onclick="saveAudioConfig()" class="w-full bg-sage-700 text-white py-2 rounded-xl">Salva Audio</button>
-        </div>
       </div>
+
+      <!-- Contenuto Dashboard -->
+      <div id="adminDashboard" class="hidden space-y-8">
+        
+        <div class="flex justify-between items-center border-b border-sage-200 pb-2 flex-wrap gap-2">
+          <div class="flex space-x-2 flex-wrap gap-1">
+            <button id="tabGuestsBtn" onclick="switchAdminTab('guests')" class="px-3 py-1.5 rounded-xl font-medium text-xs bg-sage-700 text-white">👥 Ospiti</button>
+            <button id="tabTablesBtn" onclick="switchAdminTab('tables')" class="px-3 py-1.5 rounded-xl font-medium text-xs text-sage-700 hover:bg-sage-100">🍽️ Tavoli</button>
+            <button id="tabChallengesBtn" onclick="switchAdminTab('challenges')" class="px-3 py-1.5 rounded-xl font-medium text-xs text-sage-700 hover:bg-sage-100">🎲 Sfide</button>
+            <button id="tabCmsBtn" onclick="switchAdminTab('cms')" class="px-3 py-1.5 rounded-xl font-medium text-xs text-sage-700 hover:bg-sage-100">✏️ Edita Contenuti</button>
+            <button id="tabStyleBtn" onclick="switchAdminTab('style')" class="px-3 py-1.5 rounded-xl font-medium text-xs text-sage-700 hover:bg-sage-100">🎨 Colori & Font</button>
+            <button id="tabBgBtn" onclick="switchAdminTab('background')" class="px-3 py-1.5 rounded-xl font-medium text-xs text-sage-700 hover:bg-sage-100">🖼️ Sfondo & Audio</button>
+          </div>
+          <button onclick="showSetupPin()" class="text-xs text-sage-600 underline hover:text-sage-800">Cambia PIN</button>
+        </div>
+
+        <!-- TAB 1: LISTA PARTECIPANTI -->
+        <div id="tabGuests" class="space-y-6">
+          <div class="grid grid-cols-2 md:grid-cols-5 gap-3 text-center">
+            <div class="bg-sage-50 p-3 rounded-2xl border border-sage-200">
+              <span id="statTotal" class="block font-serif text-2xl font-bold text-sage-900">0</span>
+              <span class="text-[11px] text-sage-600 font-medium">Totale Risposte</span>
+            </div>
+            <div class="bg-sage-50 p-3 rounded-2xl border border-sage-200">
+              <span id="statAdults" class="block font-serif text-2xl font-bold text-sage-900">0</span>
+              <span class="text-[11px] text-sage-600 font-medium">Adulti Confermati</span>
+            </div>
+            <div class="bg-sage-50 p-3 rounded-2xl border border-sage-200">
+              <span id="statKids" class="block font-serif text-2xl font-bold text-sage-900">0</span>
+              <span class="text-[11px] text-sage-600 font-medium">Bambini</span>
+            </div>
+            <div class="bg-sage-50 p-3 rounded-2xl border border-sage-200">
+              <span id="statHighChairs" class="block font-serif text-2xl font-bold text-sage-900">0</span>
+              <span class="text-[11px] text-sage-600 font-medium">Seggioloni</span>
+            </div>
+            <div class="bg-sage-50 p-3 rounded-2xl border border-sage-200 col-span-2 md:col-span-1">
+              <span id="statDeclined" class="block font-serif text-2xl font-bold text-gray-500">0</span>
+              <span class="text-[11px] text-gray-500 font-medium">Assenti</span>
+            </div>
+          </div>
+
+          <div class="flex flex-col md:flex-row justify-between items-center gap-3 bg-sage-50 p-3 rounded-2xl">
+            <input type="text" id="searchGuest" onkeyup="filterGuestTable()" placeholder="Cerca invitato per nome..." class="px-3 py-1.5 text-xs rounded-xl border border-sage-200 w-full md:w-64">
+            <button onclick="exportCSV()" class="bg-sage-600 hover:bg-sage-700 text-white text-xs px-3 py-1.5 rounded-xl font-medium transition flex items-center space-x-1">
+              <i data-lucide="download" class="w-3.5 h-3.5"></i>
+              <span>Esporta CSV</span>
+            </button>
+          </div>
+
+          <div class="overflow-x-auto border border-sage-200 rounded-2xl">
+            <table class="w-full text-left border-collapse text-xs">
+              <thead>
+                <tr class="bg-sage-100 text-sage-800 font-semibold border-b border-sage-200">
+                  <th class="p-3">Ospite Principale</th>
+                  <th class="p-3">Stato</th>
+                  <th class="p-3">Accompagnatore</th>
+                  <th class="p-3">Bambini & Seggioloni</th>
+                  <th class="p-3">Dettaglio Intolleranze per Persona</th>
+                  <th class="p-3">Musica / Auguri</th>
+                  <th class="p-3 text-right">Azione</th>
+                </tr>
+              </thead>
+              <tbody id="guestTableBody" class="divide-y divide-sage-100"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- TAB 2: GESTIONE TAVOLI -->
+        <div id="tabTables" class="hidden space-y-6">
+          <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-sage-50 p-4 rounded-2xl border border-sage-200">
+            <div>
+              <h3 class="font-serif font-bold text-sage-900 text-lg">Mappa & Disposizione Tavoli</h3>
+              <p class="text-xs text-sage-600">Organizza i tuoi invitati confermati per tavolo.</p>
+            </div>
+            <div class="flex items-center space-x-2">
+              <input type="text" id="newTableName" placeholder="Es. Tavolo Olivo" class="px-3 py-1.5 text-xs rounded-xl border border-sage-200">
+              <input type="number" id="newTableCapacity" value="10" min="2" max="20" class="w-16 px-2 py-1.5 text-xs rounded-xl border border-sage-200">
+              <button onclick="addTable()" class="bg-sage-700 hover:bg-sage-800 text-white text-xs px-3 py-1.5 rounded-xl font-medium transition">+ Aggiungi</button>
+            </div>
+          </div>
+
+          <div class="grid md:grid-cols-3 gap-6">
+            <div class="bg-white p-4 rounded-2xl border border-sage-200 shadow-sm md:col-span-1">
+              <h4 class="font-bold text-xs uppercase tracking-wider text-sage-800 mb-3 pb-2 border-b border-sage-100">
+                Ospiti da Assegnare (<span id="unassignedCount">0</span>)
+              </h4>
+              <div id="unassignedList" class="space-y-3 max-h-[500px] overflow-y-auto pr-1"></div>
+            </div>
+
+            <div class="md:col-span-2 space-y-4">
+              <div class="flex justify-between items-center">
+                <h4 class="font-bold text-xs uppercase tracking-wider text-sage-800">Tavoli e Posti Assegnati</h4>
+                <span id="tablesSummary" class="text-xs font-semibold text-sage-600">0 Posti Assegnati</span>
+              </div>
+              <div id="tablesGrid" class="grid sm:grid-cols-2 gap-4"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 3: VERIFICA SFIDE SPOSI -->
+        <div id="tabChallenges" class="hidden space-y-4">
+          <h3 class="font-serif font-bold text-sage-900 text-lg">Sfide Inviate dagli Invitati per l'Approvazione</h3>
+          <div class="overflow-x-auto border border-sage-200 rounded-2xl">
+            <table class="w-full text-left border-collapse text-xs">
+              <thead>
+                <tr class="bg-sage-100 text-sage-800 font-semibold border-b border-sage-200">
+                  <th class="p-3">Nome Invitato</th>
+                  <th class="p-3">Sfida Assegnata</th>
+                  <th class="p-3">Prova / Dettaglio Invio</th>
+                  <th class="p-3 text-right">Azione</th>
+                </tr>
+              </thead>
+              <tbody id="challengesTableBody" class="divide-y divide-sage-100"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- TAB 4: CMS EDITABILE IN AUTONOMIA (INFO, DATE, ORARI) -->
+        <div id="tabCms" class="hidden space-y-6">
+          <h3 class="font-serif font-bold text-sage-900 text-lg border-b border-sage-200 pb-2">Editore Contenuti & Informazioni</h3>
+          
+          <div class="grid md:grid-cols-2 gap-6">
+            <div class="bg-sage-50 p-4 rounded-2xl border border-sage-200 space-y-3 text-xs">
+              <h4 class="font-bold text-sage-800 text-sm">Dettagli Principali Sposi & Evento</h4>
+              <div>
+                <label class="block font-semibold mb-1">Nomi degli Sposi (es. Simona & Marco)</label>
+                <input type="text" id="cmsNamesInput" class="w-full px-3 py-2 rounded-xl border border-sage-200 bg-white">
+              </div>
+              <div>
+                <label class="block font-semibold mb-1">Data Matrimonio (per il Conto alla Rovescia)</label>
+                <input type="datetime-local" id="cmsDateInput" class="w-full px-3 py-2 rounded-xl border border-sage-200 bg-white">
+              </div>
+              <div>
+                <label class="block font-semibold mb-1">Data Formattata (es. Sabato 12 Giugno 2027)</label>
+                <input type="text" id="cmsDateText" class="w-full px-3 py-2 rounded-xl border border-sage-200 bg-white">
+              </div>
+              <div>
+                <label class="block font-semibold mb-1">Orario di Inizio Generale (es. Ore 17:00)</label>
+                <input type="text" id="cmsTimeText" class="w-full px-3 py-2 rounded-xl border border-sage-200 bg-white">
+              </div>
+            </div>
+
+            <div class="bg-sage-50 p-4 rounded-2xl border border-sage-200 space-y-3 text-xs">
+              <h4 class="font-bold text-sage-800 text-sm">Location e Mappe</h4>
+              <div>
+                <label class="block font-semibold mb-1">Nome Location</label>
+                <input type="text" id="cmsLocName" class="w-full px-3 py-2 rounded-xl border border-sage-200 bg-white">
+              </div>
+              <div>
+                <label class="block font-semibold mb-1">Indirizzo Completo</label>
+                <input type="text" id="cmsLocAddress" class="w-full px-3 py-2 rounded-xl border border-sage-200 bg-white">
+              </div>
+              <div>
+                <label class="block font-semibold mb-1">Link Google Maps</label>
+                <input type="text" id="cmsLocMapsUrl" class="w-full px-3 py-2 rounded-xl border border-sage-200 bg-white">
+              </div>
+              <div>
+                <label class="block font-semibold mb-1">Descrizione Location</label>
+                <textarea id="cmsLocDesc" rows="2" class="w-full px-3 py-2 rounded-xl border border-sage-200 bg-white"></textarea>
+              </div>
+            </div>
+
+            <div class="bg-sage-50 p-4 rounded-2xl border border-sage-200 space-y-3 text-xs md:col-span-2">
+              <h4 class="font-bold text-sage-800 text-sm">Orari Programma della Giornata</h4>
+              <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                <div>
+                  <label class="block font-semibold mb-1">1. Cerimonia</label>
+                  <input type="text" id="cmsProgTime1" placeholder="Ore 17:00" class="w-full px-3 py-2 rounded-xl border border-sage-200 bg-white">
+                </div>
+                <div>
+                  <label class="block font-semibold mb-1">2. Aperitivo</label>
+                  <input type="text" id="cmsProgTime2" placeholder="Ore 18:30" class="w-full px-3 py-2 rounded-xl border border-sage-200 bg-white">
+                </div>
+                <div>
+                  <label class="block font-semibold mb-1">3. Banchetto</label>
+                  <input type="text" id="cmsProgTime3" placeholder="Ore 20:00" class="w-full px-3 py-2 rounded-xl border border-sage-200 bg-white">
+                </div>
+                <div>
+                  <label class="block font-semibold mb-1">4. Torta & Party</label>
+                  <input type="text" id="cmsProgTime4" placeholder="Ore 23:00" class="w-full px-3 py-2 rounded-xl border border-sage-200 bg-white">
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-sage-50 p-4 rounded-2xl border border-sage-200 space-y-3 text-xs md:col-span-2">
+              <h4 class="font-bold text-sage-800 text-sm">Frasi, Lista Nozze & IBAN</h4>
+              <div class="grid md:grid-cols-2 gap-4">
+                <div>
+                  <label class="block font-semibold mb-1">Citazione Hero principale</label>
+                  <textarea id="cmsHeroQuote" rows="2" class="w-full px-3 py-2 rounded-xl border border-sage-200 bg-white"></textarea>
+                </div>
+                <div>
+                  <label class="block font-semibold mb-1">IBAN per i Regali</label>
+                  <input type="text" id="cmsIban" class="w-full px-3 py-2 rounded-xl border border-sage-200 bg-white font-mono">
+                </div>
+                <div>
+                  <label class="block font-semibold mb-1">Intestatario Conto</label>
+                  <input type="text" id="cmsGiftOwner" class="w-full px-3 py-2 rounded-xl border border-sage-200 bg-white">
+                </div>
+                <div>
+                  <label class="block font-semibold mb-1">Banca</label>
+                  <input type="text" id="cmsGiftBank" class="w-full px-3 py-2 rounded-xl border border-sage-200 bg-white">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <button id="cmsSaveBtn" onclick="saveCmsChanges()" class="w-full bg-sage-700 hover:bg-sage-800 text-white font-medium py-3 rounded-xl transition text-xs flex items-center justify-center space-x-2">
+            <span>💾 Salva e Pubblica Modifiche nel Cloud</span>
+          </button>
+        </div>
+
+        <!-- TAB 5: PERSONALIZZAZIONE COLORI, SCRITTE E FONT -->
+        <div id="tabStyle" class="hidden space-y-6">
+          <h3 class="font-serif font-bold text-sage-900 text-lg border-b border-sage-200 pb-2">Personalizzazione Stile, Colori e Font</h3>
+          
+          <div class="grid md:grid-cols-2 gap-6 text-xs">
+            <div class="bg-sage-50 p-4 rounded-2xl border border-sage-200 space-y-4">
+              <h4 class="font-bold text-sage-800 text-sm">Colori della Pagina</h4>
+              <div class="flex justify-between items-center bg-white p-2.5 rounded-xl border border-sage-100">
+                <label class="font-semibold">Colore Testi Principali:</label>
+                <input type="color" id="styleTextColor" value="#283728" class="w-10 h-8 rounded cursor-pointer">
+              </div>
+              <div class="flex justify-between items-center bg-white p-2.5 rounded-xl border border-sage-100">
+                <label class="font-semibold">Colore Dettagli / Oro:</label>
+                <input type="color" id="styleAccentColor" value="#d4af37" class="w-10 h-8 rounded cursor-pointer">
+              </div>
+              <div class="flex justify-between items-center bg-white p-2.5 rounded-xl border border-sage-100">
+                <label class="font-semibold">Colore Sfondo Base:</label>
+                <input type="color" id="styleBgColor" value="#fcfbf7" class="w-10 h-8 rounded cursor-pointer">
+              </div>
+            </div>
+
+            <div class="bg-sage-50 p-4 rounded-2xl border border-sage-200 space-y-4">
+              <h4 class="font-bold text-sage-800 text-sm">Font e Dimensione Testi</h4>
+              <div>
+                <label class="block font-semibold mb-1">Grandezza Testi Generali</label>
+                <select id="styleBodySize" class="w-full px-3 py-2 rounded-xl border border-sage-200 bg-white">
+                  <option value="14px">Normale (14px)</option>
+                  <option value="16px" selected>Medio/Grande (16px)</option>
+                  <option value="18px">Grande (18px)</option>
+                </select>
+              </div>
+              <div>
+                <label class="block font-semibold mb-1">Grandezza Titoli Principali</label>
+                <select id="styleTitleSize" class="w-full px-3 py-2 rounded-xl border border-sage-200 bg-white">
+                  <option value="2.5rem">Standard</option>
+                  <option value="3.5rem" selected>Grande</option>
+                  <option value="4.5rem">Molto Grande</option>
+                </select>
+              </div>
+              <div>
+                <label class="block font-semibold mb-1">Font Titoli (Nomi e Intestazioni)</label>
+                <select id="styleTitleFont" class="w-full px-3 py-2 rounded-xl border border-sage-200 bg-white">
+                  <option value="'Cormorant Garamond', serif">Cormorant Garamond (Classico Elegante)</option>
+                  <option value="'Playfair Display', serif">Playfair Display (Moderno Chic)</option>
+                  <option value="'Cinzel', serif">Cinzel (Solenne & Regale)</option>
+                  <option value="'Sacramento', cursive">Sacramento (Corsivo Cromatico)</option>
+                  <option value="'Great Vibes', cursive">Great Vibes (Corsivo Elegante)</option>
+                </select>
+              </div>
+              <div>
+                <label class="block font-semibold mb-1">Font Testi Generali</label>
+                <select id="styleBodyFont" class="w-full px-3 py-2 rounded-xl border border-sage-200 bg-white">
+                  <option value="'Montserrat', sans-serif">Montserrat (Pulito & Moderno)</option>
+                  <option value="'Cormorant Garamond', serif">Cormorant Garamond (Serif Leggibile)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex gap-3">
+            <button onclick="saveStyleChanges()" class="flex-1 bg-sage-700 hover:bg-sage-800 text-white font-medium py-3 rounded-xl transition text-xs">
+              🎨 Applica Stile & Colori
+            </button>
+            <button onclick="resetStyleDefaults()" class="px-4 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium py-3 rounded-xl transition text-xs">
+              Ripristina
+            </button>
+          </div>
+        </div>
+
+        <!-- TAB 6: PERSONALIZZAZIONE SFONDO & AUDIO -->
+        <div id="tabBackground" class="hidden space-y-6">
+          <div class="grid md:grid-cols-2 gap-6">
+            <!-- Sfondo -->
+            <div class="bg-sage-50 p-6 rounded-2xl border border-sage-200 text-center space-y-4">
+              <div class="w-12 h-12 bg-sage-200 rounded-full flex items-center justify-center text-sage-800 mx-auto">
+                <i data-lucide="image" class="w-6 h-6"></i>
+              </div>
+              <h3 class="font-serif font-bold text-sage-900 text-lg">Immagine di Sfondo</h3>
+              <p class="text-xs text-sage-600">Carica una foto dal tuo dispositivo per impostarla come sfondo.</p>
+              
+              <div class="space-y-3 pt-2">
+                <input type="file" id="bgImageInput" accept="image/*" class="w-full text-xs text-sage-700 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-sage-700 file:text-white hover:file:bg-sage-800 cursor-pointer">
+                <div class="flex gap-2 pt-2">
+                  <button onclick="applyCustomBackground()" class="flex-1 bg-sage-700 hover:bg-sage-800 text-white text-xs py-2.5 rounded-xl font-medium transition">
+                    Applica Foto
+                  </button>
+                  <button onclick="removeCustomBackground()" class="px-3 bg-red-100 hover:bg-red-200 text-red-700 text-xs py-2.5 rounded-xl font-medium transition">
+                    Rimuovi
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Musica di sottofondo -->
+            <div class="bg-sage-50 p-6 rounded-2xl border border-sage-200 text-center space-y-4">
+              <div class="w-12 h-12 bg-sage-200 rounded-full flex items-center justify-center text-sage-800 mx-auto">
+                <i data-lucide="music" class="w-6 h-6"></i>
+              </div>
+              <h3 class="font-serif font-bold text-sage-900 text-lg">Musica di Sottofondo</h3>
+              <p class="text-xs text-sage-600">Inserisci l'URL di un video YouTube o di un file MP3 per la musica di sottofondo.</p>
+              
+              <div class="space-y-3 pt-2 text-left">
+                <input type="text" id="audioUrlInput" placeholder="Es. https://www.youtube.com/watch?v=... oppure canzone.mp3" class="w-full px-3 py-2 text-xs rounded-xl border border-sage-200 bg-white">
+                <button onclick="saveAudioConfig()" class="w-full bg-sage-700 hover:bg-sage-800 text-white text-xs py-2.5 rounded-xl font-medium transition">
+                  Salva Brano Audio
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
     </div>
   </div>
 
   <script>
-    const SHEET_URL = 'https://script.google.com/macros/s/AKfycbzl2eQBEIE9GDFIpwxVYOQi_aIm003o5TjblFRcGvl3ZTvF5z81nAWyRHC-uDBGUTJ9/exec';
-    let weddingDate = new Date("2027-06-12T17:00:00").getTime();
-    let cmsConfig = { NomiSposi: 'Simona & Marco', TestoData: 'Sabato 12 Giugno 2027', AudioUrl: '' };
-    let styleConfig = JSON.parse(localStorage.getItem('wedding_style_size')) || { bodySize: '16px', titleSize: '3rem' };
+    const GOOGLE_SHEET_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzl2eQBEIE9GDFIpwxVYOQi_aIm003o5TjblFRcGvl3ZTvF5z81nAWyRHC-uDBGUTJ9/exec';
+    
+    let defaultWeddingDate = new Date("2027-06-12T17:00:00").getTime();
+
+    let cmsConfig = {
+      NomiSposi: 'Simona & Marco',
+      DataIso: '2027-06-12T17:00',
+      TestoData: 'Sabato 12 Giugno 2027',
+      Orario: 'Ore 17:00',
+      ProgTime1: 'Ore 17:00',
+      ProgTime2: 'Ore 18:30',
+      ProgTime3: 'Ore 20:00',
+      ProgTime4: 'Ore 23:00',
+      HeroQuote: '"Immersi nella bellezza della natura, vi invitiamo a condividere con noi la gioia del nostro giorno speciale."',
+      LocName: 'Ristorante Acquamatta',
+      LocAddress: 'Cascina Molino della Raina, 6 - 27020 Semiana (PV)',
+      LocMapsUrl: 'https://maps.google.com/?cid=1094651536832372958&g_mp=Cidnb29nbGUubWFwsy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQ',
+      LocDesc: "Situato nel cuore della Lomellina a Semiana (PV), il Ristorante Acquamatta offre un'atmosfera unica immersa nella natura, ideale per celebrare il nostro giorno speciale insieme alle persone care.",
+      IBAN: 'IT00 X000 0000 0000 0000 0000 000',
+      GiftOwner: 'Simona & Marco',
+      GiftBank: '[Nome Banca]',
+      AudioUrl: ''
+    };
+
+    let styleConfig = JSON.parse(localStorage.getItem('wedding_style_config')) || {
+      textColor: '#283728',
+      accentColor: '#d4af37',
+      bgColor: '#fcfbf7',
+      titleFont: "'Cormorant Garamond', serif",
+      bodyFont: "'Montserrat', sans-serif",
+      bodySize: '16px',
+      titleSize: '3.5rem'
+    };
+
+    const weddingChallenges = [
+      "🏁 SFIDA DI SQUADRA: Create con il vostro tavolo la catena più lunga usando solo giacche, cravatte, cinture e tovaglioli!",
+      "🎶 SFIDA DI SQUADRA: Cantate insieme a tutto il tavolo una strofa di una canzone famosa dedicandola agli sposi!",
+      "📸 SFIDA DI SQUADRA: Scattate una foto di gruppo con tutto il tavolo come se foste sulla copertina di una rivista di alta moda!",
+      "🍷 SFIDA DI SQUADRA: Inventate una poesia o uno stornello in rima per gli sposi e recitatelo al loro passaggio!",
+      "💃 SFIDA DI SQUADRA: Portate contemporaneamente almeno la metà del vostro tavolo a ballare in pista!",
+      "📸 Ruba uno scatto agli sposi mentre si guardano negli occhi o ridono spontaneamente (senza farti scoprire!).",
+      "👴 Scatta una foto insieme alla persona più giovane e a quella più anziana della festa.",
+      "🕶️ Fai una foto di gruppo dove tutti indossano occhiali da sole con aria da agente segreto.",
+      "🥂 Fai un brindisi con un invitato di un altro tavolo che non avevi mai visto prima.",
+      "📜 Scrivi un consiglio divertente per la vita di coppia sul retro del tuo segnaposto."
+    ];
+
+    let currentGeneratedChallenge = "";
     let guestResponses = JSON.parse(localStorage.getItem('wedding_guests_simona_marco')) || [];
     let submittedChallenges = JSON.parse(localStorage.getItem('wedding_challenges_simona_marco')) || [];
-    let tables = JSON.parse(localStorage.getItem('wedding_tables_simona_marco')) || [{ id: 't1', name: 'Tavolo Olivo', capacity: 10 }];
+    let tables = JSON.parse(localStorage.getItem('wedding_tables_simona_marco')) || [
+      { id: 't1', name: 'Tavolo Olivo', capacity: 10 },
+      { id: 't2', name: 'Tavolo Eucalipto', capacity: 8 },
+      { id: 't3', name: 'Tavolo Lavanda', capacity: 10 }
+    ];
 
     document.addEventListener('DOMContentLoaded', async () => {
       lucide.createIcons();
-      applyStyleSize();
+      applyStyleToPage();
+      
       try {
-        const res = await fetch(`${SHEET_URL}?nocache=${Date.now()}`);
-        const data = await res.json();
-        if (data && !data.status) {
-          if (data.AudioUrl && data.AudioUrl.includes('drive.google.com')) data.AudioUrl = '';
-          cmsConfig = Object.assign(cmsConfig, data);
+        const cloudUrl = `${GOOGLE_SHEET_SCRIPT_URL}?nocache=${Date.now()}`;
+        const response = await fetch(cloudUrl);
+        const remoteConfig = await response.json();
+        if (remoteConfig && !remoteConfig.status) {
+          if (remoteConfig.AudioUrl && remoteConfig.AudioUrl.includes('drive.google.com')) {
+            remoteConfig.AudioUrl = '';
+          }
+          cmsConfig = Object.assign(cmsConfig, remoteConfig);
+          localStorage.setItem('wedding_cms_config', JSON.stringify(cmsConfig));
         }
-      } catch (e) { console.warn(e); }
+      } catch (err) {
+        console.warn('Caricamento remoto fallito, uso dati locali/default:', err);
+        const localCms = localStorage.getItem('wedding_cms_config');
+        if (localCms) {
+          let parsedLocal = JSON.parse(localCms);
+          if (parsedLocal.AudioUrl && parsedLocal.AudioUrl.includes('drive.google.com')) {
+            parsedLocal.AudioUrl = '';
+          }
+          cmsConfig = Object.assign(cmsConfig, parsedLocal);
+        }
+      }
+
       applyCmsToPage();
       startCountdown();
+      
+      if (!localStorage.getItem('wedding_admin_pin')) {
+        localStorage.setItem('wedding_admin_pin', '1234');
+        localStorage.setItem('wedding_admin_secret', 'fido');
+      }
+
+      const savedBg = localStorage.getItem('wedding_custom_bg');
+      if (savedBg) {
+        applyBgToBody(savedBg);
+      }
     });
 
     function formatDateString(str) {
-      if (!str || str.includes('T') || str.includes('Z')) return 'Sabato 12 Giugno 2027';
+      if (!str || str.includes('T') || str.includes('Z')) {
+        return 'Sabato 12 Giugno 2027';
+      }
       return str;
     }
 
     function applyCmsToPage() {
-      const d = formatDateString(cmsConfig.TestoData);
+      const displayDate = formatDateString(cmsConfig.TestoData);
+
       if (cmsConfig.NomiSposi) {
-        document.getElementById('docTitle').innerText = `${cmsConfig.NomiSposi} - Invito`;
+        document.getElementById('docTitle').innerText = `${cmsConfig.NomiSposi} - Invito di Nozze`;
+        document.getElementById('navInitials').innerText = cmsConfig.NomiSposi.split('&').map(n => n.trim()[0]).join(' & ');
         document.getElementById('heroNames').innerHTML = cmsConfig.NomiSposi.replace('&', '<span class="font-script text-gold text-4xl md:text-6xl font-normal">&</span>');
-        document.getElementById('footerText').innerText = `${cmsConfig.NomiSposi} • ${d}`;
+        document.getElementById('footerText').innerText = `${cmsConfig.NomiSposi} • ${displayDate}`;
       }
-      document.getElementById('heroDate').innerText = d;
+      if (cmsConfig.HeroQuote) document.getElementById('heroQuote').innerText = cmsConfig.HeroQuote;
+
+      document.getElementById('heroDate').innerText = displayDate;
+      document.getElementById('programSub').innerText = `${displayDate} • ${cmsConfig.LocName || 'Ristorante Acquamatta'}`;
+
+      if (cmsConfig.Orario) document.getElementById('heroTime').innerText = cmsConfig.Orario;
+      
+      if (cmsConfig.ProgTime1) document.getElementById('progTime1').innerText = cmsConfig.ProgTime1;
+      if (cmsConfig.ProgTime2) document.getElementById('progTime2').innerText = cmsConfig.ProgTime2;
+      if (cmsConfig.ProgTime3) document.getElementById('progTime3').innerText = cmsConfig.ProgTime3;
+      if (cmsConfig.ProgTime4) document.getElementById('progTime4').innerText = cmsConfig.ProgTime4;
+
+      if (cmsConfig.LocName) {
+        document.getElementById('heroLocationName').innerText = cmsConfig.LocName;
+        document.getElementById('locationTitle').innerText = cmsConfig.LocName;
+        document.getElementById('footerSubText').innerText = cmsConfig.LocName;
+      }
+      if (cmsConfig.LocDesc) document.getElementById('locationDesc').innerText = cmsConfig.LocDesc;
+      if (cmsConfig.LocAddress) document.getElementById('locationAddress').innerText = cmsConfig.LocAddress;
+      if (cmsConfig.LocMapsUrl) document.getElementById('locationMapsUrl').href = cmsConfig.LocMapsUrl;
+      if (cmsConfig.IBAN) document.getElementById('ibanText').innerText = cmsConfig.IBAN;
+      if (cmsConfig.GiftOwner) document.getElementById('giftOwner').innerText = cmsConfig.GiftOwner;
+      if (cmsConfig.GiftBank) document.getElementById('giftBank').innerText = cmsConfig.GiftBank;
+
+      if (cmsConfig.DataIso) {
+        defaultWeddingDate = new Date(cmsConfig.DataIso).getTime();
+      }
     }
 
-    function applyStyleSize() {
-      const el = document.getElementById('customDynamicStyles');
-      el.innerHTML += `
-        body, p, span, a, label, input, button { font-size: ${styleConfig.bodySize} !important; }
-        #heroNames { font-size: ${styleConfig.titleSize} !important; }
+    function applyStyleToPage() {
+      const dynamicStyles = document.getElementById('customDynamicStyles');
+      dynamicStyles.innerHTML = `
+        h1, h2, h3, h4, .font-serif { font-family: ${styleConfig.titleFont} !important; }
+        body, p, label, input, button { font-family: ${styleConfig.bodyFont} !important; font-size: ${styleConfig.bodySize || '16px'} !important; }
+        #heroNames { font-size: ${styleConfig.titleSize || '3.5rem'} !important; }
+        .text-sage-900, .text-sage-800 { color: ${styleConfig.textColor} !important; }
+        .text-gold { color: ${styleConfig.accentColor} !important; }
+        .bg-gold { background-color: ${styleConfig.accentColor} !important; }
+        .watercolor-bg { background-color: ${styleConfig.bgColor} !important; }
       `;
-    }
-
-    function saveStyleChanges() {
-      styleConfig.bodySize = document.getElementById('styleBodySize').value;
-      styleConfig.titleSize = document.getElementById('styleTitleSize').value;
-      localStorage.setItem('wedding_style_size', JSON.stringify(styleConfig));
-      applyStyleSize();
-      alert('Dimensione font aggiornata!');
     }
 
     function toggleAudioPlay() {
       const icon = document.getElementById('audioIcon');
-      let url = cmsConfig.AudioUrl || '';
-      if (!url || url.includes('drive.google.com')) { alert("Inserisci un link YouTube valido nell'Area Sposi!"); return; }
-      if (url.includes('youtube.com') || url.includes('youtu.be')) {
-        let iframe = document.getElementById('ytAudioFrame');
-        if (!iframe) {
-          let vid = url.includes('v=') ? url.split('v=')[1].split('&')[0] : url.split('youtu.be/')[1].split('?')[0];
-          iframe = document.createElement('iframe');
-          iframe.id = 'ytAudioFrame'; iframe.style.display = 'none'; iframe.allow = 'autoplay';
-          iframe.src = `https://www.youtube.com/embed/${vid}?autoplay=1&loop=1`;
-          document.body.appendChild(iframe);
-          icon.setAttribute('data-lucide', 'volume-2');
-        } else { iframe.remove(); icon.setAttribute('data-lucide', 'volume-x'); }
+      let audioUrl = cmsConfig.AudioUrl || '';
+
+      if (!audioUrl || audioUrl.includes('drive.google.com')) {
+        alert("Nessun brano valido inserito nell'Area Sposi! Inserisci un link YouTube o un MP3.");
+        return;
+      }
+
+      if (audioUrl.includes('youtube.com') || audioUrl.includes('youtu.be')) {
+        let ytIframe = document.getElementById('ytAudioFrame');
+        if (!ytIframe) {
+          let videoId = audioUrl;
+          if (videoId.includes('v=')) {
+            videoId = videoId.split('v=')[1].split('&')[0];
+          } else if (videoId.includes('youtu.be/')) {
+            videoId = videoId.split('youtu.be/')[1].split('?')[0];
+          }
+
+          ytIframe = document.createElement('iframe');
+          ytIframe.id = 'ytAudioFrame';
+          ytIframe.style.display = 'none';
+          ytIframe.allow = 'autoplay';
+          ytIframe.src = `https://www.youtube.com/embed/${videoId}?enablejsapi=1&autoplay=1&loop=1`;
+          document.body.appendChild(ytIframe);
+          if (icon) icon.setAttribute('data-lucide', 'volume-2');
+        } else {
+          ytIframe.remove();
+          if (icon) icon.setAttribute('data-lucide', 'volume-x');
+        }
       } else {
-        const p = document.getElementById('bgAudioPlayer');
-        if (p.src !== url) p.src = url;
-        p.paused ? (p.play(), icon.setAttribute('data-lucide', 'volume-2')) : (p.pause(), icon.setAttribute('data-lucide', 'volume-x'));
+        const player = document.getElementById('bgAudioPlayer');
+        if (player.src !== audioUrl) {
+          player.src = audioUrl;
+        }
+
+        if (player.paused) {
+          player.play();
+          if (icon) icon.setAttribute('data-lucide', 'volume-2');
+        } else {
+          player.pause();
+          if (icon) icon.setAttribute('data-lucide', 'volume-x');
+        }
       }
       lucide.createIcons();
     }
 
-    function verifyPin() {
-      if (document.getElementById('adminPin').value === (localStorage.getItem('wedding_admin_pin') || '1234')) {
-        document.getElementById('pinView').classList.add('hidden');
-        document.getElementById('adminDashboard').classList.remove('hidden');
-        document.getElementById('cmsNamesInput').value = cmsConfig.NomiSposi || '';
-        document.getElementById('cmsDateText').value = cmsConfig.TestoData || '';
-        document.getElementById('audioUrlInput').value = (cmsConfig.AudioUrl && !cmsConfig.AudioUrl.includes('drive.google.com')) ? cmsConfig.AudioUrl : '';
-        document.getElementById('styleBodySize').value = styleConfig.bodySize;
-        document.getElementById('styleTitleSize').value = styleConfig.titleSize;
-      } else { alert('PIN errato!'); }
+    async function saveCmsChanges() {
+      const saveBtn = document.getElementById('cmsSaveBtn');
+      saveBtn.disabled = true;
+      saveBtn.innerText = "Sincronizzazione Cloud in corso...";
+
+      cmsConfig.NomiSposi = document.getElementById('cmsNamesInput').value.trim();
+      cmsConfig.DataIso = document.getElementById('cmsDateInput').value;
+      cmsConfig.TestoData = formatDateString(document.getElementById('cmsDateText').value.trim());
+      cmsConfig.Orario = document.getElementById('cmsTimeText').value.trim();
+      cmsConfig.ProgTime1 = document.getElementById('cmsProgTime1').value.trim();
+      cmsConfig.ProgTime2 = document.getElementById('cmsProgTime2').value.trim();
+      cmsConfig.ProgTime3 = document.getElementById('cmsProgTime3').value.trim();
+      cmsConfig.ProgTime4 = document.getElementById('cmsProgTime4').value.trim();
+      cmsConfig.HeroQuote = document.getElementById('cmsHeroQuote').value.trim();
+      cmsConfig.LocName = document.getElementById('cmsLocName').value.trim();
+      cmsConfig.LocAddress = document.getElementById('cmsLocAddress').value.trim();
+      cmsConfig.LocMapsUrl = document.getElementById('cmsLocMapsUrl').value.trim();
+      cmsConfig.LocDesc = document.getElementById('cmsLocDesc').value.trim();
+      cmsConfig.IBAN = document.getElementById('cmsIban').value.trim();
+      cmsConfig.GiftOwner = document.getElementById('cmsGiftOwner').value.trim();
+      cmsConfig.GiftBank = document.getElementById('cmsGiftBank').value.trim();
+
+      localStorage.setItem('wedding_cms_config', JSON.stringify(cmsConfig));
+      applyCmsToPage();
+
+      try {
+        const form = document.createElement('form');
+        form.action = GOOGLE_SHEET_SCRIPT_URL;
+        form.method = 'POST';
+        form.target = 'hidden_iframe';
+        form.style.display = 'none';
+
+        let iframe = document.getElementById('hidden_iframe');
+        if (!iframe) {
+          iframe = document.createElement('iframe');
+          iframe.name = 'hidden_iframe';
+          iframe.id = 'hidden_iframe';
+          iframe.style.display = 'none';
+          document.body.appendChild(iframe);
+        }
+
+        const actionInput = document.createElement('input');
+        actionInput.type = 'hidden';
+        actionInput.name = 'action';
+        actionInput.value = 'updateConfig';
+        form.appendChild(actionInput);
+
+        const configInput = document.createElement('input');
+        configInput.type = 'hidden';
+        configInput.name = 'config';
+        configInput.value = JSON.stringify(cmsConfig);
+        form.appendChild(configInput);
+
+        document.body.appendChild(form);
+        form.submit();
+        document.body.removeChild(form);
+
+        alert('Contenuti salvati e pubblicati online con successo! 🎉');
+      } catch (err) {
+        console.error(err);
+        alert('Errore durante l\'invio al cloud.');
+      }
+
+      saveBtn.disabled = false;
+      saveBtn.innerText = "💾 Salva e Pubblica Modifiche nel Cloud";
+    }
+
+    function saveStyleChanges() {
+      styleConfig.textColor = document.getElementById('styleTextColor').value;
+      styleConfig.accentColor = document.getElementById('styleAccentColor').value;
+      styleConfig.bgColor = document.getElementById('styleBgColor').value;
+      styleConfig.titleFont = document.getElementById('styleTitleFont').value;
+      styleConfig.bodyFont = document.getElementById('styleBodyFont').value;
+      styleConfig.bodySize = document.getElementById('styleBodySize').value;
+      styleConfig.titleSize = document.getElementById('styleTitleSize').value;
+
+      localStorage.setItem('wedding_style_config', JSON.stringify(styleConfig));
+      applyStyleToPage();
+      alert('Stile, colori e grandezza font aggiornati!');
+    }
+
+    function resetStyleDefaults() {
+      localStorage.removeItem('wedding_style_config');
+      location.reload();
     }
 
     async function saveAudioConfig() {
-      let val = document.getElementById('audioUrlInput').value.trim();
-      if (val.includes('drive.google.com')) { alert('Google Drive non è supportato. Usa YouTube o MP3.'); return; }
-      cmsConfig.AudioUrl = val;
-      localStorage.setItem('wedding_cms_config', JSON.stringify(cmsConfig));
+      let audioInputVal = document.getElementById('audioUrlInput').value.trim();
       
-      // Sincronizza subito sul cloud
-      try {
-        await fetch(SHEET_URL, {
-          method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify({ action: 'updateConfig', config: JSON.stringify(cmsConfig) })
-        });
-      } catch(e) {}
-      alert('Audio salvato e sincronizzato con successo! 🎵');
-    }
+      if (audioInputVal.includes('drive.google.com')) {
+        alert('I link di Google Drive non sono compatibili. Inserisci un link di YouTube o un file MP3.');
+        return;
+      }
 
-    function saveCmsChanges() {
-      cmsConfig.NomiSposi = document.getElementById('cmsNamesInput').value.trim();
-      cmsConfig.TestoData = formatDateString(document.getElementById('cmsDateText').value.trim());
+      cmsConfig.AudioUrl = audioInputVal;
       localStorage.setItem('wedding_cms_config', JSON.stringify(cmsConfig));
       applyCmsToPage();
-      alert('Contenuti salvati!');
+
+      try {
+        const form = document.createElement('form');
+        form.action = GOOGLE_SHEET_SCRIPT_URL;
+        form.method = 'POST';
+        form.target = 'hidden_iframe_audio';
+        form.style.display = 'none';
+
+        let iframe = document.getElementById('hidden_iframe_audio');
+        if (!iframe) {
+          iframe = document.createElement('iframe');
+          iframe.name = 'hidden_iframe_audio';
+          iframe.id = 'hidden_iframe_audio';
+          iframe.style.display = 'none';
+          document.body.appendChild(iframe);
+        }
+
+        const actionInput = document.createElement('input');
+        actionInput.type = 'hidden';
+        actionInput.name = 'action';
+        actionInput.value = 'updateConfig';
+        form.appendChild(actionInput);
+
+        const configInput = document.createElement('input');
+        configInput.type = 'hidden';
+        configInput.name = 'config';
+        configInput.value = JSON.stringify(cmsConfig);
+        form.appendChild(configInput);
+
+        document.body.appendChild(form);
+        form.submit();
+        document.body.removeChild(form);
+      } catch (err) {
+        console.error(err);
+      }
+
+      alert('Brano audio salvato e aggiornato con successo! 🎵');
+    }
+
+    function generateRandomChallenge() {
+      const randomIndex = Math.floor(Math.random() * weddingChallenges.length);
+      currentGeneratedChallenge = weddingChallenges[randomIndex];
+      document.getElementById('challengeText').innerText = currentGeneratedChallenge;
+      document.getElementById('verifyChallengeBox').classList.remove('hidden');
+    }
+
+    async function submitChallengeVerification() {
+      const name = document.getElementById('challengerName').value.trim();
+      const proof = document.getElementById('challengeProof').value.trim();
+
+      if (!name || !proof) {
+        alert('Per favore inserisci il tuo nome/tavolo e la prova del completamento.');
+        return;
+      }
+
+      const challengeData = {
+        id: Date.now().toString(),
+        name: name,
+        challenge: currentGeneratedChallenge,
+        proof: proof,
+        timestamp: new Date().toLocaleString('it-IT')
+      };
+
+      submittedChallenges.push(challengeData);
+      localStorage.setItem('wedding_challenges_simona_marco', JSON.stringify(submittedChallenges));
+
+      confetti({ particleCount: 50, spread: 50, origin: { y: 0.7 } });
+      alert('Sfida inviata agli sposi! La verificheranno al più presto 🎉');
+      document.getElementById('challengerName').value = '';
+      document.getElementById('challengeProof').value = '';
+      document.getElementById('verifyChallengeBox').classList.add('hidden');
+    }
+
+    function copyIban() {
+      const iban = document.getElementById('ibanText').innerText;
+      navigator.clipboard.writeText(iban).then(() => {
+        alert('IBAN copiato negli appunti!');
+      });
+    }
+
+    function applyBgToBody(dataUrl) {
+      const body = document.getElementById('pageBody');
+      body.style.backgroundImage = `linear-gradient(rgba(252, 251, 247, 0.88), rgba(252, 251, 247, 0.88)), url('${dataUrl}')`;
+    }
+
+    function applyCustomBackground() {
+      const fileInput = document.getElementById('bgImageInput');
+      if (fileInput.files && fileInput.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const base64Image = e.target.result;
+          localStorage.setItem('wedding_custom_bg', base64Image);
+          applyBgToBody(base64Image);
+          alert('Sfondo aggiornato con successo!');
+          toggleAdminModal();
+        };
+        reader.readAsDataURL(fileInput.files[0]);
+      } else {
+        alert('Seleziona prima un file immagine.');
+      }
+    }
+
+    function removeCustomBackground() {
+      localStorage.removeItem('wedding_custom_bg');
+      const body = document.getElementById('pageBody');
+      body.style.backgroundImage = '';
+      alert('Sfondo ripristinato allo stile originale.');
+      toggleAdminModal();
     }
 
     function startCountdown() {
-      setInterval(() => {
-        const diff = weddingDate - new Date().getTime();
-        if (diff > 0) {
-          document.getElementById('days').innerText = Math.floor(diff / (1000 * 60 * 60 * 24));
-          document.getElementById('hours').innerText = Math.floor((diff / (1000 * 60 * 60)) % 24);
-          document.getElementById('minutes').innerText = Math.floor((diff / 1000 / 60) % 60);
-          document.getElementById('seconds').innerText = Math.floor((diff / 1000) % 60);
+      const update = () => {
+        const now = new Date().getTime();
+        const diff = defaultWeddingDate - now;
+
+        if (diff <= 0) {
+          document.getElementById('countdown').innerHTML = `<div class="col-span-4 text-center font-serif text-xl text-sage-800 font-bold">Oggi è il grande giorno! 🎉</div>`;
+          return;
         }
-      }, 1000);
+
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+        document.getElementById('days').innerText = days;
+        document.getElementById('hours').innerText = hours;
+        document.getElementById('minutes').innerText = minutes;
+        document.getElementById('seconds').innerText = seconds;
+      };
+      update();
+      setInterval(update, 1000);
     }
 
-    function toggleAdminModal() { document.getElementById('adminModal').classList.toggle('hidden'); }
-    function toggleAttendanceFields(att) { document.getElementById('attendanceDetails').classList.toggle('hidden', !att); }
-    function togglePartnerFields(chk) { document.getElementById('partnerContainer').classList.toggle('hidden', !chk); }
-    function generateRandomChallenge() {
-      const challenges = ["Scatta una foto agli sposi!", "Fai un brindisi con un ospite sconosciuto!"];
-      document.getElementById('challengeText').innerText = challenges[Math.floor(Math.random() * challenges.length)];
-      document.getElementById('verifyChallengeBox').classList.remove('hidden');
+    function toggleAttendanceFields(attending) {
+      document.getElementById('attendanceDetails').classList.toggle('hidden', !attending);
     }
-    function submitChallengeVerification() { alert('Sfida inviata!'); document.getElementById('verifyChallengeBox').classList.add('hidden'); }
-    function copyIban() { navigator.clipboard.writeText(document.getElementById('ibanText').innerText); alert('IBAN copiato!'); }
-    function switchAdminTab(t) {
-      ['guests', 'tables', 'challenges', 'cms', 'style', 'background'].forEach(tab => {
-        document.getElementById(`tab${tab.charAt(0).toUpperCase() + tab.slice(1)}`).classList.toggle('hidden', tab !== t);
-      });
+
+    function togglePartnerFields(checked) {
+      document.getElementById('partnerContainer').classList.toggle('hidden', !checked);
     }
-    function handleFormSubmit(e) {
+
+    function toggleKidsFields(checked) {
+      document.getElementById('kidsContainer').classList.toggle('hidden', !checked);
+    }
+
+    async function handleFormSubmit(e) {
       e.preventDefault();
+      
+      const submitBtn = document.getElementById('submitBtn');
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `<span>Invio in corso...</span>`;
+
+      const attendance = document.querySelector('input[name="attendance"]:checked').value;
+      const mainDietary = Array.from(document.querySelectorAll('.main-diet-option:checked')).map(cb => cb.value);
+      const mainNotes = document.getElementById('mainDietNotes').value.trim();
+      const partnerDietary = Array.from(document.querySelectorAll('.partner-diet-option:checked')).map(cb => cb.value);
+      const partnerNotes = document.getElementById('partnerDietNotes').value.trim();
+
+      const newEntry = {
+        id: Date.now().toString(),
+        name: document.getElementById('guestName').value.trim(),
+        contact: document.getElementById('guestContact').value.trim(),
+        attendance: attendance,
+        mainDietary: mainDietary,
+        mainNotes: mainNotes,
+        hasPartner: attendance === 'attending' ? document.getElementById('hasPartner').checked : false,
+        partnerName: attendance === 'attending' && document.getElementById('hasPartner').checked ? document.getElementById('partnerName').value.trim() : '',
+        partnerDietary: attendance === 'attending' && document.getElementById('hasPartner').checked ? partnerDietary : [],
+        partnerNotes: attendance === 'attending' && document.getElementById('hasPartner').checked ? partnerNotes : '',
+        hasKids: attendance === 'attending' ? document.getElementById('hasKids').checked : false,
+        kidsCount: attendance === 'attending' && document.getElementById('hasKids').checked ? parseInt(document.getElementById('kidsCount').value) || 0 : 0,
+        highChairCount: attendance === 'attending' && document.getElementById('hasKids').checked ? parseInt(document.getElementById('highChairCount').value) || 0 : 0,
+        kidsNotes: attendance === 'attending' && document.getElementById('hasKids').checked ? document.getElementById('kidsMenuNotes').value.trim() : '',
+        song: attendance === 'attending' ? document.getElementById('songRequest').value.trim() : '',
+        message: document.getElementById('guestMessage').value.trim(),
+        tableId: null
+      };
+
+      let formattedDietarySummary = `${newEntry.name}: ${mainDietary.join(', ')} ${mainNotes ? '(' + mainNotes + ')' : ''}`;
+      if (newEntry.hasPartner) {
+        formattedDietarySummary += ` | ${newEntry.partnerName || 'Accompagnatore'}: ${partnerDietary.join(', ')} ${partnerNotes ? '(' + partnerNotes + ')' : ''}`;
+      }
+      if (newEntry.hasKids && newEntry.kidsNotes) {
+        formattedDietarySummary += ` | Note Bimbi: ${newEntry.kidsNotes}`;
+      }
+
+      newEntry.formattedDietarySummary = formattedDietarySummary;
+
+      try {
+        await fetch(GOOGLE_SHEET_SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify(newEntry)
+        });
+      } catch (err) {
+        console.error('Errore invio Google Sheet:', err);
+      }
+
+      guestResponses.push(newEntry);
+      saveData();
+
+      confetti({
+        particleCount: 90,
+        spread: 60,
+        origin: { y: 0.6 },
+        colors: ['#8ba888', '#d4af37', '#e3eae3']
+      });
+
       document.getElementById('rsvpForm').classList.add('hidden');
       document.getElementById('rsvpSuccess').classList.remove('hidden');
-      confetti({ particleCount: 80, spread: 60 });
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = `<i data-lucide="send" class="w-4 h-4"></i><span>Invia Conferma RSVP</span>`;
+      lucide.createIcons();
+    }
+
+    function resetRsvpForm() {
+      document.getElementById('rsvpForm').reset();
+      document.getElementById('rsvpForm').classList.remove('hidden');
+      document.getElementById('rsvpSuccess').classList.add('hidden');
+      togglePartnerFields(false);
+      toggleKidsFields(false);
+      toggleAttendanceFields(true);
+    }
+
+    function saveData() {
+      localStorage.setItem('wedding_guests_simona_marco', JSON.stringify(guestResponses));
+      localStorage.setItem('wedding_tables_simona_marco', JSON.stringify(tables));
+    }
+
+    function toggleAdminModal() {
+      document.getElementById('adminModal').classList.toggle('hidden');
+      cancelForgotPin();
+      cancelSetupPin();
+    }
+
+    function verifyPin() {
+      const enteredPin = document.getElementById('adminPin').value;
+      const savedPin = localStorage.getItem('wedding_admin_pin') || '1234';
+
+      if (enteredPin === savedPin) {
+        document.getElementById('pinView').classList.add('hidden');
+        document.getElementById('adminDashboard').classList.remove('hidden');
+        
+        document.getElementById('cmsNamesInput').value = cmsConfig.NomiSposi || '';
+        document.getElementById('cmsDateInput').value = cmsConfig.DataIso || '';
+        document.getElementById('cmsDateText').value = cmsConfig.TestoData || '';
+        document.getElementById('cmsTimeText').value = cmsConfig.Orario || '';
+        document.getElementById('cmsProgTime1').value = cmsConfig.ProgTime1 || 'Ore 17:00';
+        document.getElementById('cmsProgTime2').value = cmsConfig.ProgTime2 || 'Ore 18:30';
+        document.getElementById('cmsProgTime3').value = cmsConfig.ProgTime3 || 'Ore 20:00';
+        document.getElementById('cmsProgTime4').value = cmsConfig.ProgTime4 || 'Ore 23:00';
+        document.getElementById('cmsHeroQuote').value = cmsConfig.HeroQuote || '';
+        document.getElementById('cmsLocName').value = cmsConfig.LocName || '';
+        document.getElementById('cmsLocAddress').value = cmsConfig.LocAddress || '';
+        document.getElementById('cmsLocMapsUrl').value = cmsConfig.LocMapsUrl || '';
+        document.getElementById('cmsLocDesc').value = cmsConfig.LocDesc || '';
+        document.getElementById('cmsIban').value = cmsConfig.IBAN || '';
+        document.getElementById('cmsGiftOwner').value = cmsConfig.GiftOwner || '';
+        document.getElementById('cmsGiftBank').value = cmsConfig.GiftBank || '';
+        document.getElementById('audioUrlInput').value = (cmsConfig.AudioUrl && !cmsConfig.AudioUrl.includes('drive.google.com')) ? cmsConfig.AudioUrl : '';
+
+        if (styleConfig.bodySize) document.getElementById('styleBodySize').value = styleConfig.bodySize;
+        if (styleConfig.titleSize) document.getElementById('styleTitleSize').value = styleConfig.titleSize;
+
+        renderAdminData();
+      } else {
+        alert('PIN errato!');
+      }
+    }
+
+    function showForgotPin() {
+      document.getElementById('pinPromptContainer').classList.add('hidden');
+      document.getElementById('forgotPinContainer').classList.remove('hidden');
+    }
+
+    function cancelForgotPin() {
+      document.getElementById('forgotPinContainer').classList.add('hidden');
+      document.getElementById('pinPromptContainer').classList.remove('hidden');
+      document.getElementById('recoveryAnswerInput').value = '';
+    }
+
+    function verifyRecoveryAnswer() {
+      const answer = document.getElementById('recoveryAnswerInput').value.trim().toLowerCase();
+      const savedSecret = (localStorage.getItem('wedding_admin_secret') || 'fido').toLowerCase();
+
+      if (answer === savedSecret) {
+        alert('Risposta corretta! Ora puoi impostare un nuovo PIN.');
+        cancelForgotPin();
+        showSetupPin();
+      } else {
+        alert('Parola segreta errata.');
+      }
+    }
+
+    function showSetupPin() {
+      document.getElementById('pinPromptContainer').classList.add('hidden');
+      document.getElementById('adminDashboard').classList.add('hidden');
+      document.getElementById('setupPinContainer').classList.remove('hidden');
+      document.getElementById('pinView').classList.remove('hidden');
+    }
+
+    function cancelSetupPin() {
+      document.getElementById('setupPinContainer').classList.add('hidden');
+      document.getElementById('pinPromptContainer').classList.remove('hidden');
+    }
+
+    function saveNewPinConfig() {
+      const newPin = document.getElementById('newPinInput').value.trim();
+      const newSecret = document.getElementById('newSecretWord').value.trim();
+
+      if (!newPin || !newSecret) {
+        alert('Inserisci sia il nuovo PIN che la parola segreta.');
+        return;
+      }
+
+      localStorage.setItem('wedding_admin_pin', newPin);
+      localStorage.setItem('wedding_admin_secret', newSecret);
+      alert('PIN aggiornato con successo!');
+      document.getElementById('newPinInput').value = '';
+      document.getElementById('newSecretWord').value = '';
+      cancelSetupPin();
+    }
+
+    function switchAdminTab(tab) {
+      document.getElementById('tabGuests').classList.add('hidden');
+      document.getElementById('tabTables').classList.add('hidden');
+      document.getElementById('tabChallenges').classList.add('hidden');
+      document.getElementById('tabCms').classList.add('hidden');
+      document.getElementById('tabStyle').classList.add('hidden');
+      document.getElementById('tabBackground').classList.add('hidden');
+
+      const tabs = ['tabGuestsBtn', 'tabTablesBtn', 'tabChallengesBtn', 'tabCmsBtn', 'tabStyleBtn', 'tabBgBtn'];
+      tabs.forEach(t => document.getElementById(t).className = "px-3 py-1.5 rounded-xl font-medium text-xs text-sage-700 hover:bg-sage-100");
+
+      if (tab === 'guests') {
+        document.getElementById('tabGuests').classList.remove('hidden');
+        document.getElementById('tabGuestsBtn').className = "px-3 py-1.5 rounded-xl font-medium text-xs bg-sage-700 text-white";
+      } else if (tab === 'tables') {
+        document.getElementById('tabTables').classList.remove('hidden');
+        document.getElementById('tabTablesBtn').className = "px-3 py-1.5 rounded-xl font-medium text-xs bg-sage-700 text-white";
+        renderTablesDashboard();
+      } else if (tab === 'challenges') {
+        document.getElementById('tabChallenges').classList.remove('hidden');
+        document.getElementById('tabChallengesBtn').className = "px-3 py-1.5 rounded-xl font-medium text-xs bg-sage-700 text-white";
+        renderChallengesDashboard();
+      } else if (tab === 'cms') {
+        document.getElementById('tabCms').classList.remove('hidden');
+        document.getElementById('tabCmsBtn').className = "px-3 py-1.5 rounded-xl font-medium text-xs bg-sage-700 text-white";
+      } else if (tab === 'style') {
+        document.getElementById('tabStyle').classList.remove('hidden');
+        document.getElementById('tabStyleBtn').className = "px-3 py-1.5 rounded-xl font-medium text-xs bg-sage-700 text-white";
+      } else if (tab === 'background') {
+        document.getElementById('tabBackground').classList.remove('hidden');
+        document.getElementById('tabBgBtn').className = "px-3 py-1.5 rounded-xl font-medium text-xs bg-sage-700 text-white";
+      }
+    }
+
+    function renderChallengesDashboard() {
+      const tbody = document.getElementById('challengesTableBody');
+      tbody.innerHTML = '';
+
+      if (submittedChallenges.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-gray-400 italic">Nessuna sfida inviata dagli invitati al momento.</td></tr>`;
+        return;
+      }
+
+      submittedChallenges.forEach((ch, index) => {
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-sage-50/60";
+        tr.innerHTML = `
+          <td class="p-3 font-semibold text-sage-900">${ch.name}<br><span class="text-[10px] text-gray-400 font-normal">${ch.timestamp}</span></td>
+          <td class="p-3 text-sage-800 font-medium">${ch.challenge}</td>
+          <td class="p-3 text-sage-700">${ch.proof}</td>
+          <td class="p-3 text-right">
+            <button onclick="deleteChallenge(${index})" class="text-red-500 hover:text-red-700 text-xs">Rimuovi</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function deleteChallenge(index) {
+      if (confirm('Rimuovere questa sfida?')) {
+        submittedChallenges.splice(index, 1);
+        localStorage.setItem('wedding_challenges_simona_marco', JSON.stringify(submittedChallenges));
+        renderChallengesDashboard();
+      }
+    }
+
+    function renderAdminData() {
+      const tbody = document.getElementById('guestTableBody');
+      tbody.innerHTML = '';
+
+      let total = guestResponses.length;
+      let adults = 0;
+      let kids = 0;
+      let highChairs = 0;
+      let declined = 0;
+
+      guestResponses.forEach(g => {
+        if (g.attendance === 'attending') {
+          adults += 1;
+          if (g.hasPartner) adults += 1;
+          if (g.hasKids) {
+            kids += g.kidsCount;
+            highChairs += g.highChairCount;
+          }
+        } else {
+          declined += 1;
+        }
+
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-sage-50/60";
+
+        let dietDetailsHtml = `<div class="space-y-1 text-[11px]">`;
+        dietDetailsHtml += `<div><strong>${g.name}:</strong> ${g.mainDietary && g.mainDietary.length > 0 ? g.mainDietary.join(', ') : 'Nessuna'} ${g.mainNotes ? '<span class="italic">(' + g.mainNotes + ')</span>' : ''}</div>`;
+        if (g.hasPartner) {
+          dietDetailsHtml += `<div><strong>${g.partnerName || 'Accompagnatore'}:</strong> ${g.partnerDietary && g.partnerDietary.length > 0 ? g.partnerDietary.join(', ') : 'Nessuna'} ${g.partnerNotes ? '<span class="italic">(' + g.partnerNotes + ')</span>' : ''}</div>`;
+        }
+        if (g.hasKids && g.kidsNotes) {
+          dietDetailsHtml += `<div><strong>Bimbi:</strong> ${g.kidsNotes}</div>`;
+        }
+        dietDetailsHtml += `</div>`;
+
+        tr.innerHTML = `
+          <td class="p-3 font-semibold text-sage-900">${g.name}<br><span class="text-[10px] text-gray-500 font-normal">${g.contact}</span></td>
+          <td class="p-3">${g.attendance === 'attending' ? '<span class="bg-green-100 text-green-800 font-medium px-2 py-0.5 rounded-full text-[10px]">Presente</span>' : '<span class="bg-red-100 text-red-800 font-medium px-2 py-0.5 rounded-full text-[10px]">Assente</span>'}</td>
+          <td class="p-3">${g.hasPartner ? g.partnerName || 'Sì' : 'No'}</td>
+          <td class="p-3">${g.hasKids ? `${g.kidsCount} bimbi (${g.highChairCount} seggioloni)` : 'No'}</td>
+          <td class="p-3 text-red-800 font-medium">${dietDetailsHtml}</td>
+          <td class="p-3 text-gray-600">${g.song ? '🎵 ' + g.song : ''} ${g.message ? '💬 ' + g.message : ''}</td>
+          <td class="p-3 text-right">
+            <button onclick="deleteGuest('${g.id}')" class="text-red-500 hover:text-red-700 text-xs">Elimina</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      document.getElementById('statTotal').innerText = total;
+      document.getElementById('statAdults').innerText = adults;
+      document.getElementById('statKids').innerText = kids;
+      document.getElementById('statHighChairs').innerText = highChairs;
+      document.getElementById('statDeclined').innerText = declined;
+    }
+
+    function deleteGuest(id) {
+      if (confirm('Eliminare questa risposta?')) {
+        guestResponses = guestResponses.filter(g => g.id !== id);
+        saveData();
+        renderAdminData();
+      }
+    }
+
+    function filterGuestTable() {
+      const query = document.getElementById('searchGuest').value.toLowerCase();
+      document.querySelectorAll('#guestTableBody tr').forEach(row => {
+        row.style.display = row.innerText.toLowerCase().includes(query) ? '' : 'none';
+      });
+    }
+
+    function exportCSV() {
+      let csv = 'Nome Ospite,Contatto,Presenza,Accompagnatore,Bambini,Seggioloni,Dettaglio Intolleranze per Persona,Canzone,Messaggio,Tavolo\n';
+      guestResponses.forEach(g => {
+        const tableObj = tables.find(t => t.id === g.tableId);
+        const tableName = tableObj ? tableObj.name : 'Non Assegnato';
+        const diet = g.formattedDietarySummary ? g.formattedDietarySummary.replace(/,/g, ' ') : '';
+        csv += `"${g.name}","${g.contact}","${g.attendance}","${g.hasPartner ? g.partnerName : ''}","${g.hasKids ? g.kidsCount : 0}","${g.highChairCount}","${diet}","${g.song.replace(/,/g, ' ')}","${g.message.replace(/,/g, ' ')}","${tableName}"\n`;
+      });
+
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.setAttribute('download', 'Simona_Marco_Invitati_Acquamatta.csv');
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    function addTable() {
+      const name = document.getElementById('newTableName').value.trim();
+      const capacity = parseInt(document.getElementById('newTableCapacity').value) || 10;
+      if (!name) return alert('Inserisci il nome del tavolo');
+
+      tables.push({ id: 't_' + Date.now(), name, capacity });
+      document.getElementById('newTableName').value = '';
+      saveData();
+      renderTablesDashboard();
+    }
+
+    function deleteTable(tableId) {
+      if (confirm('Eliminare questo tavolo?')) {
+        tables = tables.filter(t => t.id !== tableId);
+        guestResponses.forEach(g => { if (g.tableId === tableId) g.tableId = null; });
+        saveData();
+        renderTablesDashboard();
+      }
+    }
+
+    function assignGuestToTable(guestId, tableId) {
+      const guest = guestResponses.find(g => g.id === guestId);
+      if (guest) {
+        guest.tableId = tableId || null;
+        saveData();
+        renderTablesDashboard();
+      }
+    }
+
+    function renderTablesDashboard() {
+      const unassignedContainer = document.getElementById('unassignedList');
+      const tablesGrid = document.getElementById('tablesGrid');
+      
+      unassignedContainer.innerHTML = '';
+      tablesGrid.innerHTML = '';
+
+      const confirmedGuests = guestResponses.filter(g => g.attendance === 'attending');
+      let unassignedCount = 0;
+      let totalSeated = 0;
+
+      confirmedGuests.filter(g => !g.tableId).forEach(g => {
+        let groupCount = 1;
+        let groupNames = [g.name];
+
+        if (g.hasPartner) { groupCount += 1; groupNames.push(g.partnerName || 'Accompagnatore'); }
+        if (g.hasKids) { groupCount += g.kidsCount; groupNames.push(`${g.kidsCount} bimbi`); }
+
+        unassignedCount += groupCount;
+
+        const card = document.createElement('div');
+        card.className = "p-3 bg-sage-50 border border-sage-200 rounded-xl space-y-2";
+        card.innerHTML = `
+          <div class="flex justify-between items-start">
+            <div>
+              <p class="font-bold text-xs text-sage-900">${g.name}</p>
+              <p class="text-[10px] text-sage-600">${groupNames.join(', ')} (${groupCount} posti)</p>
+            </div>
+            <span class="bg-sage-200 text-sage-800 text-[10px] font-bold px-2 py-0.5 rounded-full">${groupCount} p.</span>
+          </div>
+          
+          <select onchange="assignGuestToTable('${g.id}', this.value)" class="text-xs p-1.5 rounded-lg border border-sage-300 w-full bg-white">
+            <option value="">Scegli tavolo...</option>
+            ${tables.map(t => `<option value="${t.id}">${t.name} (${getTableOccupancy(t.id)}/${t.capacity})</option>`).join('')}
+          </select>
+        `;
+        unassignedContainer.appendChild(card);
+      });
+
+      document.getElementById('unassignedCount').innerText = unassignedCount;
+
+      tables.forEach(t => {
+        const assignedInTable = confirmedGuests.filter(g => g.tableId === t.id);
+        let currentOccupancy = 0;
+        assignedInTable.forEach(g => {
+          currentOccupancy += 1;
+          if (g.hasPartner) currentOccupancy += 1;
+          if (g.hasKids) currentOccupancy += g.kidsCount;
+        });
+
+        totalSeated += currentOccupancy;
+        const isFull = currentOccupancy >= t.capacity;
+
+        const tableCard = document.createElement('div');
+        tableCard.className = `p-4 rounded-2xl border ${isFull ? 'bg-amber-50/50 border-gold' : 'bg-white border-sage-200'} shadow-sm flex flex-col justify-between`;
+        
+        tableCard.innerHTML = `
+          <div>
+            <div class="flex justify-between items-center mb-2 pb-2 border-b border-sage-100">
+              <div>
+                <h5 class="font-serif font-bold text-base text-sage-900">${t.name}</h5>
+                <span class="text-[10px] font-medium text-sage-600">Capienza: ${t.capacity} posti</span>
+              </div>
+              <div class="text-right">
+                <span class="text-xs font-bold ${currentOccupancy > t.capacity ? 'text-red-600' : 'text-sage-700'}">${currentOccupancy} / ${t.capacity}</span>
+                <button onclick="deleteTable('${t.id}')" class="block text-[10px] text-red-500 hover:underline mt-0.5">Rimuovi</button>
+              </div>
+            </div>
+
+            <div class="space-y-1.5 my-3 max-h-48 overflow-y-auto">
+              ${assignedInTable.length === 0 ? '<p class="text-[11px] text-gray-400 italic">Nessun ospite assegnato</p>' : ''}
+              ${assignedInTable.map(g => {
+                let text = g.name;
+                if (g.hasPartner) text += ` + ${g.partnerName || 'Accompagnatore'}`;
+                if (g.hasKids) text += ` + ${g.kidsCount} bimbi`;
+                return `
+                  <div class="flex justify-between items-center text-xs bg-sage-50 p-1.5 rounded-lg border border-sage-100">
+                    <span class="font-medium text-sage-800">${text}</span>
+                    <button onclick="assignGuestToTable('${g.id}', null)" class="text-red-400 hover:text-red-600 text-xs px-1">✕</button>
+                  </div>
+                `;
+              }).join('')}
+            </div>
+          </div>
+
+          <div class="pt-2 border-t border-sage-100 text-[11px]">
+            <span class="${currentOccupancy > t.capacity ? 'text-red-600 font-bold' : 'text-sage-600'}">
+              ${currentOccupancy > t.capacity ? '⚠️ Capienza superata!' : `${t.capacity - currentOccupancy} posti liberi`}
+            </span>
+          </div>
+        `;
+        tablesGrid.appendChild(tableCard);
+      });
+
+      document.getElementById('tablesSummary').innerText = `${totalSeated} Posti Assegnati`;
+    }
+
+    function getTableOccupancy(tableId) {
+      let count = 0;
+      guestResponses.filter(g => g.attendance === 'attending' && g.tableId === tableId).forEach(g => {
+        count += 1;
+        if (g.hasPartner) count += 1;
+        if (g.hasKids) count += g.kidsCount;
+      });
+      return count;
     }
   </script>
 </body>
