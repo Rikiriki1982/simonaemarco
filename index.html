@@ -131,7 +131,7 @@
         "Immersi nella bellezza della natura, vi invitiamo a condividere con noi la gioia del nostro giorno speciale."
       </p>
 
-      <!-- UNICA DATA ED ORARIO CORRISPONDENTE AL COUNTDOWN -->
+      <!-- UNICA DATA ED ORARIO AUTOMATICAMENTE FORMATTATI -->
       <div class="inline-flex flex-col sm:flex-row items-center justify-center gap-4 bg-white/90 border border-gold/30 rounded-2xl p-4 shadow-md mb-10">
         <div class="flex items-center space-x-2 text-sage-800 font-medium">
           <i data-lucide="calendar" class="w-5 h-5 text-gold"></i>
@@ -761,12 +761,8 @@
                 <input type="text" id="cmsNamesInput" class="w-full px-3 py-2 rounded-xl border border-sage-200 bg-white">
               </div>
               <div>
-                <label class="block font-semibold mb-1">Data Matrimonio (per il Conto alla Rovescia)</label>
+                <label class="block font-semibold mb-1">Data e Orario Matrimonio</label>
                 <input type="datetime-local" id="cmsDateInput" class="w-full px-3 py-2 rounded-xl border border-sage-200 bg-white">
-              </div>
-              <div>
-                <label class="block font-semibold mb-1">Data e Orario Visualizzati (es. Sabato 12 Giugno 2027 • Ore 17:00)</label>
-                <input type="text" id="cmsDateText" class="w-full px-3 py-2 rounded-xl border border-sage-200 bg-white">
               </div>
             </div>
 
@@ -988,7 +984,6 @@
     let cmsConfig = {
       NomiSposi: 'Simona & Marco',
       DataIso: '2027-06-12T17:00',
-      TestoData: 'Sabato 12 Giugno 2027 • Ore 17:00',
       ProgTime1: 'Ore 17:00',
       ProgTime2: 'Ore 18:30',
       ProgTime3: 'Ore 20:00',
@@ -1081,15 +1076,24 @@
       }
     });
 
-    function formatDateString(str) {
-      if (!str || str.includes('T') || str.includes('Z')) {
-        return 'Sabato 12 Giugno 2027 • Ore 17:00';
-      }
-      return str;
+    // Funzione per formattare automaticamente la data ISO in formato testuale italiano elegante
+    function getFormattedDateFromIso(isoStr) {
+      if (!isoStr) return 'Sabato 12 Giugno 2027 • Ore 17:00';
+      const d = new Date(isoStr);
+      if (isNaN(d.getTime())) return 'Sabato 12 Giugno 2027 • Ore 17:00';
+
+      const optionsDate = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+      let formattedDate = d.toLocaleDateString('it-IT', optionsDate);
+      formattedDate = formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
+
+      const hours = String(d.getHours()).padStart(2, '0');
+      const minutes = String(d.getMinutes()).padStart(2, '0');
+
+      return `${formattedDate} • Ore ${hours}:${minutes}`;
     }
 
     function applyCmsToPage() {
-      const displayDate = formatDateString(cmsConfig.TestoData);
+      const displayDate = getFormattedDateFromIso(cmsConfig.DataIso);
 
       if (cmsConfig.NomiSposi) {
         document.getElementById('docTitle').innerText = `${cmsConfig.NomiSposi} - Invito di Nozze`;
@@ -1197,7 +1201,6 @@
 
       cmsConfig.NomiSposi = document.getElementById('cmsNamesInput').value.trim();
       cmsConfig.DataIso = document.getElementById('cmsDateInput').value;
-      cmsConfig.TestoData = formatDateString(document.getElementById('cmsDateText').value.trim());
       cmsConfig.ProgTime1 = document.getElementById('cmsProgTime1').value.trim();
       cmsConfig.ProgTime2 = document.getElementById('cmsProgTime2').value.trim();
       cmsConfig.ProgTime3 = document.getElementById('cmsProgTime3').value.trim();
@@ -1537,7 +1540,6 @@
         
         document.getElementById('cmsNamesInput').value = cmsConfig.NomiSposi || '';
         document.getElementById('cmsDateInput').value = cmsConfig.DataIso || '';
-        document.getElementById('cmsDateText').value = cmsConfig.TestoData || '';
         document.getElementById('cmsProgTime1').value = cmsConfig.ProgTime1 || 'Ore 17:00';
         document.getElementById('cmsProgTime2').value = cmsConfig.ProgTime2 || 'Ore 18:30';
         document.getElementById('cmsProgTime3').value = cmsConfig.ProgTime3 || 'Ore 20:00';
