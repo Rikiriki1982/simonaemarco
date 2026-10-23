@@ -91,6 +91,7 @@
         <a href="#dettagli" class="text-sage-700 hover:text-sage-900 transition">Evento</a>
         <a href="#location" class="text-sage-700 hover:text-sage-900 transition">Dove</a>
         <a href="#challenge" class="text-sage-700 hover:text-sage-900 transition hidden sm:inline">Sfide 🎲</a>
+        <a href="#galleria" class="text-sage-700 hover:text-sage-900 transition font-semibold">Galleria 📸</a>
         <a href="#regalo" class="text-sage-700 hover:text-sage-900 transition hidden sm:inline">Lista Nozze</a>
         <a href="#faq" class="text-sage-700 hover:text-sage-900 transition hidden sm:inline">FAQ</a>
         <a href="#rsvp" class="bg-sage-600 hover:bg-sage-700 text-white px-3 py-1.5 rounded-full shadow-sm transition">RSVP</a>
@@ -287,6 +288,40 @@
         <button onclick="submitChallengeVerification()" class="w-full bg-sage-700 hover:bg-sage-800 text-white text-xs py-2 rounded-xl font-medium transition">
           Invia Sfida per Approvazione 🚀
         </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEZIONE GALLERIA DEI RICORDI (PADLET INTEGRATO) -->
+  <section id="galleria" class="py-12 px-4 max-w-4xl mx-auto w-full">
+    <div class="card-watercolor rounded-3xl p-6 md:p-8 space-y-6">
+      <div class="text-center space-y-2">
+        <div class="w-12 h-12 bg-sage-100 text-sage-700 rounded-full flex items-center justify-center mx-auto mb-2">
+          <i data-lucide="camera" class="w-6 h-6 text-gold"></i>
+        </div>
+        <h2 class="font-serif text-3xl md:text-4xl font-bold text-sage-900">Galleria dei Ricordi 📸</h2>
+        <p class="text-xs text-sage-600 max-w-lg mx-auto">
+          Carica le tue foto e video più belli della giornata e lascia una dedica o una firma per gli sposi!
+        </p>
+      </div>
+
+      <!-- Pulsante per Apertura Schermo Intero (Comodo per Smartphone) -->
+      <div class="text-center">
+        <a href="https://padlet.com/rikiriki1982/i-ricordi-piu-belli-simona-marco-s024rsp83yztzcejitjm" target="_blank" rel="noopener noreferrer" class="inline-flex items-center space-x-2 bg-gold hover:bg-gold-dark text-white text-xs uppercase tracking-wider font-semibold px-6 py-3 rounded-full shadow-md transition transform hover:-translate-y-0.5">
+          <i data-lucide="external-link" class="w-4 h-4"></i>
+          <span>Apri Galleria a Schermo Intero 🚀</span>
+        </a>
+      </div>
+
+      <!-- Riquadro Padlet Integrato -->
+      <div class="w-full rounded-2xl overflow-hidden border border-sage-200 shadow-inner bg-white min-h-[500px]">
+        <iframe 
+          src="https://padlet.com/embed/s024rsp83yztzcejitjm" 
+          frameborder="0" 
+          allow="camera; microphone; geolocation" 
+          class="w-full h-[550px] rounded-2xl"
+          style="width:100%; height:550px; border:none;">
+        </iframe>
       </div>
     </div>
   </section>
